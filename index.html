@@ -22,29 +22,37 @@ THEO DÕI THỰC HIỆN NHIỆM VỤ KH,CN – ĐMST
 </h1>
 
 <!-- DASHBOARD 3 TRẠNG THÁI -->
-<div class="flex flex-col md:flex-row items-center gap-10 mb-10">
+<!-- DASHBOARD HÌNH TRÒN -->
+<div class="flex flex-col md:flex-row items-center gap-12 mb-10">
 
-  <!-- BIỂU ĐỒ TRÒN -->
   <div class="text-center">
-    <div id="donutChart" class="w-56 h-56 rounded-full mx-auto"></div>
-    <div class="mt-4 text-lg font-bold">Tổng thể tiến độ</div>
+    <div id="donutChart"
+         class="w-64 h-64 rounded-full mx-auto shadow-2xl"
+         style="background:#3a506b">
+    </div>
+    <div class="mt-4 text-lg font-bold text-yellow-200">
+      Tổng thể tiến độ
+    </div>
   </div>
 
-  <!-- CHÚ GIẢI -->
-  <div class="space-y-3">
+  <div class="space-y-4 text-lg">
     <div class="flex items-center gap-3">
-      <div class="w-4 h-4 bg-red-500"></div>
-      Chưa thực hiện: <span id="txtA"></span>
+      <div class="w-5 h-5 bg-red-500"></div>
+      Chưa thực hiện: <b id="txtA"></b>
     </div>
+
     <div class="flex items-center gap-3">
-      <div class="w-4 h-4 bg-yellow-400"></div>
-      Đang thực hiện: <span id="txtB"></span>
+      <div class="w-5 h-5 bg-yellow-400"></div>
+      Đang thực hiện: <b id="txtB"></b>
     </div>
+
     <div class="flex items-center gap-3">
-      <div class="w-4 h-4 bg-green-500"></div>
-      Đã xong: <span id="txtC"></span>
+      <div class="w-5 h-5 bg-green-500"></div>
+      Đã xong: <b id="txtC"></b>
     </div>
   </div>
+
+</div>
 
 </div>
 
