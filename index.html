@@ -3,75 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Theo dõi KH,CN & ĐMST</title>
+<title>Theo dõi nhiệm vụ KH,CN</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body { background:#0b132b; color:white; }
 .card { background:#1c2541; }
-
-.group1{border-left:6px solid #3b82f6;}
-.group2{border-left:6px solid #10b981;}
-.group3{border-left:6px solid #f59e0b;}
-.group4{border-left:6px solid #8b5cf6;}
-.group5{border-left:6px solid #06b6d4;}
-
-.progress-bg{background:#3a506b;}
-.progress-bar{background:#2ec4b6;}
-
-.warning{background:#ff595e;}
-.overdue{background:#ff006e;}
+.bad{background:#ff4d4f;}
+.warn{background:#facc15;color:black;}
+.good{background:#22c55e;}
 </style>
 </head>
 
 <body class="p-8">
 
 <h1 class="text-3xl font-bold mb-6 text-yellow-300">
-THEO DÕI TRIỂN KHAI KH,CN – ĐMST – CHUYỂN ĐỔI SỐ
+THEO DÕI THỰC HIỆN NHIỆM VỤ KH,CN – ĐMST
 </h1>
 
-<!-- Bộ lọc -->
-<div class="mb-6 flex gap-6">
-<div>
-<label>Năm:</label>
-<select id="yearFilter" class="text-black px-2 py-1"></select>
-</div>
+<!-- DASHBOARD 3 TRẠNG THÁI -->
+<div id="summary" class="grid grid-cols-3 gap-6 mb-8"></div>
 
-<div>
-<label>Quý:</label>
-<select id="quarterFilter" class="text-black px-2 py-1">
-<option value="all">Tất cả</option>
-<option value="1">Quý I</option>
-<option value="2">Quý II</option>
-<option value="3">Quý III</option>
-<option value="4">Quý IV</option>
-</select>
+<!-- LỌC THEO NHÓM -->
+<div class="mb-6">
+<b>Lọc theo nhóm nhiệm vụ:</b>
+<div id="groupFilter" class="mt-2"></div>
 </div>
-</div>
-
-<!-- Thống kê -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-
-<div class="card p-6 rounded-xl text-center">
-<h2 class="font-bold mb-4 text-yellow-200">Tổng thể chương trình</h2>
-<div id="overallChart" class="mx-auto w-40 h-40 rounded-full"></div>
-<div id="overallText" class="mt-4 text-xl font-bold"></div>
-</div>
-
-<div class="card p-6 rounded-xl">
-<h2 class="font-bold mb-4 text-yellow-200">Tiến độ theo nhóm</h2>
-<div id="groupStats"></div>
-</div>
-
-</div>
-
-<div id="alertBox" class="hidden p-4 mb-6 font-bold text-black"></div>
 
 <table class="w-full text-sm">
 <thead class="bg-yellow-400 text-black">
 <tr>
 <th>Nhóm</th>
-<th>Trục</th>
 <th>Nhiệm vụ</th>
 <th>Thời hạn</th>
 <th>Tiến độ</th>
@@ -83,148 +45,106 @@ THEO DÕI TRIỂN KHAI KH,CN – ĐMST – CHUYỂN ĐỔI SỐ
 
 <script>
 
-/* ================== DỮ LIỆU NHIỆM VỤ ================== */
-const data = [
-
-{group:"group1",groupName:"Chỉ đạo Tỉnh ủy",pillar:"Thể chế",
-task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN đến 2030",
-deadline:"2026-01-31",progress:70},
-
-{group:"group1",groupName:"Chỉ đạo Tỉnh ủy",pillar:"Thể chế",
-task:"Ban hành Nghị quyết đột phá KH,CN, ĐMST",
-deadline:"2026-03-31",progress:60},
-
-{group:"group2",groupName:"UBND giao trực tiếp",pillar:"Hệ sinh thái ĐMST",
-task:"Thành lập Trung tâm Đổi mới sáng tạo",
-deadline:"2026-03-30",progress:50},
-
-{group:"group2",groupName:"UBND giao trực tiếp",pillar:"Nguồn lực",
-task:"Thành lập Quỹ phát triển KH,CN",
-deadline:"2026-06-30",progress:40},
-
-{group:"group3",groupName:"Phối hợp liên ngành",pillar:"Kinh tế số",
-task:"Phát triển kinh tế số GRDP",
-deadline:"2026-12-31",progress:35},
-
-{group:"group4",groupName:"Triển khai NQ57",pillar:"Chuyển đổi số",
-task:"Chuyển đổi số cơ quan nhà nước",
-deadline:"2026-12-31",progress:45},
-
-{group:"group5",groupName:"Chiến lược 2030",pillar:"Công nghệ",
-task:"Ứng dụng AI, IoT trong sản xuất và quản lý",
-deadline:"2030-12-31",progress:20}
-
+/* ================= DỮ LIỆU GỐC ================= */
+const tasks = [
+{group:"Chỉ đạo Tỉnh ủy",task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN đến 2030",deadline:"2026-01-31"},
+{group:"UBND giao trực tiếp",task:"Thành lập Trung tâm Đổi mới sáng tạo",deadline:"2026-03-30"},
+{group:"UBND giao trực tiếp",task:"Thành lập Quỹ phát triển KH,CN",deadline:"2026-06-30"},
+{group:"Phối hợp liên ngành",task:"Phát triển kinh tế số GRDP",deadline:"2026-12-31"},
+{group:"Triển khai NQ57",task:"Chuyển đổi số cơ quan nhà nước",deadline:"2026-12-31"},
+{group:"Chiến lược 2030",task:"Ứng dụng AI, IoT trong sản xuất",deadline:"2030-12-31"}
 ];
 
-/* ================== HÀM ================== */
-
-function getQuarter(date){
-return Math.floor(date.getMonth()/3)+1;
+/* ================= LƯU TRẠNG THÁI ================= */
+function getProgress(id){
+return localStorage.getItem(id) || "Chưa thực hiện";
 }
 
-function populateYear(){
-const years=[...new Set(data.map(t=>new Date(t.deadline).getFullYear()))];
-const select=document.getElementById("yearFilter");
-years.forEach(y=>{
-const opt=document.createElement("option");
-opt.value=y; opt.text=y;
-select.appendChild(opt);
-});
+function setProgress(id,value){
+localStorage.setItem(id,value);
+render();
 }
 
+/* ================= TÍNH TRẠNG THÁI ================= */
+function calcStatus(deadline,progress){
+const now=new Date();
+const d=new Date(deadline);
+
+if(progress==="Đã xong") return {text:"Đã hoàn thành",cls:"good"};
+
+if(now>d) return {text:"Quá hạn",cls:"bad"};
+
+return {text:"Chưa đến hạn",cls:"warn"};
+}
+
+/* ================= RENDER ================= */
 function render(){
 
-const year=document.getElementById("yearFilter").value;
-const quarter=document.getElementById("quarterFilter").value;
+const table=document.getElementById("taskTable");
+table.innerHTML="";
 
-const tbody=document.getElementById("taskTable");
-tbody.innerHTML="";
+let sum={a:0,b:0,c:0};
 
-let filtered=[];
-let warnings=[];
+tasks.forEach((t,i)=>{
 
-data.forEach(t=>{
-const d=new Date(t.deadline);
-if(d.getFullYear()!=year) return;
-if(quarter!="all" && getQuarter(d)!=quarter) return;
+if(!selectedGroups.has(t.group)) return;
 
-filtered.push(t);
+const progress=getProgress(i);
+const status=calcStatus(t.deadline,progress);
 
-const today=new Date();
-const diff=(d-today)/(1000*60*60*24);
+if(progress==="Chưa thực hiện") sum.a++;
+if(progress==="Đang thực hiện") sum.b++;
+if(progress==="Đã xong") sum.c++;
 
-let status="Đang thực hiện";
-if(diff<30 && diff>0){ status="Sắp đến hạn"; warnings.push(t.task); }
-if(diff<=0){ status="Quá hạn"; }
-
-tbody.innerHTML+=`
-<tr class="card ${t.group}">
-<td>${t.groupName}</td>
-<td>${t.pillar}</td>
+table.innerHTML+=`
+<tr class="card">
+<td>${t.group}</td>
 <td>${t.task}</td>
 <td>${t.deadline}</td>
-<td>${t.progress}%</td>
-<td>${status}</td>
+
+<td>
+<select onchange="setProgress(${i},this.value)" class="text-black">
+<option ${progress==="Chưa thực hiện"?"selected":""}>Chưa thực hiện</option>
+<option ${progress==="Đang thực hiện"?"selected":""}>Đang thực hiện</option>
+<option ${progress==="Đã xong"?"selected":""}>Đã xong</option>
+</select>
+</td>
+
+<td class="${status.cls} text-center">${status.text}</td>
 </tr>`;
 });
 
-/* ==== thống kê ==== */
-renderStats(filtered);
-
-/* ==== cảnh báo ==== */
-const alertBox=document.getElementById("alertBox");
-if(warnings.length){
-alertBox.classList.remove("hidden");
-alertBox.classList.add("warning");
-alertBox.innerText="⚠ Sắp đến hạn: "+warnings.join(", ");
-}else alertBox.classList.add("hidden");
-
+renderSummary(sum);
 }
 
-function renderStats(list){
-
-if(!list.length) return;
-
-let total=0;
-const groupMap={};
-
-list.forEach(t=>{
-total+=t.progress;
-if(!groupMap[t.groupName]) groupMap[t.groupName]={sum:0,count:0};
-groupMap[t.groupName].sum+=t.progress;
-groupMap[t.groupName].count++;
-});
-
-const overall=Math.round(total/list.length);
-
-/* donut */
-document.getElementById("overallChart").style.background=
-`conic-gradient(#2ec4b6 ${overall*3.6}deg,#3a506b 0deg)`;
-
-document.getElementById("overallText").innerText=overall+"% hoàn thành";
-
-/* nhóm */
-let html="";
-Object.keys(groupMap).forEach(g=>{
-const p=Math.round(groupMap[g].sum/groupMap[g].count);
-html+=`
-<div class="mb-4">
-<div class="flex justify-between">
-<span>${g}</span><span>${p}%</span>
-</div>
-<div class="progress-bg w-full h-3 rounded">
-<div class="progress-bar h-3 rounded" style="width:${p}%"></div>
-</div>
-</div>`;
-});
-
-document.getElementById("groupStats").innerHTML=html;
+/* ================= DASHBOARD ================= */
+function renderSummary(s){
+document.getElementById("summary").innerHTML=`
+<div class="card p-4 text-center">Chưa thực hiện<br><b>${s.a}</b></div>
+<div class="card p-4 text-center">Đang thực hiện<br><b>${s.b}</b></div>
+<div class="card p-4 text-center">Đã xong<br><b>${s.c}</b></div>
+`;
 }
 
-/* ================== INIT ================== */
-populateYear();
-document.getElementById("yearFilter").onchange=render;
-document.getElementById("quarterFilter").onchange=render;
+/* ================= FILTER NHÓM ================= */
+const groups=[...new Set(tasks.map(t=>t.group))];
+let selectedGroups=new Set(groups);
+
+const filterDiv=document.getElementById("groupFilter");
+
+groups.forEach(g=>{
+filterDiv.innerHTML+=`
+<label class="mr-4">
+<input type="checkbox" checked onchange="toggleGroup('${g}',this.checked)"> ${g}
+</label>`;
+});
+
+function toggleGroup(g,checked){
+checked?selectedGroups.add(g):selectedGroups.delete(g);
+render();
+}
+
+/* ================= INIT ================= */
 render();
 
 </script>
