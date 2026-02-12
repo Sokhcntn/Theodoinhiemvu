@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Theo dõi nhiệm vụ KH,CN</title>
+<title>Dashboard Theo dõi Nhiệm vụ</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body { background:#0b132b; color:white; }
 .card { background:#1c2541; }
-.bad{background:#ff4d4f;}
+.bad{background:#ef4444;}
 .warn{background:#facc15;color:black;}
 .good{background:#22c55e;}
 </style>
@@ -17,83 +17,69 @@ body { background:#0b132b; color:white; }
 
 <body class="p-8">
 
-<h1 class="text-3xl font-bold mb-6 text-yellow-300">
+<h1 class="text-3xl font-bold mb-8 text-yellow-300">
 THEO DÕI THỰC HIỆN NHIỆM VỤ KH,CN – ĐMST
 </h1>
 
-<!-- DASHBOARD 3 TRẠNG THÁI -->
-<!-- DASHBOARD HÌNH TRÒN -->
-<div class="flex flex-col md:flex-row items-center gap-12 mb-10">
+<!-- LAYOUT SONG SONG -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-  <div class="text-center">
-    <div id="donutChart"
-         class="w-64 h-64 rounded-full mx-auto shadow-2xl"
-         style="background:#3a506b">
-    </div>
-    <div class="mt-4 text-lg font-bold text-yellow-200">
-      Tổng thể tiến độ
-    </div>
-  </div>
+<!-- ================= DASHBOARD TRÒN ================= -->
+<div class="card p-6 text-center">
 
-  <div class="space-y-4 text-lg">
-    <div class="flex items-center gap-3">
-      <div class="w-5 h-5 bg-red-500"></div>
-      Chưa thực hiện: <b id="txtA"></b>
-    </div>
+<h2 class="text-xl font-bold mb-6 text-yellow-200">TỔNG HỢP TIẾN ĐỘ</h2>
 
-    <div class="flex items-center gap-3">
-      <div class="w-5 h-5 bg-yellow-400"></div>
-      Đang thực hiện: <b id="txtB"></b>
-    </div>
+<div class="relative w-64 h-64 mx-auto">
+<div id="donutChart" class="w-64 h-64 rounded-full"></div>
 
-    <div class="flex items-center gap-3">
-      <div class="w-5 h-5 bg-green-500"></div>
-      Đã xong: <b id="txtC"></b>
-    </div>
-  </div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<div id="percentDone" class="text-3xl font-bold"></div>
+<div class="text-sm">Đã hoàn thành</div>
+</div>
+</div>
 
+<div class="mt-6 space-y-2 text-left">
+<div>🔴 Chưa thực hiện: <b id="txtA"></b></div>
+<div>🟡 Đang thực hiện: <b id="txtB"></b></div>
+<div>🟢 Đã xong: <b id="txtC"></b></div>
 </div>
 
 </div>
 
-<!-- LỌC THEO NHÓM -->
-<div class="mb-6">
-<b>Lọc theo nhóm nhiệm vụ:</b>
-<div id="groupFilter" class="mt-2"></div>
+<!-- ================= DANH SÁCH THEO NGUỒN GIAO ================= -->
+<div>
+
+<h2 class="text-xl font-bold mb-4 text-yellow-200">PHÂN THEO NGUỒN GIAO NHIỆM VỤ</h2>
+
+<div id="taskGroups"></div>
+
 </div>
 
-<table class="w-full text-sm">
-<thead class="bg-yellow-400 text-black">
-<tr>
-<th>Nhóm</th>
-<th>Nhiệm vụ</th>
-<th>Thời hạn</th>
-<th>Tiến độ</th>
-<th>Trạng thái</th>
-</tr>
-</thead>
-<tbody id="taskTable"></tbody>
-</table>
+</div>
 
 <script>
 
-/* ================= DỮ LIỆU GỐC ================= */
+/* ================= PHÂN NHÓM NGUỒN GIAO ================= */
 const tasks = [
-{group:"Chỉ đạo Tỉnh ủy",task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN đến 2030",deadline:"2026-01-31"},
-{group:"UBND giao trực tiếp",task:"Thành lập Trung tâm Đổi mới sáng tạo",deadline:"2026-03-30"},
-{group:"UBND giao trực tiếp",task:"Thành lập Quỹ phát triển KH,CN",deadline:"2026-06-30"},
-{group:"Phối hợp liên ngành",task:"Phát triển kinh tế số GRDP",deadline:"2026-12-31"},
-{group:"Triển khai NQ57",task:"Chuyển đổi số cơ quan nhà nước",deadline:"2026-12-31"},
-{group:"Chiến lược 2030",task:"Ứng dụng AI, IoT trong sản xuất",deadline:"2030-12-31"}
+
+{group:"Trung ương giao", task:"Triển khai Nghị quyết 57-NQ/TW", deadline:"2026-12-31"},
+{group:"Trung ương giao", task:"Phát triển hệ sinh thái đổi mới sáng tạo quốc gia", deadline:"2027-06-30"},
+
+{group:"Tỉnh ủy giao", task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN", deadline:"2026-01-31"},
+{group:"Tỉnh ủy giao", task:"Ban hành Nghị quyết đột phá KH,CN", deadline:"2026-03-31"},
+
+{group:"HĐND/UBND tỉnh giao", task:"Thành lập Trung tâm Đổi mới sáng tạo", deadline:"2026-03-30"},
+{group:"HĐND/UBND tỉnh giao", task:"Thành lập Quỹ phát triển KH,CN", deadline:"2026-06-30"}
+
 ];
 
-/* ================= LƯU TRẠNG THÁI ================= */
-function getProgress(id){
-return localStorage.getItem(id) || "Chưa thực hiện";
+/* ================= LƯU TIẾN ĐỘ ================= */
+function getProgress(i){
+return localStorage.getItem("p"+i) || "Chưa thực hiện";
 }
 
-function setProgress(id,value){
-localStorage.setItem(id,value);
+function setProgress(i,val){
+localStorage.setItem("p"+i,val);
 render();
 }
 
@@ -102,81 +88,86 @@ function calcStatus(deadline,progress){
 const now=new Date();
 const d=new Date(deadline);
 
-if(progress==="Đã xong") return {text:"Đã hoàn thành",cls:"good"};
-
-if(now>d) return {text:"Quá hạn",cls:"bad"};
-
-return {text:"Chưa đến hạn",cls:"warn"};
+if(progress==="Đã xong") return {txt:"Đã hoàn thành",cls:"good"};
+if(now>d) return {txt:"Quá hạn",cls:"bad"};
+return {txt:"Chưa đến hạn",cls:"warn"};
 }
 
 /* ================= RENDER ================= */
 function render(){
 
-const table=document.getElementById("taskTable");
-table.innerHTML="";
+let countA=0,countB=0,countC=0;
 
-let sum={a:0,b:0,c:0};
-
+const grouped={};
 tasks.forEach((t,i)=>{
+if(!grouped[t.group]) grouped[t.group]=[];
+grouped[t.group].push({...t,index:i});
+});
 
-if(!selectedGroups.has(t.group)) return;
+/* ==== render theo nhóm ==== */
+let html="";
+Object.keys(grouped).forEach(g=>{
 
-const progress=getProgress(i);
+html+=`<div class="mb-6">
+<h3 class="font-bold text-yellow-300 mb-2">${g}</h3>
+<table class="w-full text-sm">
+<tr class="bg-yellow-400 text-black">
+<th>Nhiệm vụ</th><th>Thời hạn</th><th>Tiến độ</th><th>Trạng thái</th>
+</tr>`;
+
+grouped[g].forEach(t=>{
+const progress=getProgress(t.index);
 const status=calcStatus(t.deadline,progress);
 
-if(progress==="Chưa thực hiện") sum.a++;
-if(progress==="Đang thực hiện") sum.b++;
-if(progress==="Đã xong") sum.c++;
+if(progress==="Chưa thực hiện") countA++;
+if(progress==="Đang thực hiện") countB++;
+if(progress==="Đã xong") countC++;
 
-table.innerHTML+=`
+html+=`
 <tr class="card">
-<td>${t.group}</td>
 <td>${t.task}</td>
 <td>${t.deadline}</td>
-
 <td>
-<select onchange="setProgress(${i},this.value)" class="text-black">
+<select onchange="setProgress(${t.index},this.value)" class="text-black">
 <option ${progress==="Chưa thực hiện"?"selected":""}>Chưa thực hiện</option>
 <option ${progress==="Đang thực hiện"?"selected":""}>Đang thực hiện</option>
 <option ${progress==="Đã xong"?"selected":""}>Đã xong</option>
 </select>
 </td>
-
-<td class="${status.cls} text-center">${status.text}</td>
+<td class="${status.cls} text-center">${status.txt}</td>
 </tr>`;
 });
 
-renderSummary(sum);
-}
-
-/* ================= DASHBOARD ================= */
-function renderSummary(s){
-document.getElementById("summary").innerHTML=`
-<div class="card p-4 text-center">Chưa thực hiện<br><b>${s.a}</b></div>
-<div class="card p-4 text-center">Đang thực hiện<br><b>${s.b}</b></div>
-<div class="card p-4 text-center">Đã xong<br><b>${s.c}</b></div>
-`;
-}
-
-/* ================= FILTER NHÓM ================= */
-const groups=[...new Set(tasks.map(t=>t.group))];
-let selectedGroups=new Set(groups);
-
-const filterDiv=document.getElementById("groupFilter");
-
-groups.forEach(g=>{
-filterDiv.innerHTML+=`
-<label class="mr-4">
-<input type="checkbox" checked onchange="toggleGroup('${g}',this.checked)"> ${g}
-</label>`;
+html+="</table></div>";
 });
 
-function toggleGroup(g,checked){
-checked?selectedGroups.add(g):selectedGroups.delete(g);
-render();
+document.getElementById("taskGroups").innerHTML=html;
+
+/* ==== vẽ dashboard ==== */
+drawDonut(countA,countB,countC);
 }
 
-/* ================= INIT ================= */
+/* ================= BIỂU ĐỒ ================= */
+function drawDonut(a,b,c){
+
+const total=a+b+c || 1;
+const pA=a/total*100;
+const pB=b/total*100;
+const pC=c/total*100;
+
+document.getElementById("donutChart").style.background=
+`conic-gradient(
+#ef4444 0% ${pA}%,
+#facc15 ${pA}% ${pA+pB}%,
+#22c55e ${pA+pB}% 100%
+)`;
+
+document.getElementById("percentDone").innerText=Math.round(pC)+"%";
+document.getElementById("txtA").innerText=a+" ("+Math.round(pA)+"%)";
+document.getElementById("txtB").innerText=b+" ("+Math.round(pB)+"%)";
+document.getElementById("txtC").innerText=c+" ("+Math.round(pC)+"%)";
+}
+
 render();
 
 </script>
