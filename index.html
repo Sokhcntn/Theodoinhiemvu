@@ -3,25 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Theo dõi Chiến lược KH,CN</title>
-
+<title>Dashboard Theo dõi KH,CN & ĐMST</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body { background:#0b132b; color:white; }
 .card { background:#1c2541; }
-.warning { background:#ff595e; }
-.ok { background:#2ec4b6; }
-.overdue { background:#ff006e; }
+
+.group1{border-left:6px solid #3b82f6;}
+.group2{border-left:6px solid #10b981;}
+.group3{border-left:6px solid #f59e0b;}
+.group4{border-left:6px solid #8b5cf6;}
+.group5{border-left:6px solid #06b6d4;}
+
+.progress-bg{background:#3a506b;}
+.progress-bar{background:#2ec4b6;}
+
+.warning{background:#ff595e;}
+.overdue{background:#ff006e;}
 </style>
 </head>
 
 <body class="p-8">
 
 <h1 class="text-3xl font-bold mb-6 text-yellow-300">
-THEO DÕI THỰC HIỆN CHIẾN LƯỢC KH,CN & CHUYỂN ĐỔI SỐ
+THEO DÕI TRIỂN KHAI KH,CN – ĐMST – CHUYỂN ĐỔI SỐ
 </h1>
 
+<!-- Bộ lọc -->
 <div class="mb-6 flex gap-6">
 <div>
 <label>Năm:</label>
@@ -40,14 +49,30 @@ THEO DÕI THỰC HIỆN CHIẾN LƯỢC KH,CN & CHUYỂN ĐỔI SỐ
 </div>
 </div>
 
+<!-- Thống kê -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+
+<div class="card p-6 rounded-xl text-center">
+<h2 class="font-bold mb-4 text-yellow-200">Tổng thể chương trình</h2>
+<div id="overallChart" class="mx-auto w-40 h-40 rounded-full"></div>
+<div id="overallText" class="mt-4 text-xl font-bold"></div>
+</div>
+
+<div class="card p-6 rounded-xl">
+<h2 class="font-bold mb-4 text-yellow-200">Tiến độ theo nhóm</h2>
+<div id="groupStats"></div>
+</div>
+
+</div>
+
 <div id="alertBox" class="hidden p-4 mb-6 font-bold text-black"></div>
 
 <table class="w-full text-sm">
 <thead class="bg-yellow-400 text-black">
 <tr>
-<th class="p-3">Trục chiến lược</th>
+<th>Nhóm</th>
+<th>Trục</th>
 <th>Nhiệm vụ</th>
-<th>Cơ quan</th>
 <th>Thời hạn</th>
 <th>Tiến độ</th>
 <th>Trạng thái</th>
@@ -57,70 +82,45 @@ THEO DÕI THỰC HIỆN CHIẾN LƯỢC KH,CN & CHUYỂN ĐỔI SỐ
 </table>
 
 <script>
+
+/* ================== DỮ LIỆU NHIỆM VỤ ================== */
 const data = [
 
-/* ================= CHƯƠNG TRÌNH TỈNH ỦY 2026 ================= */
+{group:"group1",groupName:"Chỉ đạo Tỉnh ủy",pillar:"Thể chế",
+task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN đến 2030",
+deadline:"2026-01-31",progress:70},
 
-{ pillar:"Thể chế & Điều hành", task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN&ĐMST đến 2030", agency:"Sở KH&CN", deadline:"2026-01-31", progress:0 },
+{group:"group1",groupName:"Chỉ đạo Tỉnh ủy",pillar:"Thể chế",
+task:"Ban hành Nghị quyết đột phá KH,CN, ĐMST",
+deadline:"2026-03-31",progress:60},
 
-{ pillar:"Thể chế & Điều hành", task:"Tham mưu ban hành Nghị quyết đột phá phát triển KH,CN, ĐMST, CĐS, kinh tế tuần hoàn", agency:"Sở KH&CN", deadline:"2026-03-31", progress:0 },
+{group:"group2",groupName:"UBND giao trực tiếp",pillar:"Hệ sinh thái ĐMST",
+task:"Thành lập Trung tâm Đổi mới sáng tạo",
+deadline:"2026-03-30",progress:50},
 
-{ pillar:"Nguồn nhân lực KH,CN", task:"Xây dựng kế hoạch phát triển đội ngũ cán bộ thực hiện Nghị quyết 57-NQ/TW", agency:"Sở KH&CN (phối hợp)", deadline:"2026-11-30", progress:0 },
+{group:"group2",groupName:"UBND giao trực tiếp",pillar:"Nguồn lực",
+task:"Thành lập Quỹ phát triển KH,CN",
+deadline:"2026-06-30",progress:40},
 
-{ pillar:"Điều phối thực hiện NQ57", task:"Tổ chức triển khai các chương trình, kế hoạch thực hiện Nghị quyết 57-NQ/TW", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+{group:"group3",groupName:"Phối hợp liên ngành",pillar:"Kinh tế số",
+task:"Phát triển kinh tế số GRDP",
+deadline:"2026-12-31",progress:35},
 
-{ pillar:"Quản trị phát triển", task:"Tích hợp nội dung KH,CN, ĐMST, CĐS vào quy hoạch, kế hoạch phát triển KT-XH", agency:"Sở KH&CN", deadline:"2026-03-31", progress:0 },
+{group:"group4",groupName:"Triển khai NQ57",pillar:"Chuyển đổi số",
+task:"Chuyển đổi số cơ quan nhà nước",
+deadline:"2026-12-31",progress:45},
 
-{ pillar:"Chuyển đổi số khu vực công", task:"Đẩy mạnh chuyển đổi số trong hoạt động cơ quan nhà nước", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Cải cách môi trường kinh doanh", task:"Tham gia nâng cao các chỉ số PCI, PAPI, PAR INDEX, SIPAS", agency:"Sở KH&CN (phối hợp)", deadline:"2026-07-31", progress:0 },
-
-{ pillar:"Hạ tầng nghiên cứu", task:"Tham mưu Đề án nâng cao năng lực Trạm nghiên cứu ứng dụng KH&CN Đồng Tháp Mười", agency:"Sở KH&CN", deadline:"2026-07-31", progress:0 },
-
-/* ================= NHIỆM VỤ UBND TỈNH GIAO TRỰC TIẾP ================= */
-
-{ pillar:"Hệ sinh thái ĐMST", task:"Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
-
-{ pillar:"Sở hữu trí tuệ", task:"Xây dựng Kế hoạch phát triển tài sản trí tuệ năm 2026", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
-
-{ pillar:"Hệ sinh thái ĐMST", task:"Xây dựng mô hình đổi mới sáng tạo gắn doanh nghiệp có khả năng nhân rộng", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
-
-{ pillar:"Nguồn lực KH,CN", task:"Xây dựng Đề án thành lập Quỹ phát triển KH,CN&ĐMST tỉnh", agency:"Sở KH&CN", deadline:"2026-06-30", progress:0 },
-
-{ pillar:"Sở hữu trí tuệ", task:"Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Hạ tầng KH,CN", task:"Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm và trung tâm R&D", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Phổ biến tri thức", task:"Tổ chức hội thảo, hội nghị chuyên đề KH,CN và đổi mới sáng tạo", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Hạ tầng số", task:"Triển khai nâng cao chất lượng kết nối số, ưu tiên vùng sâu vùng xa", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Hạ tầng số", task:"Rà soát, cập nhật kế hoạch phát triển hạ tầng số, 5G, IoT trong KCN/CCN", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Hạ tầng số", task:"Khai thác sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
-
-/* ================= NHIỆM VỤ PHỐI HỢP LIÊN NGÀNH ================= */
-
-{ pillar:"Kinh tế số", task:"Phát triển quy mô kinh tế số theo mục tiêu GRDP", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Công nghiệp công nghệ cao", task:"Thu hút đầu tư vào công nghiệp công nghệ cao và công nghiệp hỗ trợ", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
-
-{ pillar:"Nông nghiệp công nghệ cao", task:"Phát triển nông nghiệp ứng dụng công nghệ cao", agency:"Sở KH&CN (phối hợp)", deadline:"2030-12-31", progress:0 },
-
-{ pillar:"Nhân lực số", task:"Phát triển nguồn nhân lực chất lượng cao gắn KH,CN và chuyển đổi số", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
-
-/* ================= NHIỆM VỤ CHIẾN LƯỢC GIAI ĐOẠN 2026-2030 ================= */
-
-{ pillar:"Doanh nghiệp & ĐMST", task:"Thúc đẩy doanh nghiệp ứng dụng công nghệ, đổi mới sáng tạo và chuyển đổi số", agency:"Sở KH&CN", deadline:"2030-12-31", progress:0 },
-
-{ pillar:"Tăng trưởng dựa vào công nghệ", task:"Chuyển đổi mô hình tăng trưởng dựa trên năng suất, công nghệ và kinh tế số", agency:"Toàn tỉnh", deadline:"2030-12-31", progress:0 },
-
-{ pillar:"Phát triển doanh nghiệp công nghệ", task:"Phát triển doanh nghiệp công nghệ số và hệ sinh thái số đóng góp GRDP", agency:"Toàn tỉnh", deadline:"2030-12-31", progress:0 }
+{group:"group5",groupName:"Chiến lược 2030",pillar:"Công nghệ",
+task:"Ứng dụng AI, IoT trong sản xuất và quản lý",
+deadline:"2030-12-31",progress:20}
 
 ];
 
+/* ================== HÀM ================== */
 
-function getQuarter(date){ return Math.floor(date.getMonth()/3)+1; }
+function getQuarter(date){
+return Math.floor(date.getMonth()/3)+1;
+}
 
 function populateYear(){
 const years=[...new Set(data.map(t=>new Date(t.deadline).getFullYear()))];
@@ -133,12 +133,14 @@ select.appendChild(opt);
 }
 
 function render(){
+
 const year=document.getElementById("yearFilter").value;
 const quarter=document.getElementById("quarterFilter").value;
-const tbody=document.getElementById("taskTable");
-const alertBox=document.getElementById("alertBox");
 
+const tbody=document.getElementById("taskTable");
 tbody.innerHTML="";
+
+let filtered=[];
 let warnings=[];
 
 data.forEach(t=>{
@@ -146,38 +148,85 @@ const d=new Date(t.deadline);
 if(d.getFullYear()!=year) return;
 if(quarter!="all" && getQuarter(d)!=quarter) return;
 
+filtered.push(t);
+
 const today=new Date();
 const diff=(d-today)/(1000*60*60*24);
 
 let status="Đang thực hiện";
-let color="ok";
-
-if(diff<30 && diff>0){ status="Sắp đến hạn"; color="warning"; warnings.push(t.task); }
-if(diff<=0){ status="Quá hạn"; color="overdue"; }
+if(diff<30 && diff>0){ status="Sắp đến hạn"; warnings.push(t.task); }
+if(diff<=0){ status="Quá hạn"; }
 
 tbody.innerHTML+=`
-<tr class="card">
-<td class="p-3">${t.pillar}</td>
+<tr class="card ${t.group}">
+<td>${t.groupName}</td>
+<td>${t.pillar}</td>
 <td>${t.task}</td>
-<td>${t.agency}</td>
 <td>${t.deadline}</td>
 <td>${t.progress}%</td>
-<td class="${color} text-center">${status}</td>
+<td>${status}</td>
 </tr>`;
 });
 
+/* ==== thống kê ==== */
+renderStats(filtered);
+
+/* ==== cảnh báo ==== */
+const alertBox=document.getElementById("alertBox");
 if(warnings.length){
 alertBox.classList.remove("hidden");
 alertBox.classList.add("warning");
-alertBox.innerText="⚠ Nhiệm vụ sắp đến hạn: "+warnings.join(", ");
-}else{ alertBox.classList.add("hidden"); }
+alertBox.innerText="⚠ Sắp đến hạn: "+warnings.join(", ");
+}else alertBox.classList.add("hidden");
+
 }
 
+function renderStats(list){
+
+if(!list.length) return;
+
+let total=0;
+const groupMap={};
+
+list.forEach(t=>{
+total+=t.progress;
+if(!groupMap[t.groupName]) groupMap[t.groupName]={sum:0,count:0};
+groupMap[t.groupName].sum+=t.progress;
+groupMap[t.groupName].count++;
+});
+
+const overall=Math.round(total/list.length);
+
+/* donut */
+document.getElementById("overallChart").style.background=
+`conic-gradient(#2ec4b6 ${overall*3.6}deg,#3a506b 0deg)`;
+
+document.getElementById("overallText").innerText=overall+"% hoàn thành";
+
+/* nhóm */
+let html="";
+Object.keys(groupMap).forEach(g=>{
+const p=Math.round(groupMap[g].sum/groupMap[g].count);
+html+=`
+<div class="mb-4">
+<div class="flex justify-between">
+<span>${g}</span><span>${p}%</span>
+</div>
+<div class="progress-bg w-full h-3 rounded">
+<div class="progress-bar h-3 rounded" style="width:${p}%"></div>
+</div>
+</div>`;
+});
+
+document.getElementById("groupStats").innerHTML=html;
+}
+
+/* ================== INIT ================== */
 populateYear();
 document.getElementById("yearFilter").onchange=render;
 document.getElementById("quarterFilter").onchange=render;
 render();
-</script>
 
+</script>
 </body>
 </html>
