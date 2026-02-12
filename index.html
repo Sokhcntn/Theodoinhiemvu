@@ -59,25 +59,66 @@ THEO DÕI THỰC HIỆN CHIẾN LƯỢC KH,CN & CHUYỂN ĐỔI SỐ
 <script>
 const data = [
 
-{ pillar:"Thể chế & Chính sách", task:"Hoàn thiện tiêu chuẩn, quy chuẩn phục vụ chuyển đổi số", agency:"Sở KH&CN", deadline:"2026-12-30", progress:0 },
+/* ================= CHƯƠNG TRÌNH TỈNH ỦY 2026 ================= */
 
-{ pillar:"Thể chế & Chính sách", task:"Ban hành cơ chế hỗ trợ doanh nghiệp đổi mới công nghệ", agency:"UBND tỉnh", deadline:"2026-09-30", progress:0 },
+{ pillar:"Thể chế & Điều hành", task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN&ĐMST đến 2030", agency:"Sở KH&CN", deadline:"2026-01-31", progress:0 },
 
-{ pillar:"Doanh nghiệp & ĐMST", task:"Hỗ trợ doanh nghiệp triển khai ERP, CRM, chuyển đổi số", agency:"Sở KH&CN", deadline:"2028-12-30", progress:0 },
+{ pillar:"Thể chế & Điều hành", task:"Tham mưu ban hành Nghị quyết đột phá phát triển KH,CN, ĐMST, CĐS, kinh tế tuần hoàn", agency:"Sở KH&CN", deadline:"2026-03-31", progress:0 },
 
-{ pillar:"Doanh nghiệp & ĐMST", task:"Hình thành hệ sinh thái khởi nghiệp đổi mới sáng tạo", agency:"Sở KH&CN", deadline:"2027-12-30", progress:0 },
+{ pillar:"Nguồn nhân lực KH,CN", task:"Xây dựng kế hoạch phát triển đội ngũ cán bộ thực hiện Nghị quyết 57-NQ/TW", agency:"Sở KH&CN (phối hợp)", deadline:"2026-11-30", progress:0 },
 
-{ pillar:"Ứng dụng công nghệ ngành", task:"Phát triển nông nghiệp công nghệ cao và chuỗi số hóa", agency:"Sở NN&PTNT", deadline:"2030-12-30", progress:0 },
+{ pillar:"Điều phối thực hiện NQ57", task:"Tổ chức triển khai các chương trình, kế hoạch thực hiện Nghị quyết 57-NQ/TW", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
 
-{ pillar:"Ứng dụng công nghệ ngành", task:"Đổi mới dây chuyền sản xuất trong khu công nghiệp", agency:"BQL KCN", deadline:"2029-12-30", progress:0 },
+{ pillar:"Quản trị phát triển", task:"Tích hợp nội dung KH,CN, ĐMST, CĐS vào quy hoạch, kế hoạch phát triển KT-XH", agency:"Sở KH&CN", deadline:"2026-03-31", progress:0 },
 
-{ pillar:"Hạ tầng số & Dữ liệu", task:"Xây dựng hệ thống dữ liệu nền và đo lường doanh nghiệp", agency:"Sở KH&CN", deadline:"2027-06-30", progress:0 },
+{ pillar:"Chuyển đổi số khu vực công", task:"Đẩy mạnh chuyển đổi số trong hoạt động cơ quan nhà nước", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
 
-{ pillar:"Hạ tầng số & Dữ liệu", task:"Phát triển hạ tầng số và nền tảng dùng chung", agency:"Sở TT&TT", deadline:"2028-12-30", progress:0 },
+{ pillar:"Cải cách môi trường kinh doanh", task:"Tham gia nâng cao các chỉ số PCI, PAPI, PAR INDEX, SIPAS", agency:"Sở KH&CN (phối hợp)", deadline:"2026-07-31", progress:0 },
 
-{ pillar:"Đầu tư công nghệ cao", task:"Thu hút FDI có chuyển giao công nghệ và R&D", agency:"Sở KH&ĐT", deadline:"2030-12-30", progress:0 }
+{ pillar:"Hạ tầng nghiên cứu", task:"Tham mưu Đề án nâng cao năng lực Trạm nghiên cứu ứng dụng KH&CN Đồng Tháp Mười", agency:"Sở KH&CN", deadline:"2026-07-31", progress:0 },
+
+/* ================= NHIỆM VỤ UBND TỈNH GIAO TRỰC TIẾP ================= */
+
+{ pillar:"Hệ sinh thái ĐMST", task:"Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
+
+{ pillar:"Sở hữu trí tuệ", task:"Xây dựng Kế hoạch phát triển tài sản trí tuệ năm 2026", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
+
+{ pillar:"Hệ sinh thái ĐMST", task:"Xây dựng mô hình đổi mới sáng tạo gắn doanh nghiệp có khả năng nhân rộng", agency:"Sở KH&CN", deadline:"2026-03-30", progress:0 },
+
+{ pillar:"Nguồn lực KH,CN", task:"Xây dựng Đề án thành lập Quỹ phát triển KH,CN&ĐMST tỉnh", agency:"Sở KH&CN", deadline:"2026-06-30", progress:0 },
+
+{ pillar:"Sở hữu trí tuệ", task:"Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Hạ tầng KH,CN", task:"Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm và trung tâm R&D", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Phổ biến tri thức", task:"Tổ chức hội thảo, hội nghị chuyên đề KH,CN và đổi mới sáng tạo", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Hạ tầng số", task:"Triển khai nâng cao chất lượng kết nối số, ưu tiên vùng sâu vùng xa", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Hạ tầng số", task:"Rà soát, cập nhật kế hoạch phát triển hạ tầng số, 5G, IoT trong KCN/CCN", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Hạ tầng số", task:"Khai thác sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia", agency:"Sở KH&CN", deadline:"2026-12-31", progress:0 },
+
+/* ================= NHIỆM VỤ PHỐI HỢP LIÊN NGÀNH ================= */
+
+{ pillar:"Kinh tế số", task:"Phát triển quy mô kinh tế số theo mục tiêu GRDP", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Công nghiệp công nghệ cao", task:"Thu hút đầu tư vào công nghiệp công nghệ cao và công nghiệp hỗ trợ", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
+
+{ pillar:"Nông nghiệp công nghệ cao", task:"Phát triển nông nghiệp ứng dụng công nghệ cao", agency:"Sở KH&CN (phối hợp)", deadline:"2030-12-31", progress:0 },
+
+{ pillar:"Nhân lực số", task:"Phát triển nguồn nhân lực chất lượng cao gắn KH,CN và chuyển đổi số", agency:"Sở KH&CN (phối hợp)", deadline:"2026-12-31", progress:0 },
+
+/* ================= NHIỆM VỤ CHIẾN LƯỢC GIAI ĐOẠN 2026-2030 ================= */
+
+{ pillar:"Doanh nghiệp & ĐMST", task:"Thúc đẩy doanh nghiệp ứng dụng công nghệ, đổi mới sáng tạo và chuyển đổi số", agency:"Sở KH&CN", deadline:"2030-12-31", progress:0 },
+
+{ pillar:"Tăng trưởng dựa vào công nghệ", task:"Chuyển đổi mô hình tăng trưởng dựa trên năng suất, công nghệ và kinh tế số", agency:"Toàn tỉnh", deadline:"2030-12-31", progress:0 },
+
+{ pillar:"Phát triển doanh nghiệp công nghệ", task:"Phát triển doanh nghiệp công nghệ số và hệ sinh thái số đóng góp GRDP", agency:"Toàn tỉnh", deadline:"2030-12-31", progress:0 }
 
 ];
+
 
 function getQuarter(date){ return Math.floor(date.getMonth()/3)+1; }
 
