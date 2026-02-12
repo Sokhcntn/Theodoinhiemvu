@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Theo dõi Nhiệm vụ</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body { background:#0b132b; color:white; }
+.card { background:#1c2541; }
+.warning { background:#ff595e; }
+.ok { background:#2ec4b6; }
+</style>
+</head>
+
+<body class="p-8">
+
+<h1 class="text-3xl font-bold mb-6 text-yellow-300">
+HỆ THỐNG THEO DÕI NHIỆM VỤ CHIẾN LƯỢC
+</h1>
+
+<div class="mb-6">
+<label>Chọn năm:</label>
+<select id="yearFilter" class="text-black px-2 py-1"></select>
+
+<label class="ml-6">Chọn quý:</label>
+<select id="quarterFilter" class="text-black px-2 py-1">
+<option value="all">Tất cả</option>
+<option value="1">Quý I</option>
+<option value="2">Quý II</option>
+<option value="3">Quý III</option>
+<option value="4">Quý IV</option>
+</select>
+</div>
+
+<div id="alertBox" class="hidden p-4 mb-6 font-bold"></div>
+
+<table class="w-full text-sm">
+<thead class="bg-yellow-400 text-black">
+<tr>
+<th class="p-3">Nhiệm vụ</th>
+<th>Cơ quan</th>
+<th>Thời hạn</th>
+<th>Tiến độ</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+<tbody id="taskTable"></tbody>
+</table>
+
+<script>
+const data = [
+  {
+    task: "Xây dựng Trung tâm dữ liệu tỉnh",
+    agency: "Sở KH&CN",
+    deadline: "2026-06-30",
+    progress: 40
+  },
+  {
+    task: "Triển khai nền tảng số dùng chung",
+    agency: "Sở TT&TT",
+    deadline: "2026-09-30",
+    progress: 20
+  },
+  {
+    task: "Hỗ trợ doanh nghiệp chuyển đổi số",
+    agency: "Sở KH&CN",
+    deadline: "2026-12-15",
+    progress: 55
+  }
+];
+
+function getQuarter(date){
+  return Math.floor(date.getMonth()/3)+1;
+}
+
+function populateYear(){
+  const years=[...new Set(data.map(t=>new Date(t.deadline).getFullYear()))];
+  const select=document.getElementById("yearFilter");
+  years.forEach(y=>{
+    const opt=document.createElement("option");
+    opt.value=y; opt.text=y;
+    select.appendChild(opt);
+  });
+}
+
+function render(){
+  const year=document.getElementById("yearFilter").value;
+  const quarter=document.getElementById("quarterFilter").value;
+  const tbody=document.getElementById("taskTable");
+  const alertBox=document.getElementById("alertBox");
+
+  tbody.innerHTML="";
+  let warnings=[];
+
+  data.forEach(t=>{
+    const d=new Date(t.deadline);
+    if(d.getFullYear()!=year) return;
+    if(quarter!="all" && getQuarter(d)!=quarter) return;
+
+    const today=new Date();
+    const diff=(d-today)/(1000*60*60*24);
+
+    let status="Đang thực hiện";
+    let color="ok";
+
+    if(diff<15 && diff>0){
+      status="Sắp đến hạn";
+      color="warning";
+      warnings.push(t.task);
+    }
+    if(diff<=0){
+      status="Quá hạn";
+      color="warning";
+    }
+
+    tbody.innerHTML+=`
+      <tr class="card">
+        <td class="p-3">${t.task}</td>
+        <td>${t.agency}</td>
+        <td>${t.deadline}</td>
+        <td>${t.progress}%</td>
+        <td class="${color} text-center">${status}</td>
+      </tr>`;
+  });
+
+  if(warnings.length){
+    alertBox.classList.remove("hidden");
+    alertBox.classList.add("warning");
+    alertBox.innerText="⚠ Sắp đến hạn: "+warnings.join(", ");
+  }else{
+    alertBox.classList.add("hidden");
+  }
+}
+
+populateYear();
+document.getElementById("yearFilter").onchange=render;
+document.getElementById("quarterFilter").onchange=render;
+render();
+</script>
+
+</body>
+</html>
