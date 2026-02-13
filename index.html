@@ -3,173 +3,212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Theo dõi Nhiệm vụ</title>
+<title>IOC Theo dõi Nhiệm vụ</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body { background:#0b132b; color:white; }
-.card { background:#1c2541; }
-.bad{background:#ef4444;}
-.warn{background:#facc15;color:black;}
-.good{background:#22c55e;}
+body{background:#071028;color:white;font-family:system-ui}
+.card{background:#0f1c3f;border:1px solid #1e3a8a}
 </style>
 </head>
 
-<body class="p-8">
+<body class="p-6">
 
-<h1 class="text-3xl font-bold mb-8 text-yellow-300">
-THEO DÕI THỰC HIỆN NHIỆM VỤ KH,CN – ĐMST
+<!-- HEADER -->
+<h1 class="text-3xl font-bold text-yellow-300 mb-8">
+TRUNG TÂM ĐIỀU HÀNH NHIỆM VỤ KH,CN – ĐMST
 </h1>
 
-<!-- LAYOUT SONG SONG -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+<!-- KPI ROW -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-10" id="kpis"></div>
 
-<!-- ================= DASHBOARD TRÒN ================= -->
-<div class="card p-6 text-center">
+<!-- MAIN DASHBOARD -->
+<div class="grid lg:grid-cols-3 gap-10 mb-12">
 
-<h2 class="text-xl font-bold mb-6 text-yellow-200">TỔNG HỢP TIẾN ĐỘ</h2>
+<!-- DONUT -->
+<div class="card rounded-xl p-6 text-center">
+<h2 class="text-lg mb-6 text-yellow-200 font-bold">TỔNG THỂ TIẾN ĐỘ</h2>
 
 <div class="relative w-64 h-64 mx-auto">
-<div id="donutChart" class="w-64 h-64 rounded-full"></div>
+<div id="donut" class="w-64 h-64 rounded-full"></div>
 
-<div class="absolute inset-0 flex flex-col items-center justify-center">
-<div id="percentDone" class="text-3xl font-bold"></div>
-<div class="text-sm">Đã hoàn thành</div>
+<div class="absolute inset-0 flex flex-col justify-center items-center">
+<div id="percent" class="text-3xl font-bold"></div>
+<div class="text-sm">Hoàn thành</div>
 </div>
 </div>
 
-<div class="mt-6 space-y-2 text-left">
-<div>🔴 Chưa thực hiện: <b id="txtA"></b></div>
-<div>🟡 Đang thực hiện: <b id="txtB"></b></div>
-<div>🟢 Đã xong: <b id="txtC"></b></div>
+<div class="mt-6 space-y-2 text-left text-sm">
+<div>🔴 Chưa thực hiện: <b id="a"></b></div>
+<div>🟡 Đang thực hiện: <b id="b"></b></div>
+<div>🟢 Đã xong: <b id="c"></b></div>
+</div>
+</div>
+
+<!-- PROGRESS BY SOURCE -->
+<div class="card rounded-xl p-6 col-span-2">
+<h2 class="text-lg mb-6 text-yellow-200 font-bold">
+TIẾN ĐỘ THEO NGUỒN GIAO
+</h2>
+<div id="bars"></div>
 </div>
 
 </div>
 
-<!-- ================= DANH SÁCH THEO NGUỒN GIAO ================= -->
-<div>
+<!-- ALERT BOX -->
+<div id="alerts" class="mb-10"></div>
 
-<h2 class="text-xl font-bold mb-4 text-yellow-200">PHÂN THEO NGUỒN GIAO NHIỆM VỤ</h2>
+<!-- TABLE -->
+<div class="card rounded-xl p-6">
+<h2 class="text-lg mb-6 text-yellow-200 font-bold">
+DANH SÁCH NHIỆM VỤ
+</h2>
 
-<div id="taskGroups"></div>
-
-</div>
-
+<table class="w-full text-sm">
+<thead class="bg-yellow-400 text-black">
+<tr>
+<th>Nhóm</th>
+<th>Nhiệm vụ</th>
+<th>Hạn</th>
+<th>Tiến độ</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
 </div>
 
 <script>
 
-/* ================= PHÂN NHÓM NGUỒN GIAO ================= */
-const tasks = [
+/* ================= DATA ================= */
 
-{group:"Trung ương giao", task:"Triển khai Nghị quyết 57-NQ/TW", deadline:"2026-12-31"},
-{group:"Trung ương giao", task:"Phát triển hệ sinh thái đổi mới sáng tạo quốc gia", deadline:"2027-06-30"},
-
-{group:"Tỉnh ủy giao", task:"Xây dựng Kế hoạch thực hiện Chiến lược KH,CN", deadline:"2026-01-31"},
-{group:"Tỉnh ủy giao", task:"Ban hành Nghị quyết đột phá KH,CN", deadline:"2026-03-31"},
-
-{group:"HĐND/UBND tỉnh giao", task:"Thành lập Trung tâm Đổi mới sáng tạo", deadline:"2026-03-30"},
-{group:"HĐND/UBND tỉnh giao", task:"Thành lập Quỹ phát triển KH,CN", deadline:"2026-06-30"}
-
+const tasks=[
+{g:"Trung ương",t:"Triển khai NQ Trung ương về KH,CN",d:"2026-03-01"},
+{g:"Trung ương",t:"Xây dựng hệ sinh thái đổi mới sáng tạo",d:"2027-06-01"},
+{g:"Tỉnh ủy",t:"Kế hoạch chiến lược KH,CN",d:"2026-01-01"},
+{g:"Tỉnh ủy",t:"Nghị quyết đột phá công nghệ",d:"2026-05-01"},
+{g:"UBND",t:"Thành lập Trung tâm ĐMST",d:"2026-03-30"},
+{g:"UBND",t:"Quỹ phát triển KH,CN",d:"2026-06-30"},
+{g:"Sở",t:"Triển khai chuyển đổi số doanh nghiệp",d:"2026-12-30"},
+{g:"Sở",t:"Xây dựng cơ sở dữ liệu ngành",d:"2026-10-01"}
 ];
 
-/* ================= LƯU TIẾN ĐỘ ================= */
-function getProgress(i){
-return localStorage.getItem("p"+i) || "Chưa thực hiện";
-}
+/* ================= STORAGE ================= */
 
-function setProgress(i,val){
-localStorage.setItem("p"+i,val);
+function get(i){
+return localStorage.getItem("p"+i)||"Chưa";
+}
+function set(i,v){
+localStorage.setItem("p"+i,v);
 render();
 }
 
-/* ================= TÍNH TRẠNG THÁI ================= */
-function calcStatus(deadline,progress){
-const now=new Date();
-const d=new Date(deadline);
+/* ================= STATUS ================= */
 
-if(progress==="Đã xong") return {txt:"Đã hoàn thành",cls:"good"};
-if(now>d) return {txt:"Quá hạn",cls:"bad"};
-return {txt:"Chưa đến hạn",cls:"warn"};
+function status(d,p){
+const now=new Date();
+const x=new Date(d);
+
+if(p==="Xong") return["Đã hoàn thành","bg-green-500"];
+if(now>x) return["Quá hạn","bg-red-500"];
+return["Chưa đến hạn","bg-yellow-400 text-black"];
 }
 
 /* ================= RENDER ================= */
+
 function render(){
 
-let countA=0,countB=0,countC=0;
+let A=0,B=0,C=0;
+let tableHTML="";
+let source={};
 
-const grouped={};
-tasks.forEach((t,i)=>{
-if(!grouped[t.group]) grouped[t.group]=[];
-grouped[t.group].push({...t,index:i});
-});
+tasks.forEach((task,i)=>{
 
-/* ==== render theo nhóm ==== */
-let html="";
-Object.keys(grouped).forEach(g=>{
+const p=get(i);
+if(p==="Chưa")A++;
+if(p==="Đang")B++;
+if(p==="Xong")C++;
 
-html+=`<div class="mb-6">
-<h3 class="font-bold text-yellow-300 mb-2">${g}</h3>
-<table class="w-full text-sm">
-<tr class="bg-yellow-400 text-black">
-<th>Nhiệm vụ</th><th>Thời hạn</th><th>Tiến độ</th><th>Trạng thái</th>
-</tr>`;
+if(!source[task.g])source[task.g]={t:0,d:0};
+source[task.g].t++;
+if(p==="Xong")source[task.g].d++;
 
-grouped[g].forEach(t=>{
-const progress=getProgress(t.index);
-const status=calcStatus(t.deadline,progress);
+const st=status(task.d,p);
 
-if(progress==="Chưa thực hiện") countA++;
-if(progress==="Đang thực hiện") countB++;
-if(progress==="Đã xong") countC++;
+tableHTML+=`
+<tr class="border-b border-blue-900">
+<td>${task.g}</td>
+<td>${task.t}</td>
+<td>${task.d}</td>
 
-html+=`
-<tr class="card">
-<td>${t.task}</td>
-<td>${t.deadline}</td>
 <td>
-<select onchange="setProgress(${t.index},this.value)" class="text-black">
-<option ${progress==="Chưa thực hiện"?"selected":""}>Chưa thực hiện</option>
-<option ${progress==="Đang thực hiện"?"selected":""}>Đang thực hiện</option>
-<option ${progress==="Đã xong"?"selected":""}>Đã xong</option>
+<select onchange="set(${i},this.value)" class="text-black">
+<option ${p==="Chưa"?"selected":""}>Chưa</option>
+<option ${p==="Đang"?"selected":""}>Đang</option>
+<option ${p==="Xong"?"selected":""}>Xong</option>
 </select>
 </td>
-<td class="${status.cls} text-center">${status.txt}</td>
+
+<td class="${st[1]} text-center">${st[0]}</td>
 </tr>`;
 });
 
-html+="</table></div>";
-});
+document.getElementById("table").innerHTML=tableHTML;
 
-document.getElementById("taskGroups").innerHTML=html;
+/* KPI */
+document.getElementById("kpis").innerHTML=`
+<div class="card p-4 text-center">Tổng nhiệm vụ<br><b>${tasks.length}</b></div>
+<div class="card p-4 text-center">Quá hạn<br><b>${A}</b></div>
+<div class="card p-4 text-center">Đang thực hiện<br><b>${B}</b></div>
+<div class="card p-4 text-center">Hoàn thành<br><b>${C}</b></div>
+`;
 
-/* ==== vẽ dashboard ==== */
-drawDonut(countA,countB,countC);
-}
+/* DONUT */
+const total=A+B+C||1;
+const pC=Math.round(C/total*100);
+const pA=A/total*100;
+const pB=B/total*100;
 
-/* ================= BIỂU ĐỒ ================= */
-function drawDonut(a,b,c){
-
-const total=a+b+c || 1;
-const pA=a/total*100;
-const pB=b/total*100;
-const pC=c/total*100;
-
-document.getElementById("donutChart").style.background=
+document.getElementById("donut").style.background=
 `conic-gradient(
 #ef4444 0% ${pA}%,
 #facc15 ${pA}% ${pA+pB}%,
 #22c55e ${pA+pB}% 100%
 )`;
 
-document.getElementById("percentDone").innerText=Math.round(pC)+"%";
-document.getElementById("txtA").innerText=a+" ("+Math.round(pA)+"%)";
-document.getElementById("txtB").innerText=b+" ("+Math.round(pB)+"%)";
-document.getElementById("txtC").innerText=c+" ("+Math.round(pC)+"%)";
+document.getElementById("percent").innerText=pC+"%";
+document.getElementById("a").innerText=A;
+document.getElementById("b").innerText=B;
+document.getElementById("c").innerText=C;
+
+/* BARS */
+let barsHTML="";
+Object.keys(source).forEach(k=>{
+const pct=Math.round(source[k].d/source[k].t*100);
+
+barsHTML+=`
+<div class="mb-4">
+<div class="flex justify-between text-sm mb-1">
+<span>${k}</span>
+<span>${pct}%</span>
+</div>
+<div class="w-full bg-gray-700 h-3 rounded">
+<div class="bg-green-400 h-3 rounded" style="width:${pct}%"></div>
+</div>
+</div>`;
+});
+
+document.getElementById("bars").innerHTML=barsHTML;
+
+/* ALERTS */
+let alertHTML="";
+if(A>0)alertHTML+=`<div class="bg-red-600 p-3 mb-2 rounded">❗ ${A} nhiệm vụ quá hạn</div>`;
+if(B>0)alertHTML+=`<div class="bg-yellow-500 text-black p-3 rounded">⚠ ${B} nhiệm vụ đang thực hiện</div>`;
+
+document.getElementById("alerts").innerHTML=alertHTML;
 }
 
 render();
-
 </script>
 </body>
 </html>
