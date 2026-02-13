@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IOC Điều Hành KH&CN Tây Ninh - Tính Năng Giao Việc</title>
+    <title>IOC Điều Hành KH&CN Tây Ninh - Cập nhật Đầy đủ Nhiệm vụ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
@@ -18,93 +18,28 @@
             --border: #CBD5E1;
         }
 
-        body {
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            font-family: 'Lexend', sans-serif;
-            overflow: hidden;
-        }
-
+        body { background-color: var(--bg-page); color: var(--text-main); font-family: 'Lexend', sans-serif; overflow: hidden; }
         .sidebar { width: 260px; background: var(--bg-sidebar); color: var(--sidebar-text); }
-
-        .menu-item {
-            padding: 10px 20px;
-            margin: 4px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        .active-item { 
-            background: var(--sidebar-active-bg) !important; 
-            color: white !important; 
-            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4);
-        }
-
-        /* Menu Giao Việc Mới - Nổi bật */
-        .menu-new-task {
-            background: #f59e0b; /* Amber 500 */
-            color: #020617 !important;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-            animation: pulse-gold 3s infinite;
-        }
-        .menu-new-task:hover {
-            background: #d97706; /* Amber 600 */
-            transform: translateY(-2px);
-        }
+        .menu-item { padding: 10px 20px; margin: 4px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .active-item { background: var(--sidebar-active-bg) !important; color: white !important; box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4); }
+        .menu-new-task { background: #f59e0b; color: #020617 !important; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); animation: pulse-gold 3s infinite; }
+        
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
             70% { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
             100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
         }
 
-        .compact-card {
-            background: #FFFFFF;
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 12px;
-        }
-
+        .compact-card { background: #FFFFFF; border: 1px solid var(--border); padding: 12px 16px; border-radius: 12px; }
         .card-total { background: linear-gradient(135deg, #1E40AF, #1E3A8A); color: white; border: none; }
-
         .task-table-container { background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; }
-
-        thead.sticky th {
-            color: white;
-            font-weight: 800;
-            background-color: #1e293b;
-            text-transform: uppercase;
-            font-size: 9.5px;
-            padding: 12px 10px;
-            letter-spacing: 0.05em;
-        }
-
-        .task-row td {
-            font-size: 11px; 
-            padding: 8px 10px;
-            line-height: 1.4;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .row-color-0 { color: #1e293b; }
-        .row-color-1 { color: #1e40af; }
-        .row-color-2 { color: #0369a1; }
-        .row-color-3 { color: #4338ca; }
-        .row-color-4 { color: #0f172a; }
-
+        thead.sticky th { color: white; font-weight: 800; background-color: #1e293b; text-transform: uppercase; font-size: 9.5px; padding: 12px 10px; letter-spacing: 0.05em; }
+        .task-row td { font-size: 11px; padding: 8px 10px; line-height: 1.4; border-bottom: 1px solid #f1f5f9; }
         .task-row:hover { background-color: #f1f5f9; }
-
-        .badge-step { padding: 4px 6px; border-radius: 4px; font-size: 8px; font-weight: 800; display: inline-block; width: 65px; }
+        .badge-step { padding: 4px 6px; border-radius: 4px; font-size: 8px; font-weight: 800; display: inline-block; width: 65px; text-align: center; }
         .badge-in-progress { background: #E0F2FE; color: #0369A1; border: 1px solid #BAe6FD; }
         .badge-done { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
-
         .tag { padding: 2px 5px; border-radius: 4px; font-size: 8.5px; font-weight: 800; }
-
         .custom-scroll::-webkit-scrollbar { width: 5px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
@@ -119,16 +54,15 @@
 
         <nav class="flex-1 space-y-1 overflow-y-auto custom-scroll">
             <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-32px)] active-item">Tất cả nhiệm vụ</button>
-            <button onclick="switchMode('TU', this)" class="menu-item w-[calc(100%-32px)]">Tỉnh ủy giao</button>
-            <button onclick="switchMode('UB', this)" class="menu-item w-[calc(100%-32px)]">UBND Tỉnh giao</button>
-            <button onclick="switchMode('NQ24', this)" class="menu-item w-[calc(100%-32px)]">Nghị quyết 24</button>
-            <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-32px)]">Chuyên môn Sở</button>
-            <!-- Menu Giao Việc Mới -->
+            <button onclick="switchMode('TU', this)" class="menu-item w-[calc(100%-32px)]">Tỉnh ủy (12)</button>
+            <button onclick="switchMode('NQ24', this)" class="menu-item w-[calc(100%-32px)]">HĐND - NQ24 (18)</button>
+            <button onclick="switchMode('UB', this)" class="menu-item w-[calc(100%-32px)]">UBND Tỉnh (14)</button>
+            <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-32px)]">Chuyên môn Sở (40)</button>
             <button onclick="switchMode('NEW', this)" class="menu-item w-[calc(100%-32px)] menu-new-task mt-4">✨ Giao việc mới</button>
         </nav>
         
-        <div class="p-4 border-t border-slate-800">
-            <div id="miniClock" class="text-xl font-bold font-mono text-blue-500 text-center">00:00:00</div>
+        <div class="p-4 border-t border-slate-800 text-center">
+            <div id="miniClock" class="text-xl font-bold font-mono text-blue-500">00:00:00</div>
         </div>
     </aside>
 
@@ -137,7 +71,7 @@
             <div class="col-span-9 grid grid-cols-4 gap-4">
                 <div class="compact-card card-total">
                     <div class="text-[9px] font-bold opacity-80 uppercase">Tổng số</div>
-                    <div id="stat-total" class="text-2xl font-black">84</div>
+                    <div id="stat-total" class="text-2xl font-black">0</div>
                 </div>
                 <div class="compact-card border-l-4 border-amber-500">
                     <div class="text-[9px] font-bold text-slate-400 uppercase">Chưa xong</div>
@@ -159,52 +93,37 @@
         </div>
 
         <div class="flex-1 overflow-hidden flex flex-col p-4 gap-4 bg-slate-50">
-            <!-- Form Giao Việc Nhanh -->
+            <!-- Form Giao Việc Mới -->
             <div id="quickTaskForm" class="hidden bg-amber-50 border border-amber-200 p-4 rounded-xl shadow-sm flex flex-col gap-3">
-                <div class="text-[10px] font-black text-amber-600 uppercase flex items-center gap-2">
-                    <span class="text-lg">✍️</span> Nhập thông tin nhiệm vụ mới
-                </div>
+                <div class="text-[10px] font-black text-amber-600 uppercase flex items-center gap-2">✍️ Nhập thông tin nhiệm vụ mới</div>
                 <div class="grid grid-cols-12 gap-3">
-                    <div class="col-span-5">
-                        <textarea id="nt-text" placeholder="Nội dung nhiệm vụ..." class="w-full h-10 px-3 py-2 text-xs border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none resize-none"></textarea>
-                    </div>
+                    <div class="col-span-5"><textarea id="nt-text" placeholder="Nội dung..." class="w-full h-10 px-3 py-2 text-xs border border-amber-300 rounded-lg outline-none resize-none"></textarea></div>
                     <div class="col-span-2">
-                        <select id="nt-cat" class="w-full h-10 px-2 text-[10px] font-bold border border-amber-300 rounded-lg bg-white outline-none cursor-pointer">
-                            <option value="TW">Trung ương</option>
+                        <select id="nt-cat" class="w-full h-10 px-2 text-[10px] font-bold border border-amber-300 rounded-lg bg-white">
                             <option value="TU">Tỉnh ủy</option>
-                            <option value="HD">HĐND tỉnh</option>
-                            <option value="UB">UBND tỉnh</option>
+                            <option value="NQ24">HĐND</option>
+                            <option value="UB">UBND</option>
                             <option value="SO">Sở</option>
                         </select>
                     </div>
                     <div class="col-span-2">
-                        <select id="nt-unit" class="w-full h-10 px-2 text-[10px] font-bold border border-amber-300 rounded-lg bg-white outline-none cursor-pointer">
-                            <option value="Phòng KH">Phòng KH</option>
-                            <option value="Phòng CĐS">Phòng CĐS</option>
-                            <option value="Phòng CN&ĐMST">Phòng CN&ĐMST</option>
-                            <option value="Phòng TC-KH">Phòng TC-KH</option>
-                            <option value="Phòng TĐC">Phòng TĐC</option>
+                        <select id="nt-unit" class="w-full h-10 px-2 text-[10px] font-bold border border-amber-300 rounded-lg bg-white">
+                            <option value="KH">Phòng KH</option>
+                            <option value="CĐS">Phòng CĐS</option>
+                            <option value="CN&ĐMST">Phòng CN&ĐMST</option>
+                            <option value="TC-KH">Phòng TC-KH</option>
+                            <option value="TĐC">Phòng TĐC</option>
                             <option value="Văn phòng">Văn phòng</option>
-                            <option value="Trung tâm CĐS">Trung tâm CĐS</option>
-                            <option value="Trung tâm KHCN">Trung tâm KHCN</option>
-                            <option value="ĐMST">ĐMST</option>
                         </select>
                     </div>
-                    <div class="col-span-2">
-                        <input type="text" id="nt-date" placeholder="Hạn (VD: 31/12)" class="w-full h-10 px-3 text-xs border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
-                    </div>
-                    <div class="col-span-1">
-                        <button onclick="addNewTask()" class="w-full h-10 bg-amber-500 hover:bg-amber-600 text-white font-black text-[10px] uppercase rounded-lg transition-colors shadow-md">
-                            LƯU
-                        </button>
-                    </div>
+                    <div class="col-span-2"><input type="text" id="nt-date" placeholder="Hạn" class="w-full h-10 px-3 text-xs border border-amber-300 rounded-lg"></div>
+                    <div class="col-span-1"><button onclick="addNewTask()" class="w-full h-10 bg-amber-500 text-white font-black text-[10px] rounded-lg">LƯU</button></div>
                 </div>
             </div>
 
             <div class="flex gap-3 shrink-0">
-                <input type="text" id="search" placeholder="Tìm tên nhiệm vụ..." 
-                       class="flex-1 h-9 px-4 rounded-xl text-xs font-semibold border border-slate-300 outline-none focus:ring-2 focus:ring-blue-500">
-                <select id="unit" class="h-9 px-4 rounded-xl text-[10px] font-bold uppercase border border-slate-300 bg-white">
+                <input type="text" id="search" placeholder="Tìm nội dung..." class="flex-1 h-9 px-4 rounded-xl text-xs border border-slate-300 outline-none">
+                <select id="unit" class="h-9 px-4 rounded-xl text-[10px] font-bold border border-slate-300 bg-white">
                     <option value="all">Tất cả Đơn vị</option>
                 </select>
             </div>
@@ -214,9 +133,9 @@
                     <thead class="sticky top-0 z-10">
                         <tr class="text-left">
                             <th class="p-2 w-8 text-center">#</th>
-                            <th class="p-2 w-auto">Nội dung nhiệm vụ (Phần chính)</th>
-                            <th class="p-2 w-20">Tham mưu</th> 
-                            <th class="p-2 w-14 text-center">Hạn</th> 
+                            <th class="p-2 w-auto">Nội dung nhiệm vụ</th>
+                            <th class="p-2 w-24">Tham mưu</th> 
+                            <th class="p-2 w-16 text-center">Hạn</th> 
                             <th class="p-2 w-32">Tiến độ điều hành</th> 
                             <th class="p-2 w-20 text-center">Trạng thái</th>
                         </tr>
@@ -228,198 +147,166 @@
     </main>
 
     <script>
-        const steps = [
-            "1. Đang soạn thảo",
-            "2. Lấy ý kiến các phòng",
-            "3. Trưởng phòng duyệt",
-            "4. Lãnh đạo Sở duyệt",
-            "5. Lấy ý kiến Sở Ngành",
-            "6. Tổng hợp ý kiến",
-            "7. Trình UBND Tỉnh",
-            "8. Chờ VP UBND phản hồi",
-            "9. Đã hoàn thành"
+        const steps = ["1. Đang soạn thảo", "2. Lấy ý kiến các phòng", "3. Trưởng phòng duyệt", "4. Lãnh đạo Sở duyệt", "5. Lấy ý kiến Sở Ngành", "6. Tổng hợp ý kiến", "7. Trình UBND Tỉnh", "8. Chờ phản hồi", "9. Đã hoàn thành"];
+
+        // 12 NHIỆM VỤ TỈNH ỦY (CT 25 & 33)
+        const tuTasks = [
+            {id:"TU-01", cat:"TU", g:"KH", t:"Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d:"Tháng 01/26"},
+            {id:"TU-02", cat:"TU", g:"CN&ĐMST", t:"Nghị quyết của Tỉnh ủy về đột phá phát triển KHCN, ĐMST và CĐS; chuyển đổi xanh", d:"Tháng 01/26"},
+            {id:"TU-03", cat:"TU", g:"Văn phòng", t:"Kế hoạch xây dựng đội ngũ cán bộ theo Nghị quyết 57-NQ/TW", d:"Tháng 11/26"},
+            {id:"TU-04", cat:"TU", g:"CN&ĐMST", t:"Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao", d:"Tháng 06/26"},
+            {id:"TU-05", cat:"TU", g:"CN&ĐMST", t:"Chương trình phát triển nông nghiệp ứng dụng công nghệ cao", d:"Tháng 10/26"},
+            {id:"TU-06", cat:"TU", g:"KH", t:"Đề án nâng cao năng lực Trạm nghiên cứu ứng dụng KH&CN Đồng Tháp Mười", d:"Tháng 07/26"},
+            {id:"TU-07", cat:"TU", g:"KH", t:"Phân công, lựa chọn nhiệm vụ trọng tâm KHCN - ĐMST triển khai định kỳ", d:"Thường xuyên"},
+            {id:"TU-08", cat:"TU", g:"CĐS", t:"Đẩy mạnh chuyển đổi số trong hoạt động cơ quan nhà nước; hạ tầng CNTT", d:"Quý I/26"},
+            {id:"TU-09", cat:"TU", g:"KH", t:"Tích hợp nội dung KHCN, ĐMST vào quy hoạch, kế hoạch phát triển KT-XH", d:"Quý I/26"},
+            {id:"TU-10", cat:"TU", g:"CN&ĐMST", t:"Thúc đẩy ứng dụng KHCN, ĐMST trong khu vực kinh tế tư nhân", d:"Thường xuyên"},
+            {id:"TU-11", cat:"TU", g:"TC-KH", t:"Hợp tác KHCN quốc tế, chuyển giao công nghệ từ nước ngoài", d:"Thường xuyên"},
+            {id:"TU-12", cat:"TU", g:"KH", t:"Báo cáo sơ kết thực hiện các Nghị quyết của TW về KHCN trên địa bàn", d:"Quý II/26"}
         ];
 
+        // 18 NHIỆM VỤ NGHỊ QUYẾT 24 (HĐND)
+        const nq24Tasks = [
+            {id:"NQ24-01", cat:"NQ24", g:"KH", t:"Phối hợp triển khai nhiệm vụ KHCN gắn định hướng phát triển địa phương", d:"2025-2030"},
+            {id:"NQ24-02", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển thị trường khoa học và công nghệ trên địa bàn tỉnh", d:"2025-2030"},
+            {id:"NQ24-03", cat:"NQ24", g:"CN&ĐMST", t:"Hỗ trợ doanh nghiệp KHCN, doanh nghiệp Đổi mới sáng tạo", d:"2025-2030"},
+            {id:"NQ24-04", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển tổ chức trung gian, trung tâm hỗ trợ chuyển giao công nghệ", d:"2026-2030"},
+            {id:"NQ24-05", cat:"NQ24", g:"CĐS", t:"Xây dựng hạ tầng dữ liệu, hệ thống thông tin KHCN mở", d:"2025-2027"},
+            {id:"NQ24-06", cat:"NQ24", g:"TĐC", t:"Nâng cao năng lực đo lường, thử nghiệm phục vụ sản xuất kinh doanh", d:"2025-2030"},
+            {id:"NQ24-07", cat:"NQ24", g:"CN&ĐMST", t:"Triển khai Đề án 844 về Hệ sinh thái khởi nghiệp đổi mới sáng tạo", d:"Thường xuyên"},
+            {id:"NQ24-08", cat:"NQ24", g:"CN&ĐMST", t:"Hỗ trợ xác lập, bảo hộ tài sản trí tuệ cho các sản phẩm chủ lực", d:"Thường xuyên"},
+            {id:"NQ24-09", cat:"NQ24", g:"CĐS", t:"Xây dựng CSDL đổi mới sáng tạo liên thông cấp tỉnh", d:"2026-2028"},
+            {id:"NQ24-10", cat:"NQ24", g:"CĐS", t:"Hoàn thiện chính quyền số trong lĩnh vực KH&CN", d:"2025-2030"},
+            {id:"NQ24-11", cat:"NQ24", g:"CĐS", t:"Phát triển nền tảng số, dữ liệu số dùng chung chuyên ngành", d:"2025-2030"},
+            {id:"NQ24-12", cat:"NQ24", g:"CĐS", t:"Triển khai nền tảng số tích hợp, chia sẻ dữ liệu KHCN", d:"2025-2027"},
+            {id:"NQ24-13", cat:"NQ24", g:"CĐS", t:"Ứng dụng AI, Big Data trong quản lý nhà nước về KHCN", d:"2026-2030"},
+            {id:"NQ24-14", cat:"NQ24", g:"CĐS", t:"Phát triển dữ liệu mở, kho dữ liệu dùng chung của Sở", d:"2025-2027"},
+            {id:"NQ24-15", cat:"NQ24", g:"CĐS", t:"Phối hợp thúc đẩy kinh tế số, thương mại điện tử sản phẩm KHCN", d:"Thường xuyên"},
+            {id:"NQ24-16", cat:"NQ24", g:"CĐS", t:"Đảm bảo an toàn thông tin mạng, an ninh dữ liệu số", d:"Thường xuyên"},
+            {id:"NQ24-17", cat:"NQ24", g:"CĐS", t:"Phát triển kỹ năng số cho công chức, viên chức và doanh nghiệp", d:"Thường xuyên"},
+            {id:"NQ24-18", cat:"NQ24", g:"KH", t:"Kiểm tra, giám sát thực hiện các chính sách hỗ trợ KHCN - ĐMST", d:"Định kỳ"}
+        ];
+
+        // 14 NHIỆM VỤ UBND TỈNH GIAO (UB)
+        const ubTasks = [
+            {id:"UB-01", cat:"UB", g:"CN&ĐMST", t:"Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", d:"30/03/26"},
+            {id:"UB-02", cat:"UB", g:"KH", t:"Tham mưu Quyết định quy định quản lý nhiệm vụ KHCN cấp tỉnh", d:"Quý I/26"},
+            {id:"UB-03", cat:"UB", g:"TĐC", t:"Xây dựng Kế hoạch nâng cao năng suất chất lượng dựa trên KHCN-ĐMST", d:"Quý II/26"},
+            {id:"UB-04", cat:"UB", g:"CN&ĐMST", t:"Triển khai các chương trình hỗ trợ doanh nghiệp đổi mới công nghệ", d:"Thường xuyên"},
+            {id:"UB-05", cat:"UB", g:"KH", t:"Phối hợp đánh giá trình độ công nghệ các ngành sản xuất chủ lực", d:"Tháng 12/26"},
+            {id:"UB-06", cat:"UB", g:"CN&ĐMST", t:"Tổ chức sự kiện Techfest Tây Ninh năm 2026", d:"Tháng 10/26"},
+            {id:"UB-07", cat:"UB", g:"TĐC", t:"Kiểm tra tiêu chuẩn đo lường chất lượng mặt hàng xăng dầu, khí dầu mỏ", d:"Định kỳ"},
+            {id:"UB-08", cat:"UB", g:"TC-KH", t:"Tham mưu cơ chế đặt hàng nhiệm vụ KHCN phục vụ yêu cầu cấp bách", d:"Quý III/26"},
+            {id:"UB-09", cat:"UB", g:"Văn phòng", t:"Thực hiện công tác CCHC, kiểm soát TTHC lĩnh vực KHCN", d:"Hàng năm"},
+            {id:"UB-10", cat:"UB", g:"CĐS", t:"Vận hành cổng thông tin truy xuất nguồn gốc sản phẩm hàng hóa tỉnh", d:"Quý II/26"},
+            {id:"UB-11", cat:"UB", g:"CN&ĐMST", t:"Đăng ký chỉ dẫn địa lý, nhãn hiệu tập thể các sản phẩm OCOP", d:"Thường xuyên"},
+            {id:"UB-12", cat:"UB", g:"KH", t:"Tham mưu thành lập Hội đồng KH&CN tỉnh nhiệm kỳ mới", d:"Quý I/26"},
+            {id:"UB-13", cat:"UB", g:"Văn phòng", t:"Thanh tra việc chấp hành quy định pháp luật về KHCN tại cơ sở", d:"Theo KH"},
+            {id:"UB-14", cat:"UB", g:"TC-KH", t:"Báo cáo tình hình quản lý nhà nước về KHCN trên địa bàn năm 2026", d:"Tháng 12/26"}
+        ];
+
+        // 40 NHIỆM VỤ CHUYÊN MÔN SỞ (SO)
         const rawTasks = [
-            // TỈNH ỦY (12 NHIỆM VỤ)
-            {id: "TU-01", cat: "TU", g: "QLKH", t: "Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (Quyết định 569/QĐ-TTg)", d: "01/2026"},
-            {id: "TU-02", cat: "TU", g: "CN&ĐMST", t: "Nghị quyết của Tỉnh ủy về đột phá phát triển KHCN, ĐMST và chuyển đổi số; gắn với chuyển đổi xanh, kinh tế tuần hoàn", d: "01/2026"},
-            {id: "TU-03", cat: "TU", g: "TC-KH", t: "Kế hoạch xây dựng, phát triển đội ngũ cán bộ đáp ứng yêu cầu thực hiện Nghị quyết số 57-NQ/TW của Bộ Chính trị", d: "11/2026"},
-            {id: "TU-04", cat: "TU", g: "CN&ĐMST", t: "Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao, lĩnh vực trọng điểm đến năm 2030", d: "06/2026"},
-            {id: "TU-05", cat: "TU", g: "QLKH", t: "Chương trình phát triển nông nghiệp ứng dụng công nghệ cao gắn với tái cơ cấu ngành nông nghiệp", d: "10/2026"},
-            {id: "TU-06", cat: "TU", g: "QLKH", t: "Đề án đầu tư nâng cao năng lực Trạm nghiên cứu ứng dụng KH&CN Đồng Tháp Mười (2025-2030)", d: "07/2026"},
-            {id: "TU-07", cat: "TU", g: "Văn phòng", t: "Kế hoạch nâng cao các chỉ số PCI, PAPI, PAR INDEX, SIPAS", d: "07/2026"},
-            {id: "TU-08", cat: "TU", g: "CN&ĐMST", t: "Xây dựng và tổ chức thực hiện hiệu quả Nghị quyết đột phá KHCN, ĐMST, CĐS", d: "Quý I/2026"},
-            {id: "TU-09", cat: "TU", g: "CN&ĐMST", t: "Lựa chọn và tập trung triển khai các nhiệm vụ KHCN, ĐMST, CĐS trọng tâm, trọng điểm", d: "Thường xuyên"},
-            {id: "TU-10", cat: "TU", g: "CĐS", t: "Đẩy mạnh chuyển đổi số cơ quan nhà nước; ưu tiên hạ tầng CNTT và nhân lực số", d: "Quý I/2026"},
-            {id: "TU-11", cat: "TU", g: "QLKH", t: "Tích hợp nội dung KHCN, ĐMST, CĐS vào quy hoạch ngành và kế hoạch đầu tư công", d: "Quý I/2026"},
-            {id: "TU-12", cat: "TU", g: "CN&ĐMST", t: "Thúc đẩy ứng dụng KHCN & chuyển đổi xanh trong khu vực kinh tế tư nhân", d: "2026-2030"},
-
-            // UBND TỈNH (14 NHIỆM VỤ)
-            {id: "UB-01", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", d: "30/03/2026"},
-            {id: "UB-02", cat: "UB", g: "QLKH", t: "Kế hoạch phát triển tài sản trí tuệ năm 2026", d: "30/03/2026"},
-            {id: "UB-03", cat: "UB", g: "CN&ĐMST", t: "Xây dựng mô hình đổi mới sáng tạo gắn với doanh nghiệp, có khả năng nhân rộng", d: "30/03/2026"},
-            {id: "UB-04", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Quỹ phát triển khoa học, công nghệ và đổi mới sáng tạo tỉnh", d: "30/06/2026"},
-            {id: "UB-05", cat: "UB", g: "QLKH", t: "Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu", d: "Trong năm 2026"},
-            {id: "UB-06", cat: "UB", g: "QLKH", t: "Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm, trung tâm R&D", d: "Trong năm 2026"},
-            {id: "UB-07", cat: "UB", g: "QLKH", t: "Tổ chức hội thảo, hội nghị chuyên đề về KHCN, ĐMST", d: "Thường xuyên"},
-            {id: "UB-08", cat: "UB", g: "CĐS", t: "Triển khai nâng cao chất lượng kết nối, ưu tiên vùng sâu, vùng xa (Hạ tầng số)", d: "Trong năm 2026"},
-            {id: "UB-09", cat: "UB", g: "CĐS", t: "Rà soát, cập nhật Kế hoạch phát triển hạ tầng số, 5G, IoT trong KCN, CCN", d: "Trong năm 2026"},
-            {id: "UB-10", cat: "UB", g: "CĐS", t: "Khai thác, sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia", d: "Trong năm 2026"},
-            {id: "UB-11", cat: "UB", g: "CĐS", t: "Phát triển quy mô kinh tế số đạt 12% GRDP (Phối hợp Sở Tài chính)", d: "Năm 2026"},
-            {id: "UB-12", cat: "UB", g: "CN&ĐMST", t: "Thu hút đầu tư vào công nghiệp công nghệ cao, hỗ trợ (Phối hợp Sở Công Thương)", d: "Năm 2026"},
-            {id: "UB-13", cat: "UB", g: "QLKH", t: "Phát triển nông nghiệp ứng dụng công nghệ cao (Phối hợp Sở NN&MT)", d: "2026-2030"},
-            {id: "UB-14", cat: "UB", g: "CĐS", t: "Phát triển nguồn nhân lực chất lượng cao gắn với KHCN, CĐS (Phối hợp Sở GD&ĐT)", d: "Năm 2026"},
-
-            // NGHỊ QUYẾT 24 (18 NHIỆM VỤ)
-            {id: "NQ24-01", cat: "NQ24", g: "QLKH", t: "Tăng cường phối hợp triển khai nhiệm vụ KHCN gắn định hướng phát triển địa phương", d: "2025–2030"},
-            {id: "NQ24-02", cat: "NQ24", g: "CN&ĐMST", t: "Phát triển thị trường khoa học và công nghệ", d: "2025–2030"},
-            {id: "NQ24-03", cat: "NQ24", g: "CN&ĐMST", t: "Hỗ trợ doanh nghiệp KHCN, doanh nghiệp ĐMST", d: "2025–2030"},
-            {id: "NQ24-04", cat: "NQ24", g: "CN&ĐMST", t: "Phát triển tổ chức trung gian, trung tâm hỗ trợ CGCN", d: "2026–2030"},
-            {id: "NQ24-05", cat: "NQ24", g: "CĐS", t: "Xây dựng hạ tầng dữ liệu, mạng lưới chuyên gia KHCN mở", d: "2025–2028"},
-            {id: "NQ24-06", cat: "NQ24", g: "CN&ĐMST", t: "Phát triển hệ sinh thái khởi nghiệp ĐMST", d: "2025–2030"},
-            {id: "NQ24-07", cat: "NQ24", g: "CN&ĐMST", t: "Xây dựng, vận hành Trung tâm ĐMST tỉnh", d: "2026"},
-            {id: "NQ24-08", cat: "NQ24", g: "CN&ĐMST", t: "Hỗ trợ thương mại hóa kết quả nghiên cứu, SHTT", d: "2025–2030"},
-            {id: "NQ24-09", cat: "NQ24", g: "CĐS", t: "Xây dựng CSDL đổi mới sáng tạo liên thông", d: "2026–2028"},
-            {id: "NQ24-10", cat: "NQ24", g: "CĐS", t: "Xây dựng, hoàn thiện chính quyền số", d: "2025–2030"},
-            {id: "NQ24-11", cat: "NQ24", g: "CĐS", t: "Phát triển nền tảng số, dữ liệu số dùng chung", d: "2025–2030"},
-            {id: "NQ24-12", cat: "NQ24", g: "CĐS", t: "Triển khai nền tảng số tích hợp, chia sẻ dữ liệu", d: "2025–2027"},
-            {id: "NQ24-13", cat: "NQ24", g: "CĐS", t: "Ứng dụng AI, Big Data, Cloud trong QLNN", d: "2026–2030"},
-            {id: "NQ24-14", cat: "NQ24", g: "CĐS", t: "Phát triển dữ liệu mở, kho dữ liệu dùng chung", d: "2025–2027"},
-            {id: "NQ24-15", cat: "NQ24", g: "CĐS", t: "Thúc đẩy phát triển kinh tế số, TMĐT", d: "2025–2030"},
-            {id: "NQ24-16", cat: "NQ24", g: "CĐS", t: "Phát triển xã hội số, nâng cao kỹ năng số", d: "2025–2030"},
-            {id: "NQ24-17", cat: "NQ24", g: "CĐS", t: "Bảo đảm an toàn, an ninh mạng", d: "Thường xuyên"},
-            {id: "NQ24-18", cat: "NQ24", g: "CN&ĐMST", t: "Mở rộng hợp tác quốc tế, thu hút nguồn lực công nghệ", d: "2025–2030"}
+            {id:"SO-01", cat:"SO", g:"CN&ĐMST", t:"Kế hoạch Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d:"31/01/26"},
+            {id:"SO-02", cat:"SO", g:"TĐC", t:"Chương trình hành động thực hiện Chỉ thị số 38-CT/TW của Ban Bí thư", d:"31/01/26"},
+            {id:"SO-03", cat:"SO", g:"CN&ĐMST", t:"Nghị quyết Tỉnh ủy về đột phá phát triển KHCN, ĐMST, CĐS, Chuyển đổi xanh", d:"31/01/26"},
+            {id:"SO-04", cat:"SO", g:"CN&ĐMST", t:"Đề án thành lập Quỹ phát triển khoa học, công nghệ và đổi mới sáng tạo tỉnh", d:"31/01/26"},
+            {id:"SO-05", cat:"SO", g:"TC-KH", t:"Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026–2030) gửi Bộ Tài chính", d:"05/02/26"},
+            {id:"SO-06", cat:"SO", g:"Văn phòng", t:"Góp ý dự thảo Kế hoạch phát triển VBQPPL và truyền thông chính sách", d:"05/02/26"},
+            {id:"SO-07", cat:"SO", g:"Văn phòng", t:"Góp ý dự thảo Công văn hướng dẫn tuyên truyền kỷ niệm các ngày lễ lớn", d:"05/02/26"},
+            {id:"SO-08", cat:"SO", g:"CĐS", t:"Văn bản đề nghị cung cấp danh mục dữ liệu mở năm 2026", d:"05/02/26"},
+            {id:"SO-09", cat:"SO", g:"CĐS", t:"Báo cáo đánh giá tình hình thực hiện nhiệm vụ CĐS tháng 01/2026", d:"05/02/26"},
+            {id:"SO-10", cat:"SO", g:"CĐS", t:"Đăng ký danh mục các nền tảng số triển khai trong năm 2026", d:"05/02/26"},
+            {id:"SO-11", cat:"SO", g:"CĐS", t:"Xây dựng dự thảo Kế hoạch Chuyển đổi số tỉnh Tây Ninh năm 2026", d:"06/02/26"},
+            {id:"SO-12", cat:"SO", g:"CN&ĐMST", t:"Tham mưu báo cáo sơ kết phong trào thi đua Lao động sáng tạo năm 2025", d:"06/02/26"},
+            {id:"SO-13", cat:"SO", g:"KH", t:"Báo cáo tình hình thực hiện Kế hoạch phát triển KT-XH tháng 01/2026", d:"10/02/26"},
+            {id:"SO-14", cat:"SO", g:"KH", t:"Tham mưu báo cáo tình hình thực hiện các nhiệm vụ trọng tâm tháng 01", d:"10/02/26"},
+            {id:"SO-15", cat:"SO", g:"Văn phòng", t:"Dự thảo Kế hoạch đào tạo, bồi dưỡng cán bộ, công chức, viên chức năm 2026", d:"10/02/26"},
+            {id:"SO-16", cat:"SO", g:"Văn phòng", t:"Báo cáo kết quả thực hiện công tác cải cách hành chính Quý I/2026", d:"10/02/26"},
+            {id:"SO-17", cat:"SO", g:"CĐS", t:"Văn bản gửi các cơ quan về việc rà soát hạ tầng CNTT phục vụ họp", d:"10/02/26"},
+            {id:"SO-18", cat:"SO", g:"TĐC", t:"Kế hoạch thanh tra, kiểm tra về tiêu chuẩn, đo lường, chất lượng năm 2026", d:"12/02/26"},
+            {id:"SO-19", cat:"SO", g:"Văn phòng", t:"Tham mưu nội dung phục vụ Đoàn kiểm tra Tỉnh ủy về công tác cán bộ", d:"12/02/26"},
+            {id:"SO-20", cat:"SO", g:"KH", t:"Rà soát, tổng hợp danh mục các nhiệm vụ KH&CN cấp tỉnh năm 2026", d:"15/02/26"},
+            {id:"SO-21", cat:"SO", g:"KH", t:"Tham mưu Quyết định phê duyệt danh mục đề tài, dự án KH&CN đợt 1/2026", d:"15/02/26"},
+            {id:"SO-22", cat:"SO", g:"TC-KH", t:"Báo cáo quyết toán kinh phí sự nghiệp KH&CN năm 2025", d:"15/02/26"},
+            {id:"SO-23", cat:"SO", g:"Văn phòng", t:"Báo cáo tình hình thực hiện Quy chế dân chủ tại cơ sở năm 2025", d:"20/02/26"},
+            {id:"SO-24", cat:"SO", g:"Văn phòng", t:"Văn bản hướng dẫn tổ chức Hội nghị công chức, viên chức năm 2026", d:"20/02/26"},
+            {id:"SO-25", cat:"SO", g:"CĐS", t:"Triển khai cài đặt phần mềm phòng chống mã độc tập trung", d:"25/02/26"},
+            {id:"SO-26", cat:"SO", g:"CĐS", t:"Báo cáo kết quả thực hiện an toàn thông tin mạng tháng 02/2026", d:"25/02/26"},
+            {id:"SO-27", cat:"SO", g:"CN&ĐMST", t:"Kế hoạch tổ chức Ngày hội Khởi nghiệp đổi mới sáng tạo tỉnh", d:"28/02/26"},
+            {id:"SO-28", cat:"SO", g:"CN&ĐMST", t:"Góp ý văn bản quản lý chỉ dẫn địa lý “Đậu phộng Tây Ninh”", d:"13/02/26"},
+            {id:"SO-29", cat:"SO", g:"CĐS", t:"Tạo lập sổ quản lý văn bản đi, đến trên hệ thống VBDH", d:"13/02/26"},
+            {id:"SO-30", cat:"SO", g:"Văn phòng", t:"Tham gia thực hiện chế độ báo cáo trực Tết Nguyên đán", d:"22/02/26"},
+            {id:"SO-31", cat:"SO", g:"CĐS", t:"Triển khai Kế hoạch 04-KH/BCĐTW về KHCN, ĐMST và CĐS", d:"24/02/26"},
+            {id:"SO-32", cat:"SO", g:"Văn phòng", t:"Kế hoạch kiểm soát TTHC, cơ chế một cửa năm 2026", d:"26/02/26"},
+            {id:"SO-33", cat:"SO", g:"TC-KH", t:"Phương án sắp xếp sở hữu, tài sản công nghiệp sau sắp xếp", d:"28/02/26"},
+            {id:"SO-34", cat:"SO", g:"Văn phòng", t:"Rà soát, điều chỉnh Chương trình hành động Đại hội XIV", d:"31/03/26"},
+            {id:"SO-35", cat:"SO", g:"Văn phòng", t:"Điều chỉnh, bổ sung các Quyết định chức năng nhiệm vụ các phòng", d:"31/03/26"},
+            {id:"SO-36", cat:"SO", g:"CĐS", t:"Chỉ đạo nhà mạng tuyên truyền về phòng cháy chữa cháy tập trung", d:"31/03/26"},
+            {id:"SO-37", cat:"SO", g:"TĐC", t:"Tham mưu Kế hoạch hưởng ứng Ngày Quyền người tiêu dùng", d:"10/03/26"},
+            {id:"SO-38", cat:"SO", g:"TĐC", t:"Kiểm tra nhà nước về đo lường đối với phương tiện đo nhóm 2", d:"Thường xuyên"},
+            {id:"SO-39", cat:"SO", g:"TĐC", t:"Hỗ trợ doanh nghiệp áp dụng hệ thống quản lý chất lượng tiên tiến", d:"Thường xuyên"},
+            {id:"SO-40", cat:"SO", g:"CN&ĐMST", t:"Quản lý nhà nước về hoạt động sáng kiến trên địa bàn tỉnh", d:"Thường xuyên"}
         ];
-
-        // Tạo thêm nhiệm vụ Chuyên môn Sở để đạt tổng 84
-        for(let i=1; i<=40; i++) {
-            rawTasks.push({ id: `SO-${i<10?'0'+i:i}`, cat: "SO", g: "Văn phòng", t: `Nhiệm vụ quản lý chuyên môn số ${i}: Rà soát văn bản và điều hành hành chính đơn vị trong năm 2026`, d: "31/12/2026" });
-        }
 
         let customTasks = JSON.parse(localStorage.getItem('ioc_custom_tasks') || '[]');
-        let tasks = [...rawTasks, ...customTasks];
+        let tasks = [...tuTasks, ...nq24Tasks, ...ubTasks, ...rawTasks, ...customTasks];
         let currentCat = 'ALL';
 
         function switchMode(cat, el) {
             currentCat = cat;
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active-item'));
             el.classList.add('active-item');
-            
-            const form = document.getElementById('quickTaskForm');
-            if(cat === 'NEW') {
-                form.classList.remove('hidden');
-                document.getElementById('currentCategoryLabel').innerText = "GIAO VIỆC MỚI";
-            } else {
-                form.classList.add('hidden');
-                const labels = { 'ALL': 'TẤT CẢ', 'TU': 'TỈNH ỦY GIAO', 'UB': 'UBND TỈNH GIAO', 'NQ24': 'NGHỊ QUYẾT 24', 'SO': 'CHUYÊN MÔN SỞ' };
-                document.getElementById('currentCategoryLabel').innerText = labels[cat] || cat;
-            }
+            document.getElementById('quickTaskForm').classList.toggle('hidden', cat !== 'NEW');
+            const labels = {'ALL':'TẤT CẢ', 'TU':'TỈNH ỦY (12)', 'NQ24':'HĐND-NQ24 (18)', 'UB':'UBND TỈNH (14)', 'SO':'CHUYÊN MÔN SỞ (40)', 'NEW':'GIAO VIỆC MỚI'};
+            document.getElementById('currentCategoryLabel').innerText = labels[cat];
             render();
         }
 
         function addNewTask() {
             const text = document.getElementById('nt-text').value;
-            const cat = document.getElementById('nt-cat').value;
-            const unit = document.getElementById('nt-unit').value;
-            const date = document.getElementById('nt-date').value || "Thường xuyên";
-
             if(!text) return;
-
-            const newTask = {
-                id: "GV-" + Date.now().toString().slice(-4),
-                cat: cat,
-                g: unit,
-                t: text,
-                d: date
-            };
-
+            const newTask = { id:"GV-"+Date.now().toString().slice(-4), cat:document.getElementById('nt-cat').value, g:document.getElementById('nt-unit').value, t:text, d:document.getElementById('nt-date').value || "Thường xuyên" };
             customTasks.push(newTask);
             localStorage.setItem('ioc_custom_tasks', JSON.stringify(customTasks));
-            tasks = [...rawTasks, ...customTasks];
+            tasks = [...tuTasks, ...nq24Tasks, ...ubTasks, ...rawTasks, ...customTasks];
             document.getElementById('nt-text').value = "";
             render();
         }
 
         function render() {
-            const search = document.getElementById('search').value.toLowerCase();
-            const unit = document.getElementById('unit').value;
-
-            const filtered = tasks.filter(t => {
-                const matchSearch = t.t.toLowerCase().includes(search) || t.id.toLowerCase().includes(search);
-                const matchUnit = unit === 'all' || t.g === unit;
-                const matchCat = currentCat === 'ALL' || t.cat === currentCat || (currentCat === 'NEW' && t.id.startsWith('GV-'));
-                return matchSearch && matchUnit && matchCat;
-            });
-
-            const doneCount = filtered.filter(t => localStorage.getItem('ioc_v20_'+t.id) === "9. Đã hoàn thành").length;
-            const percent = filtered.length ? Math.round((doneCount/filtered.length)*100) : 0;
-
+            const s = document.getElementById('search').value.toLowerCase();
+            const u = document.getElementById('unit').value;
+            const filtered = tasks.filter(t => (t.t.toLowerCase().includes(s) || t.id.toLowerCase().includes(s)) && (u === 'all' || t.g === u) && (currentCat === 'ALL' || t.cat === currentCat || (currentCat === 'NEW' && t.id.startsWith('GV-'))));
+            
+            const done = filtered.filter(t => localStorage.getItem('ioc_v21_'+t.id) === steps[8]).length;
             document.getElementById('stat-total').innerText = filtered.length;
-            document.getElementById('stat-pending').innerText = filtered.length - doneCount;
-            document.getElementById('stat-done').innerText = doneCount;
-            document.getElementById('stat-percent').innerText = percent + "%";
+            document.getElementById('stat-pending').innerText = filtered.length - done;
+            document.getElementById('stat-done').innerText = done;
+            document.getElementById('stat-percent').innerText = (filtered.length ? Math.round((done/filtered.length)*100) : 0) + "%";
 
             let html = "";
             filtered.forEach((t, i) => {
-                const step = localStorage.getItem('ioc_v20_'+t.id) || steps[0];
-                const isDone = step === "9. Đã hoàn thành";
-                const colorIdx = i % 5;
-                
-                let tagColor = "bg-slate-100 text-slate-600";
-                if(t.cat === 'TU') tagColor = "bg-rose-100 text-rose-700";
-                if(t.cat === 'UB') tagColor = "bg-emerald-100 text-emerald-700";
-                if(t.cat === 'HĐND' || t.cat === 'NQ24') tagColor = "bg-indigo-100 text-indigo-700";
-                if(t.cat === 'SO') tagColor = "bg-blue-100 text-blue-700";
-                if(t.cat === 'TW') tagColor = "bg-purple-100 text-purple-700"; // Màu cho Trung ương
-
+                const step = localStorage.getItem('ioc_v21_'+t.id) || steps[0];
+                const isD = step === steps[8];
+                const tagC = t.cat==='TU'?'bg-rose-100 text-rose-700':t.cat==='NQ24'?'bg-indigo-100 text-indigo-700':t.cat==='UB'?'bg-emerald-100 text-emerald-700':'bg-blue-100 text-blue-700';
                 html += `
-                    <tr class="task-row row-color-${colorIdx}">
+                    <tr class="task-row">
                         <td class="text-center font-bold opacity-30">${i+1}</td>
-                        <td class="break-words">
-                            <div class="font-bold leading-snug mb-0.5">${t.t}</div>
-                            <div class="flex gap-2 items-center">
-                                <span class="tag ${tagColor}">${t.cat}</span>
-                                <span class="text-[8px] font-mono opacity-50">${t.id}</span>
-                            </div>
-                        </td>
+                        <td><div class="font-bold mb-0.5">${t.t}</div><div class="flex gap-2 items-center"><span class="tag ${tagC}">${t.cat}</span><span class="text-[8px] opacity-40">${t.id}</span></div></td>
                         <td class="text-[9px] font-bold uppercase opacity-60">${t.g}</td>
                         <td class="text-center font-bold opacity-70">${t.d}</td>
-                        <td>
-                            <select onchange="save('${t.id}', this.value)" 
-                                    class="w-full border border-slate-200 rounded px-1 py-0.5 text-[8.8px] font-medium outline-none ${isDone ? 'bg-emerald-50 text-emerald-700' : 'bg-white text-slate-700'}">
-                                ${steps.map(s => `<option value="${s}" ${step === s ? 'selected' : ''}>${s}</option>`).join('')}
-                            </select>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge-step ${isDone ? 'badge-done' : 'badge-in-progress'}">
-                                ${isDone ? 'HOÀN THÀNH' : 'ĐANG XỬ LÝ'}
-                            </span>
-                        </td>
-                    </tr>
-                `;
+                        <td><select onchange="save('${t.id}',this.value)" class="w-full border rounded text-[8.8px] p-0.5 ${isD?'bg-emerald-50 text-emerald-700':'bg-white'}">${steps.map(s=>`<option value="${s}" ${step===s?'selected':''}>${s}</option>`).join('')}</select></td>
+                        <td class="text-center"><span class="badge-step ${isD?'badge-done':'badge-in-progress'}">${isD?'XONG':'XỬ LÝ'}</span></td>
+                    </tr>`;
             });
             document.getElementById('taskTable').innerHTML = html;
         }
 
-        function save(id, val) { 
-            localStorage.setItem('ioc_v20_'+id, val); 
-            render(); 
-        }
-
-        setInterval(() => { 
-            document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false}); 
-        }, 1000);
-        
-        const units = ["Phòng KH", "Phòng CĐS", "Phòng CN&ĐMST", "Phòng TC-KH", "Phòng TĐC", "Văn phòng", "Trung tâm CĐS", "Trung tâm KHCN", "ĐMST"];
-        const unitSelect = document.getElementById('unit');
-        units.forEach(u => {
-            const op = document.createElement('option'); 
-            op.value = u; 
-            op.innerText = u;
-            unitSelect.appendChild(op);
-        });
-
+        function save(id,v){ localStorage.setItem('ioc_v21_'+id,v); render(); }
+        setInterval(()=>document.getElementById('miniClock').innerText=new Date().toLocaleTimeString('vi-VN',{hour12:false}),1000);
+        const units = ["KH", "CĐS", "CN&ĐMST", "TC-KH", "TĐC", "Văn phòng"];
+        units.forEach(u => { const op=document.createElement('option'); op.value=u; op.innerText=u; document.getElementById('unit').appendChild(op); });
         document.getElementById('search').oninput = render;
         document.getElementById('unit').onchange = render;
         window.onload = render;
