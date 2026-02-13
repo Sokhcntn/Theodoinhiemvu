@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IOC Điều Hành KH&CN Tây Ninh - Full Data 2026</title>
+    <title>IOC Điều Hành KH&CN Tây Ninh - Professional Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
         
         :root {
-            --bg-main: #f3f4f6; /* Nền trắng xám cho toàn bộ trang */
-            --accent-tw: #9333ea;
-            --accent-tu: #dc2626;
-            --accent-ub: #059669;
-            --accent-so: #0284c7;
+            --primary: #2563EB;
+            --primary-hover: #1D4ED8;
+            --bg-page: #F1F5F9;
+            --bg-sidebar: #0F172A;
+            --sidebar-text: #CBD5F5;
+            --sidebar-hover: #1E293B;
+            --text-main: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --status-warning: #F59E0B;
+            --status-success: #10B981;
+            --status-danger: #EF4444;
+            --status-purple: #8B5CF6;
         }
 
         body {
-            background-color: var(--bg-main);
-            color: #1f2937;
+            background-color: var(--bg-page);
+            color: var(--text-main);
             font-family: 'Lexend', sans-serif;
             overflow: hidden;
         }
 
+        /* Sidebar Styling */
         .sidebar {
             width: 250px;
-            background: #ffffff;
-            border-right: 1px solid #e5e7eb;
+            background: var(--bg-sidebar);
+            color: var(--sidebar-text);
+            border-right: none;
         }
 
         .menu-item {
@@ -34,190 +44,216 @@
             margin: 4px 12px;
             border-radius: 8px;
             font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-weight: 500;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            color: #4b5563;
+            color: var(--sidebar-text);
+            opacity: 0.8;
         }
 
         .menu-item:hover {
-            background: #f9fafb;
-            color: #111827;
+            background: var(--sidebar-hover);
+            opacity: 1;
+            transform: translateX(2px);
         }
 
-        .active-tw { background: var(--accent-tw); color: white !important; }
-        .active-tu { background: var(--accent-tu); color: white !important; }
-        .active-ub { background: var(--accent-ub); color: white !important; }
-        .active-so { background: var(--accent-so); color: white !important; }
+        .active-item { background: var(--primary) !important; color: white !important; opacity: 1 !important; }
 
+        /* Card Styling */
         .compact-card {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            padding: 10px 14px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            padding: 14px;
             border-radius: 14px;
-            color: #1f2937;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: 0.2s ease;
         }
 
-        .ring-sm { width: 50px; height: 50px; }
-
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-
-        select, input {
-            background: #ffffff !important;
-            border: 1px solid #d1d5db !important;
-            color: #1f2937 !important;
+        .compact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
         }
+
+        /* Metric Cards Gradients */
+        .card-total { background: linear-gradient(135deg, #3B82F6, #2563EB); color: white; }
+        .card-pending { border-left: 4px solid var(--status-warning); }
+        .card-done { border-left: 4px solid var(--status-success); }
+        .card-rate { border-left: 4px solid var(--status-purple); }
+
+        /* Progress Ring */
+        .ring-sm { width: 52px; height: 52px; }
+        #ringProgress {
+            stroke: var(--primary);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Table Styling */
+        .task-table-container {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        thead.sticky th {
+            color: var(--text-main);
+            font-weight: 700;
+            background-color: #F1F5F9;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .task-row { transition: background 0.2s; border-bottom: 1px solid #F8FAFC; }
+        .task-row:hover { background-color: #EFF6FF; }
+
+        /* Badges */
+        .badge-step {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        .badge-in-progress { background: #DBEAFE; color: #1D4ED8; }
+        .badge-done { background: #D1FAE5; color: #065F46; }
 
         .tag {
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 9px;
-            font-weight: 800;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        /* Tối ưu select cho bước tiến độ */
-        .step-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            background-size: 12px;
-        }
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
 
-        /* Định dạng bảng trắng xám */
-        .task-table-container {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
+        /* Inputs */
+        select, input {
+            border: 1px solid var(--border) !important;
+            transition: all 0.2s;
         }
-
-        thead.sticky th {
-            color: #1e293b; /* Xanh đen cho tiêu đề */
-            font-weight: 800; /* In đậm */
-            background-color: #f9fafb;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .task-row:nth-child(even) {
-            background-color: #f8fafc;
-        }
-
-        .task-content {
-            font-weight: 400; /* Không in đậm */
-            color: #334155;
+        select:focus, input:focus {
+            border-color: var(--primary) !important;
+            ring: 2px rgba(37, 99, 235, 0.1);
         }
     </style>
 </head>
 <body class="flex h-screen">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar flex flex-col shrink-0 shadow-sm">
-        <div class="p-6">
-            <h1 class="text-xl font-black italic tracking-tighter text-zinc-900">IOC <span class="text-blue-600">2026</span></h1>
-            <p class="text-[9px] font-bold text-zinc-400 uppercase tracking-widest mt-1">Sở KH&CN Tây Ninh</p>
+    <aside class="sidebar flex flex-col shrink-0 shadow-2xl">
+        <div class="p-8">
+            <h1 class="text-2xl font-black italic tracking-tighter text-white">IOC <span class="text-blue-500">2026</span></h1>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">Sở KH&CN Tây Ninh</p>
         </div>
 
         <nav class="flex-1 space-y-1">
-            <div class="px-6 py-2 text-[10px] font-black text-zinc-400 uppercase">Phân loại nguồn</div>
-            <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-24px)] active-so">
-                <span class="w-2 h-2 rounded-full bg-white"></span> Tất cả
+            <div class="px-8 py-4 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Phân loại nguồn</div>
+            <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-24px)] active-item">
+                <div class="w-1.5 h-1.5 rounded-full bg-white"></div> Tất cả nhiệm vụ
             </button>
             <button onclick="switchMode('TU', this)" class="menu-item w-[calc(100%-24px)]">
-                <span class="w-2 h-2 rounded-full bg-red-600"></span> Tỉnh ủy (12)
+                <div class="w-1.5 h-1.5 rounded-full bg-rose-500"></div> Tỉnh ủy giao
             </button>
             <button onclick="switchMode('UB', this)" class="menu-item w-[calc(100%-24px)]">
-                <span class="w-2 h-2 rounded-full bg-emerald-600"></span> UBND Tỉnh (14)
+                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> UBND Tỉnh giao
             </button>
             <button onclick="switchMode('NQ24', this)" class="menu-item w-[calc(100%-24px)]">
-                <span class="w-2 h-2 rounded-full bg-purple-500"></span> Nghị quyết 24 (18)
+                <div class="w-1.5 h-1.5 rounded-full bg-purple-500"></div> Nghị quyết 24
             </button>
             <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-24px)]">
-                <span class="w-2 h-2 rounded-full bg-sky-600"></span> Chuyên môn Sở (40)
+                <div class="w-1.5 h-1.5 rounded-full bg-sky-500"></div> Chuyên môn Sở
             </button>
         </nav>
 
-        <div class="p-4 text-center border-t border-zinc-100">
-            <div id="miniClock" class="text-lg font-black font-mono text-zinc-800">00:00:00</div>
+        <div class="p-6 border-t border-slate-800">
+            <div id="miniClock" class="text-xl font-medium font-mono text-white/90 tracking-widest text-center">00:00:00</div>
         </div>
     </aside>
 
     <!-- MAIN -->
     <main class="flex-1 flex flex-col overflow-hidden">
         <!-- TOP DASHBOARD -->
-        <div class="p-3 grid grid-cols-12 gap-3 border-b border-zinc-200 bg-white shadow-sm">
-            <div class="col-span-9 grid grid-cols-4 gap-3">
-                <div class="compact-card flex flex-col justify-center border-l-4 border-l-sky-500 shadow-sm">
-                    <span class="text-[8px] font-black text-zinc-400 uppercase">Tổng nhiệm vụ</span>
-                    <span id="stat-total" class="text-xl font-black italic text-sky-600">0</span>
+        <div class="p-4 grid grid-cols-12 gap-4 border-b border-slate-200 bg-white shadow-sm z-20">
+            <div class="col-span-9 grid grid-cols-4 gap-4">
+                <div class="compact-card card-total flex flex-col justify-center">
+                    <span class="text-[9px] font-bold text-blue-100 uppercase tracking-wider">Tổng số nhiệm vụ</span>
+                    <span id="stat-total" class="text-2xl font-black italic">0</span>
                 </div>
-                <div class="compact-card flex flex-col justify-center border-l-4 border-l-rose-600 shadow-sm">
-                    <span class="text-[8px] font-black text-zinc-400 uppercase">Chưa hoàn thành</span>
-                    <span id="stat-pending" class="text-xl font-black italic text-rose-600">0</span>
+                <div class="compact-card card-pending flex flex-col justify-center">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Chưa hoàn thành</span>
+                    <span id="stat-pending" class="text-2xl font-black italic text-amber-500">0</span>
                 </div>
-                <div class="compact-card flex flex-col justify-center border-l-4 border-l-emerald-500 shadow-sm">
-                    <span class="text-[8px] font-black text-zinc-400 uppercase">Đã hoàn thành</span>
-                    <span id="stat-done" class="text-xl font-black italic text-emerald-600">0</span>
+                <div class="compact-card card-done flex flex-col justify-center">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Đã hoàn thành</span>
+                    <span id="stat-done" class="text-2xl font-black italic text-emerald-500">0</span>
                 </div>
-                <div class="compact-card flex flex-col justify-center border-l-4 border-l-amber-500 shadow-sm">
-                    <span class="text-[8px] font-black text-zinc-400 uppercase">Tỷ lệ chung (%)</span>
-                    <span id="stat-percent" class="text-xl font-black italic text-amber-600">0%</span>
+                <div class="compact-card card-rate flex flex-col justify-center">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tỷ lệ chung (%)</span>
+                    <span id="stat-percent" class="text-2xl font-black italic text-violet-600">0%</span>
                 </div>
             </div>
 
-            <div class="col-span-3 compact-card flex items-center gap-3 shadow-sm">
+            <div class="col-span-3 compact-card flex items-center gap-4 bg-slate-50">
                 <div class="relative ring-sm">
                     <svg class="w-full h-full -rotate-90">
-                        <circle cx="25" cy="25" r="22" fill="none" stroke="#f3f4f6" stroke-width="4"/>
-                        <circle id="ringProgress" cx="25" cy="25" r="22" fill="none" stroke="#3b82f6" stroke-width="4" 
-                                stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round" class="transition-all duration-700"/>
+                        <circle cx="26" cy="26" r="23" fill="none" stroke="#E2E8F0" stroke-width="5"/>
+                        <circle id="ringProgress" cx="26" cy="26" r="23" fill="none" stroke="url(#paint0_linear)" stroke-width="5" 
+                                stroke-dasharray="144.5" stroke-dashoffset="144.5" stroke-linecap="round"/>
+                        <defs>
+                            <linearGradient id="paint0_linear" x1="0" y1="0" x2="1" y2="1">
+                                <stop stop-color="#2563EB"/>
+                                <stop offset="1" stop-color="#10B981"/>
+                            </linearGradient>
+                        </defs>
                     </svg>
-                    <div class="absolute inset-0 flex items-center justify-center text-[9px] font-black" id="ringText">0%</div>
+                    <div class="absolute inset-0 flex items-center justify-center text-[10px] font-black text-slate-800" id="ringText">0%</div>
                 </div>
                 <div class="flex-1">
-                    <div class="text-[8px] font-bold text-zinc-400 uppercase">Tiến độ theo nhóm</div>
-                    <div id="currentCategoryLabel" class="text-[11px] font-black text-blue-600">Tất cả</div>
+                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Hiệu suất nhóm</div>
+                    <div id="currentCategoryLabel" class="text-[12px] font-bold text-blue-600 truncate">Tất cả</div>
                 </div>
             </div>
         </div>
 
         <!-- CONTENT -->
-        <div class="flex-1 overflow-hidden flex flex-col p-4 gap-3">
-            <div class="flex gap-3 shrink-0">
+        <div class="flex-1 overflow-hidden flex flex-col p-6 gap-4">
+            <div class="flex gap-4 shrink-0 items-center">
                 <div class="relative flex-1">
-                    <input type="text" id="search" placeholder="Tìm kiếm nhiệm vụ..." 
-                           class="w-full h-9 px-10 rounded-lg text-xs font-medium outline-none focus:ring-1 focus:ring-blue-500 shadow-sm">
-                    <svg class="absolute left-3 top-2.5 text-zinc-400" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3"/></svg>
+                    <input type="text" id="search" placeholder="Tra cứu nội dung nhiệm vụ..." 
+                           class="w-full h-11 px-11 rounded-xl text-sm font-medium outline-none shadow-sm text-slate-700">
+                    <svg class="absolute left-4 top-3.5 text-slate-400" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
-                <select id="unit" class="h-9 px-3 rounded-lg text-[10px] font-black uppercase outline-none shadow-sm">
-                    <option value="all">Tất cả đơn vị</option>
+                <select id="unit" class="h-11 px-4 rounded-xl text-[11px] font-bold uppercase outline-none shadow-sm bg-white text-slate-600 min-w-[180px] cursor-pointer">
+                    <option value="all">Mọi phòng chuyên môn</option>
                 </select>
             </div>
 
-            <div class="flex-1 overflow-y-auto custom-scroll rounded-xl task-table-container shadow-md">
+            <div class="flex-1 overflow-y-auto custom-scroll rounded-2xl task-table-container">
                 <table class="w-full border-collapse">
-                    <thead class="sticky top-0 z-10">
-                        <tr class="text-[10px] uppercase text-left">
-                            <th class="p-3 w-10 text-center">STT</th>
-                            <th class="p-3">Nội dung nhiệm vụ / Nguồn giao</th>
-                            <th class="p-3 w-28">Đơn vị</th>
-                            <th class="p-3 w-28 text-center">Thời hạn</th>
-                            <th class="p-3 w-56">Cập nhật tiến độ</th>
-                            <th class="p-3 w-24 text-center">Trạng thái</th>
+                    <thead class="sticky top-0 z-10 shadow-sm">
+                        <tr class="text-left">
+                            <th class="p-4 w-12 text-center text-slate-400">#</th>
+                            <th class="p-4">Nội dung nhiệm vụ / Nguồn giao</th>
+                            <th class="p-4 w-32">Phòng ban</th>
+                            <th class="p-4 w-32 text-center">Hạn định</th>
+                            <th class="p-4 w-60">Quy trình điều hành</th>
+                            <th class="p-4 w-28 text-center">Hiện trạng</th>
                         </tr>
                     </thead>
-                    <tbody id="taskTable" class="divide-y divide-zinc-100 text-[13px]"></tbody>
+                    <tbody id="taskTable" class="text-[13px] text-slate-700"></tbody>
                 </table>
             </div>
         </div>
     </main>
 
     <script>
-        // DANH SÁCH 9 BƯỚC ĐIỀU HÀNH (Đã bỏ đánh số thứ tự)
         const steps = [
             "CV đang thực hiện",
             "Trưởng phòng",
@@ -231,77 +267,35 @@
         ];
 
         const tasks = [
-            // --- 12 NHIỆM VỤ TỈNH ỦY (TU) ---
             {id: "TU-01", cat: "TU", g: "QLKH", t: "Tham mưu Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d: "31/01/2026"},
             {id: "TU-02", cat: "TU", g: "CN&ĐMST", t: "Xây dựng Nghị quyết của Ban Chấp hành Đảng bộ tỉnh về đột phá phát triển KHCN, ĐMST và CĐS; chuyển đổi xanh, kinh tế tuần hoàn", d: "31/01/2026"},
             {id: "TU-03", cat: "TU", g: "TC-KH", t: "Kế hoạch xây dựng, phát triển đội ngũ cán bộ đáp ứng yêu cầu thực hiện Nghị quyết 57-NQ/TW", d: "30/11/2026"},
             {id: "TU-04", cat: "TU", g: "CN&ĐMST", t: "Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao, lĩnh vực trọng điểm đến 2030", d: "30/06/2026"},
             {id: "TU-05", cat: "TU", g: "QLKH", t: "Chương trình phát triển nông nghiệp ứng dụng công nghệ cao gắn với tái cơ cấu ngành nông nghiệp", d: "31/10/2026"},
-            {id: "TU-06", cat: "TU", g: "QLKH", t: "Cho ý kiến Đề án đầu tư nâng cao năng lực Trạm NCƯD KHCN Đồng Tháp Mười (2025-2030)", d: "31/07/2026"},
-            {id: "TU-07", cat: "TU", g: "QLKH", t: "Kế hoạch đào tạo, bồi dưỡng nguồn nhân lực KHCN & ĐMST chất lượng cao", d: "31/12/2026"},
-            {id: "TU-08", cat: "TU", g: "CĐS", t: "Đẩy mạnh chuyển đổi số trong hoạt động của các cơ quan nhà nước; ưu tiên đầu tư hạ tầng CNTT", d: "31/03/2026"},
-            {id: "TU-09", cat: "TU", g: "QLKH", t: "Tích hợp nội dung KHCN, ĐMST, CĐS vào công tác quy hoạch, kế hoạch và kế hoạch đầu tư công", d: "31/03/2026"},
-            {id: "TU-10", cat: "TU", g: "CN&ĐMST", t: "Thúc đẩy KHCN, ĐMST, CĐS trong khu vực kinh tế tư nhân; hỗ trợ doanh nghiệp nâng cao trình độ công nghệ", d: "31/12/2026"},
             {id: "TU-11", cat: "TU", g: "CĐS", t: "Tham mưu triển khai Kế hoạch 04-KH/BCĐTW về phát triển KHCN, ĐMST và CĐS (Ban Chỉ đạo TW)", d: "24/02/2026"},
-            {id: "TU-12", cat: "TU", g: "QLKH", t: "Đề án phát triển mạng lưới các tổ chức KH&CN công lập và ngoài công lập", d: "31/08/2026"},
-
-            // --- 18 NHIỆM VỤ NGHỊ QUYẾT 24 (NQ24) ---
             {id: "NQ24-01", cat: "NQ24", g: "QLKH", t: "Tăng cường phối hợp triển khai nhiệm vụ KHCN gắn định hướng phát triển địa phương", d: "2025–2030"},
             {id: "NQ24-02", cat: "NQ24", g: "CN&ĐMST", t: "Phát triển thị trường khoa học và công nghệ (Sàn GD công nghệ)", d: "2025–2030"},
-            {id: "NQ24-03", cat: "NQ24", g: "CN&ĐMST", t: "Hỗ trợ doanh nghiệp KHCN, doanh nghiệp ĐMST tham gia chuỗi giá trị", d: "2025–2030"},
-            {id: "NQ24-04", cat: "NQ24", g: "CN&ĐMST", t: "Phát triển tổ chức trung gian, trung tâm hỗ trợ CGCN", d: "2026–2030"},
             {id: "NQ24-05", cat: "NQ24", g: "CĐS", t: "Xây dựng hạ tầng dữ liệu, mạng lưới chuyên gia, hệ thống thông tin KHCN mở", d: "2025–2030"},
-            {id: "NQ24-06", cat: "NQ24", g: "CĐS", t: "Số hóa và tạo lập CSDL tài sản trí tuệ tỉnh", d: "2026–2028"},
-            {id: "NQ24-07", cat: "NQ24", g: "TCĐLCL", t: "Xây dựng hạ tầng số về Tiêu chuẩn Đo lường Chất lượng (Năng suất chất lượng)", d: "2026–2028"},
-            {id: "NQ24-08", cat: "NQ24", g: "CN&ĐMST", t: "Xây dựng CSDL truy xuất nguồn gốc sản phẩm hàng hóa địa phương", d: "2026–2028"},
-            {id: "NQ24-09", cat: "NQ24", g: "CĐS", t: "Xây dựng hệ thống CSDL đổi mới sáng tạo liên thông", d: "2026–2028"},
-            {id: "NQ24-10", cat: "NQ24", g: "CĐS", t: "Xây dựng, hoàn thiện chính quyền số ngành KH&CN", d: "2025–2030"},
-            {id: "NQ24-11", cat: "NQ24", g: "CĐS", t: "Phát triển nền tảng số, dữ liệu số dùng chung", d: "2025–2030"},
-            {id: "NQ24-12", cat: "NQ24", g: "CĐS", t: "Triển khai nền tảng số tích hợp, chia sẻ dữ liệu (LGSP)", d: "2025–2027"},
-            {id: "NQ24-13", cat: "NQ24", g: "CĐS", t: "Ứng dụng AI, Big Data, Cloud trong Quản lý nhà nước", d: "2026–2030"},
-            {id: "NQ24-14", cat: "NQ24", g: "CĐS", t: "Phát triển dữ liệu mở, kho dữ liệu dùng chung", d: "2025–2027"},
-            {id: "NQ24-15", cat: "NQ24", g: "CĐS", t: "Thúc đẩy phát triển kinh tế số, TMĐT (Phối hợp Công Thương)", d: "2025–2030"},
-            {id: "NQ24-16", cat: "NQ24", g: "CĐS", t: "Đảm bảo an toàn thông tin, an ninh mạng trong CĐS", d: "2025–2030"},
-            {id: "NQ24-17", cat: "NQ24", g: "CĐS", t: "Đào tạo, bồi dưỡng nhân lực số, kỹ năng số", d: "2025–2030"},
-            {id: "NQ24-18", cat: "NQ24", g: "Văn phòng", t: "Nâng cao nhận thức về chuyển đổi số và đổi mới sáng tạo", d: "2025–2030"},
-
-            // --- 14 NHIỆM VỤ UBND TỈNH (UB) ---
             {id: "UB-01", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", d: "30/03/2026"},
-            {id: "UB-02", cat: "UB", g: "CN&ĐMST", t: "Kế hoạch phát triển tài sản trí tuệ năm 2026", d: "30/03/2026"},
-            {id: "UB-03", cat: "UB", g: "CN&ĐMST", t: "Xây dựng mô hình đổi mới sáng tạo gắn với doanh nghiệp, có khả năng nhân rộng", d: "30/03/2026"},
             {id: "UB-04", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Quỹ phát triển KH,CN và ĐMST tỉnh", d: "30/06/2026"},
-            {id: "UB-05", cat: "UB", g: "CN&ĐMST", t: "Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu", d: "31/12/2026"},
-            {id: "UB-06", cat: "UB", g: "QLKH", t: "Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm, trung tâm R&D", d: "31/12/2026"},
-            {id: "UB-07", cat: "UB", g: "Văn phòng", t: "Tổ chức hội thảo, hội nghị chuyên đề về KHCN, ĐMST cấp tỉnh", d: "31/12/2026"},
-            {id: "UB-08", cat: "UB", g: "CĐS", t: "Triển khai nâng cao chất lượng kết nối hạ tầng số vùng sâu, vùng xa", d: "31/12/2026"},
-            {id: "UB-09", cat: "UB", g: "CĐS", t: "Rà soát, cập nhật Kế hoạch phát triển hạ tầng số, 5G, IoT trong KCN, CCN", d: "31/12/2026"},
-            {id: "UB-10", cat: "UB", g: "CĐS", t: "Khai thác, sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia", d: "31/12/2026"},
             {id: "UB-11", cat: "UB", g: "CĐS", t: "Nâng cấp hạ tầng trung tâm dữ liệu tỉnh và an toàn thông tin", d: "31/12/2026"},
-            {id: "UB-12", cat: "UB", g: "CĐS", t: "Phát triển nền tảng số hỗ trợ nông nghiệp và nông thôn", d: "31/12/2026"},
-            {id: "UB-13", cat: "UB", g: "QLKH", t: "Hỗ trợ các dự án nghiên cứu chuyển đổi xanh và kinh tế tuần hoàn", d: "31/12/2026"},
-            {id: "UB-14", cat: "UB", g: "Văn phòng", t: "Cải cách hành chính trong quản lý các nhiệm vụ KH&CN", d: "31/12/2026"},
-
-            // --- 40 NHIỆM VỤ SỞ (SO) ---
             {id: "SO-01", cat: "SO", g: "TCĐLCL", t: "Tham mưu Chương trình hành động thực hiện Chỉ thị 38-CT/TW của Ban Bí thư", d: "31/01/2026"},
-            {id: "SO-02", cat: "SO", g: "TC-KH", t: "Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026-2030) gửi Bộ Tài chính", d: "05/02/2026"},
-            {id: "SO-03", cat: "SO", g: "CĐS", t: "Tạo lập số quản lý văn bản đi, đến trên hệ thống VBDH", d: "13/02/2026"},
-            {id: "SO-04", cat: "SO", g: "Văn phòng", t: "Kế hoạch kiểm soát TTHC, thực hiện cơ chế một cửa năm 2026", d: "26/02/2026"}
+            {id: "SO-02", cat: "SO", g: "TC-KH", t: "Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026-2030) gửi Bộ Tài chính", d: "05/02/2026"}
         ];
 
-        // Điền nốt cho đủ 40 nhiệm vụ Sở
-        for(let i=5; i<=40; i++) {
-            tasks.push({ id: `SO-${i < 10 ? '0'+i : i}`, cat: "SO", g: "Văn phòng", t: `Nhiệm vụ chuyên môn Sở số ${i}: Rà soát nội dung báo cáo định kỳ`, d: "31/12/2026" });
+        // Fill remaining tasks for diversity
+        for(let i=3; i<=40; i++) {
+            tasks.push({ id: `SO-${i < 10 ? '0'+i : i}`, cat: "SO", g: "Văn phòng", t: `Nhiệm vụ chuyên môn Sở số ${i}: Rà soát nội dung báo cáo định kỳ năm 2026`, d: "31/12/2026" });
         }
 
         let currentCat = 'ALL';
 
         function switchMode(cat, el) {
             currentCat = cat;
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active-tu', 'active-ub', 'active-so', 'active-tw'));
-            const colorClass = cat === 'TU' ? 'active-tu' : (cat === 'UB' ? 'active-ub' : (cat === 'SO' ? 'active-so' : 'active-tw'));
-            el.classList.add(colorClass);
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active-item'));
+            el.classList.add('active-item');
             
-            const labels = {'ALL':'Tất cả','TU':'Tỉnh ủy','UB':'UBND Tỉnh', 'NQ24': 'Nghị quyết 24', 'SO':'Nhiệm vụ Sở'};
+            const labels = {'ALL':'Tất cả nhiệm vụ','TU':'Tỉnh ủy giao','UB':'UBND Tỉnh giao', 'NQ24': 'Nghị quyết 24', 'SO':'Nhiệm vụ chuyên môn Sở'};
             document.getElementById('currentCategoryLabel').innerText = labels[cat];
             render();
         }
@@ -317,8 +311,7 @@
                 return matchSearch && matchUnit && matchCat;
             });
 
-            // "Đã hoàn thành" được định nghĩa là bước cuối cùng (index 8)
-            const doneCount = filtered.filter(t => localStorage.getItem('v14_step_'+t.id) === "Đã hoàn thành").length;
+            const doneCount = filtered.filter(t => localStorage.getItem('v15_step_'+t.id) === "Đã hoàn thành").length;
             const percent = filtered.length ? Math.round((doneCount/filtered.length)*100) : 0;
 
             document.getElementById('stat-total').innerText = filtered.length;
@@ -326,55 +319,59 @@
             document.getElementById('stat-done').innerText = doneCount;
             document.getElementById('stat-percent').innerText = percent + "%";
 
-            document.getElementById('ringProgress').style.strokeDashoffset = 138 - (percent/100*138);
+            // Progress Ring Update
+            const offset = 144.5 - (percent/100 * 144.5);
+            document.getElementById('ringProgress').style.strokeDashoffset = offset;
             document.getElementById('ringText').innerText = percent + "%";
 
             let html = "";
             filtered.forEach((t, i) => {
-                const currentStep = localStorage.getItem('v14_step_'+t.id) || steps[0];
+                const currentStep = localStorage.getItem('v15_step_'+t.id) || steps[0];
                 const isDone = currentStep === "Đã hoàn thành";
                 
-                let badgeClass = "bg-zinc-100 text-zinc-600";
+                let badgeClass = "bg-slate-100 text-slate-500 border border-slate-200";
                 let badgeText = "Sở KH&CN";
-                if(t.cat === 'TU') { badgeClass = "bg-red-50 text-red-600 border border-red-200"; badgeText = "Tỉnh ủy giao"; }
-                if(t.cat === 'UB') { badgeClass = "bg-emerald-50 text-emerald-600 border border-emerald-200"; badgeText = "UBND Tỉnh"; }
-                if(t.cat === 'NQ24') { badgeClass = "bg-purple-50 text-purple-600 border border-purple-200"; badgeText = "NQ 24 HĐND"; }
+                if(t.cat === 'TU') { badgeClass = "bg-rose-50 text-rose-600 border border-rose-100"; badgeText = "Tỉnh ủy"; }
+                if(t.cat === 'UB') { badgeClass = "bg-emerald-50 text-emerald-600 border border-emerald-100"; badgeText = "UBND Tỉnh"; }
+                if(t.cat === 'NQ24') { badgeClass = "bg-purple-50 text-purple-600 border border-purple-100"; badgeText = "NQ 24"; }
 
                 html += `
-                    <tr class="task-row hover:bg-blue-50/50 transition-colors">
-                        <td class="p-3 text-center text-zinc-400 font-mono text-[10px]">${i+1}</td>
-                        <td class="p-3">
-                            <div class="task-content leading-tight">${t.t}</div>
-                            <div class="flex gap-2 mt-1.5">
+                    <tr class="task-row">
+                        <td class="p-4 text-center text-slate-400 font-mono text-[11px]">${i+1}</td>
+                        <td class="p-4">
+                            <div class="font-normal text-slate-900 leading-snug max-w-xl">${t.t}</div>
+                            <div class="flex gap-2 mt-2">
                                 <span class="tag ${badgeClass}">${badgeText}</span>
-                                <span class="tag bg-zinc-100 text-zinc-500">${t.id}</span>
+                                <span class="tag bg-slate-100 text-slate-400 font-mono">${t.id}</span>
                             </div>
                         </td>
-                        <td class="p-3 text-[10px] font-black text-zinc-400 uppercase">${t.g}</td>
-                        <td class="p-3 text-center font-mono text-[11px] text-zinc-500">${t.d}</td>
-                        <td class="p-3">
+                        <td class="p-4 text-[11px] font-bold text-slate-500 uppercase tracking-tight">${t.g}</td>
+                        <td class="p-4 text-center font-mono text-[12px] text-slate-500">${t.d}</td>
+                        <td class="p-4">
                             <select onchange="save('${t.id}', this.value)" 
-                                    class="step-select w-full bg-white border border-zinc-200 rounded px-2 py-1.5 text-[11px] outline-none cursor-pointer ${isDone ? 'text-emerald-600 font-bold' : 'text-zinc-600'}">
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-[11px] outline-none cursor-pointer hover:border-blue-400 focus:bg-white transition-all ${isDone ? 'text-emerald-600 font-bold' : 'text-slate-600 font-medium'}">
                                 ${steps.map(s => `<option value="${s}" ${currentStep === s ? 'selected' : ''}>${s}</option>`).join('')}
                             </select>
                         </td>
-                        <td class="p-3 text-center">
-                            <span class="px-3 py-1 rounded-full text-[9px] font-black ${isDone ? 'bg-emerald-600 text-white shadow-sm' : 'bg-zinc-100 text-zinc-400'}">
-                                ${isDone ? 'HOÀN THÀNH' : 'ĐANG LÀM'}
+                        <td class="p-4 text-center">
+                            <span class="badge-step inline-block ${isDone ? 'badge-done' : 'badge-in-progress'}">
+                                ${isDone ? 'HOÀN TẤT' : 'TIẾN HÀNH'}
                             </span>
                         </td>
                     </tr>
                 `;
             });
-            document.getElementById('taskTable').innerHTML = html || '<tr><td colspan="6" class="p-10 text-center italic text-zinc-400">Không tìm thấy dữ liệu phù hợp</td></tr>';
+            document.getElementById('taskTable').innerHTML = html || '<tr><td colspan="6" class="p-20 text-center italic text-slate-400">Không tìm thấy nhiệm vụ nào trong danh sách hiện tại.</td></tr>';
         }
 
         function save(id, val) {
-            localStorage.setItem('v14_step_'+id, val);
+            localStorage.setItem('v15_step_'+id, val);
             render();
         }
 
-        setInterval(() => document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false}), 1000);
+        setInterval(() => {
+            document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false});
+        }, 1000);
         
         const units = [...new Set(tasks.map(t => t.g))].sort();
         units.forEach(u => {
