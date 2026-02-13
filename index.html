@@ -82,16 +82,49 @@ DANH SÁCH NHIỆM VỤ
 
 /* ================= DATA ================= */
 
-const tasks=[
-{g:"Trung ương",t:"Triển khai NQ Trung ương về KH,CN",d:"2026-03-01"},
-{g:"Trung ương",t:"Xây dựng hệ sinh thái đổi mới sáng tạo",d:"2027-06-01"},
-{g:"Tỉnh ủy",t:"Kế hoạch chiến lược KH,CN",d:"2026-01-01"},
-{g:"Tỉnh ủy",t:"Nghị quyết đột phá công nghệ",d:"2026-05-01"},
-{g:"UBND",t:"Thành lập Trung tâm ĐMST",d:"2026-03-30"},
-{g:"UBND",t:"Quỹ phát triển KH,CN",d:"2026-06-30"},
-{g:"Sở",t:"Triển khai chuyển đổi số doanh nghiệp",d:"2026-12-30"},
-{g:"Sở",t:"Xây dựng cơ sở dữ liệu ngành",d:"2026-10-01"}
+const tasks = [
+{g:"CN&ĐMST",t:"Tham mưu Kế hoạch thực hiện Chiến lược phát triển khoa học, công nghệ và đổi mới sáng tạo đến năm 2030 theo Quyết định 569/QĐ-TTg",d:"2026-01-31",p:"Xong"},
+{g:"TCĐLCL",t:"Tham mưu xây dựng Chương trình hành động thực hiện Chỉ thị 38-CT/TW",d:"2026-01-31",p:"Đang"},
+{g:"CN&ĐMST",t:"Tham mưu xây dựng Nghị quyết Đảng bộ tỉnh về đột phá khoa học công nghệ, đổi mới sáng tạo, chuyển đổi số",d:"2026-01-31",p:"Chưa"},
+{g:"CN&ĐMST",t:"Tham mưu xây dựng Đề án thành lập Quỹ phát triển KH,CN và ĐMST tỉnh",d:"2026-01-31",p:"Chưa"},
+{g:"TC-KH",t:"Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS 2026-2030 gửi Bộ Tài chính",d:"2026-02-05",p:"Chưa"},
+{g:"CN&ĐMST",t:"Xây dựng Đề án Trung tâm đổi mới sáng tạo tỉnh",d:"2026-02-20",p:"Chưa"},
+{g:"TCĐLCL",t:"Triển khai chương trình nâng cao năng suất chất lượng",d:"2026-03-01",p:"Chưa"},
+{g:"Thanh tra",t:"Kế hoạch thanh tra chuyên ngành KH,CN",d:"2026-03-10",p:"Chưa"},
+{g:"Văn phòng",t:"Chuyển đổi số nội bộ cơ quan",d:"2026-03-20",p:"Chưa"},
+{g:"CN&ĐMST",t:"Chương trình hỗ trợ doanh nghiệp đổi mới công nghệ",d:"2026-03-30",p:"Chưa"},
+{g:"TC-KH",t:"Kế hoạch phân bổ ngân sách KH,CN",d:"2026-04-10",p:"Chưa"},
+{g:"TCĐLCL",t:"Chương trình truy xuất nguồn gốc sản phẩm",d:"2026-04-20",p:"Chưa"},
+{g:"CN&ĐMST",t:"Đề án phát triển hệ sinh thái khởi nghiệp",d:"2026-05-01",p:"Chưa"},
+{g:"Thanh tra",t:"Kế hoạch kiểm tra tiêu chuẩn đo lường",d:"2026-05-15",p:"Chưa"},
+{g:"Văn phòng",t:"Triển khai phần mềm điều hành",d:"2026-05-30",p:"Chưa"},
+{g:"CN&ĐMST",t:"Chương trình AI ứng dụng doanh nghiệp",d:"2026-06-01",p:"Chưa"},
+{g:"TC-KH",t:"Báo cáo quyết toán kinh phí KH,CN",d:"2026-06-15",p:"Chưa"},
+{g:"TCĐLCL",t:"Đề án nâng cao chất lượng sản phẩm OCOP",d:"2026-06-30",p:"Chưa"},
+{g:"CN&ĐMST",t:"Kế hoạch hợp tác viện trường",d:"2026-07-10",p:"Chưa"},
+{g:"Thanh tra",t:"Thanh tra doanh nghiệp công nghệ",d:"2026-07-20",p:"Chưa"},
+{g:"Văn phòng",t:"Chuẩn hóa dữ liệu ngành",d:"2026-08-01",p:"Chưa"},
+{g:"CN&ĐMST",t:"Chương trình hỗ trợ start-up",d:"2026-08-15",p:"Chưa"},
+{g:"TC-KH",t:"Đề án xã hội hóa đầu tư công nghệ",d:"2026-08-30",p:"Chưa"},
+{g:"TCĐLCL",t:"Chương trình tiêu chuẩn quốc tế",d:"2026-09-01",p:"Chưa"},
+{g:"CN&ĐMST",t:"Kế hoạch phát triển công nghệ cao",d:"2026-09-15",p:"Chưa"},
+{g:"Thanh tra",t:"Kiểm tra an toàn bức xạ",d:"2026-09-30",p:"Chưa"},
+{g:"Văn phòng",t:"Triển khai văn phòng điện tử",d:"2026-10-01",p:"Chưa"},
+{g:"CN&ĐMST",t:"Đề án dữ liệu mở ngành",d:"2026-10-15",p:"Chưa"},
+{g:"TC-KH",t:"Kế hoạch vốn năm sau",d:"2026-10-30",p:"Chưa"},
+{g:"TCĐLCL",t:"Chương trình kiểm định thiết bị",d:"2026-11-01",p:"Chưa"},
+{g:"CN&ĐMST",t:"Chương trình hỗ trợ chuyển đổi số doanh nghiệp",d:"2026-11-15",p:"Chưa"},
+{g:"Thanh tra",t:"Thanh tra định kỳ năm",d:"2026-11-30",p:"Chưa"},
+{g:"Văn phòng",t:"Tổng hợp báo cáo năm",d:"2026-12-01",p:"Chưa"},
+{g:"CN&ĐMST",t:"Đề án phát triển công nghiệp công nghệ",d:"2026-12-10",p:"Chưa"},
+{g:"TC-KH",t:"Tổng kết tài chính năm",d:"2026-12-15",p:"Chưa"},
+{g:"TCĐLCL",t:"Báo cáo chất lượng sản phẩm",d:"2026-12-20",p:"Chưa"},
+{g:"CN&ĐMST",t:"Báo cáo tổng kết chương trình đổi mới sáng tạo",d:"2026-12-25",p:"Chưa"},
+{g:"Thanh tra",t:"Tổng kết thanh tra năm",d:"2026-12-28",p:"Chưa"},
+{g:"Văn phòng",t:"Tổng hợp chỉ tiêu KPI ngành",d:"2026-12-30",p:"Chưa"},
+{g:"CN&ĐMST",t:"Đánh giá kết quả chiến lược KH,CN",d:"2026-12-31",p:"Chưa"}
 ];
+
 
 /* ================= STORAGE ================= */
 
