@@ -2,324 +2,335 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>IOC Điều Hành Nhiệm Vụ - KH&CN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOC Điều Hành KH&CN Tây Ninh - Full Data 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
         
         :root {
-            --bg-deep: #071028;
-            --card-bg: #0f1c3f;
-            --border-blue: #1e3a8a;
-            --accent-yellow: #facc15;
+            --bg-main: #050505;
+            --accent-tw: #9333ea;
+            --accent-tu: #dc2626;
+            --accent-ub: #059669;
+            --accent-so: #0284c7;
         }
 
         body {
-            background: var(--bg-deep);
-            color: white;
-            font-family: 'Inter', system-ui, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            background-color: var(--bg-main);
+            color: #ffffff;
+            font-family: 'Lexend', sans-serif;
+            overflow: hidden;
         }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-blue);
+        .sidebar {
+            width: 250px;
+            background: #000;
+            border-right: 1px solid #1a1a1a;
         }
 
-        /* Mobile Responsive Table to Card */
-        @media (max-width: 768px) {
-            .responsive-table thead {
-                display: none;
-            }
-            .responsive-table border-b {
-                border-bottom: 2px solid #1e3a8a;
-            }
-            .task-row {
-                display: block;
-                margin-bottom: 1rem;
-                padding: 1rem !important;
-                background: #162a5a;
-                border-radius: 12px;
-                border: 1px solid #1e40af;
-            }
-            .task-cell {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0.5rem 0;
-                border-bottom: 1px border-blue-900/30;
-                width: 100% !important;
-                text-align: left !important;
-            }
-            .task-cell::before {
-                content: attr(data-label);
-                font-weight: 700;
-                font-size: 0.75rem;
-                text-transform: uppercase;
-                color: #94a3b8;
-                margin-right: 1rem;
-            }
-            .task-cell.content-block {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .task-cell.content-block::before {
-                margin-bottom: 0.25rem;
-            }
+        .menu-item {
+            padding: 10px 16px;
+            margin: 4px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
         }
 
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #0f1c3f; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
+        .active-tw { background: var(--accent-tw); color: white; box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4); }
+        .active-tu { background: var(--accent-tu); color: white; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4); }
+        .active-ub { background: var(--accent-ub); color: white; box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4); }
+        .active-so { background: var(--accent-so); color: white; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); }
+
+        .compact-card {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            padding: 10px 14px;
+            border-radius: 14px;
+        }
+
+        .ring-sm { width: 50px; height: 50px; }
+
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
 
         select, input {
-            background: #162a5a;
-            color: white;
-            border: 1px solid #1e3a8a;
-            appearance: none;
+            background: #111 !important;
+            border: 1px solid #222 !important;
+            color: white !important;
         }
 
-        .step-cv { color: #94a3b8; }
-        .step-tp { color: #60a5fa; }
-        .step-ld { color: #facc15; }
-        .step-ngoai { color: #f472b6; }
-        .step-final { color: #4ade80; }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tag {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
-        .animate-slide { animation: slideUp 0.4s ease-out forwards; }
     </style>
 </head>
+<body class="flex h-screen">
 
-<body class="p-3 md:p-8">
-
-    <!-- HEADER -->
-    <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-            <h1 class="text-xl md:text-3xl font-bold text-yellow-400 uppercase tracking-tight">
-                IOC Điều Hành KH&CN
-            </h1>
-            <p class="text-blue-300 text-xs mt-1 italic opacity-80">Giao diện tối ưu đa thiết bị (Mobile & Desktop)</p>
+    <!-- SIDEBAR -->
+    <aside class="sidebar flex flex-col shrink-0">
+        <div class="p-6">
+            <h1 class="text-xl font-black italic tracking-tighter">IOC <span class="text-blue-500">2026</span></h1>
+            <p class="text-[9px] font-bold text-zinc-600 uppercase tracking-widest mt-1">Sở KH&CN Tây Ninh</p>
         </div>
-        <div id="currentDate" class="text-[10px] font-mono text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full border border-blue-800"></div>
-    </header>
 
-    <!-- KPI GRID -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" id="kpis"></div>
+        <nav class="flex-1 space-y-1">
+            <div class="px-6 py-2 text-[10px] font-black text-zinc-700 uppercase">Phân loại nguồn</div>
+            <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-24px)] active-so">
+                <span class="w-2 h-2 rounded-full bg-white"></span> Tất cả
+            </button>
+            <button onclick="switchMode('TU', this)" class="menu-item w-[calc(100%-24px)] text-zinc-500 hover:text-white">
+                <span class="w-2 h-2 rounded-full bg-red-600"></span> Tỉnh ủy (12)
+            </button>
+            <button onclick="switchMode('UB', this)" class="menu-item w-[calc(100%-24px)] text-zinc-500 hover:text-white">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span> HĐND - UBND (32)
+            </button>
+            <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-24px)] text-zinc-500 hover:text-white">
+                <span class="w-2 h-2 rounded-full bg-sky-600"></span> Chuyên môn Sở (40)
+            </button>
+        </nav>
 
-    <!-- MAIN DASHBOARD -->
-    <div class="grid lg:grid-cols-3 gap-6 mb-6">
-        <!-- DONUT CHART -->
-        <div class="card rounded-2xl p-5 flex flex-col items-center">
-            <h2 class="text-sm mb-6 text-yellow-200 font-bold w-full uppercase tracking-widest">Tiến độ tổng thể</h2>
-            <div class="relative w-40 h-40 md:w-48 md:h-48">
-                <div id="donut" class="w-full h-full rounded-full transition-all duration-700 shadow-[0_0_20px_rgba(30,58,138,0.5)]"></div>
-                <div class="absolute inset-0 flex flex-col justify-center items-center bg-transparent">
-                    <div id="percent" class="text-3xl font-bold">0%</div>
-                    <div class="text-[9px] uppercase tracking-tighter text-blue-300">Hoàn thành</div>
+        <div class="p-4 text-center border-t border-zinc-900">
+            <div id="miniClock" class="text-lg font-black font-mono">00:00:00</div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- TOP DASHBOARD -->
+        <div class="p-3 grid grid-cols-12 gap-3 border-b border-zinc-900 bg-zinc-950/30">
+            <div class="col-span-9 grid grid-cols-4 gap-3">
+                <div class="compact-card flex flex-col justify-center border-l-4 border-l-sky-500">
+                    <span class="text-[8px] font-black text-zinc-500 uppercase">Tổng nhiệm vụ</span>
+                    <span id="stat-total" class="text-xl font-black italic text-sky-400">0</span>
+                </div>
+                <div class="compact-card flex flex-col justify-center border-l-4 border-l-rose-600">
+                    <span class="text-[8px] font-black text-zinc-500 uppercase">Chưa hoàn thành</span>
+                    <span id="stat-pending" class="text-xl font-black italic text-rose-500">0</span>
+                </div>
+                <div class="compact-card flex flex-col justify-center border-l-4 border-l-emerald-500">
+                    <span class="text-[8px] font-black text-zinc-500 uppercase">Đã hoàn thành</span>
+                    <span id="stat-done" class="text-xl font-black italic text-emerald-500">0</span>
+                </div>
+                <div class="compact-card flex flex-col justify-center border-l-4 border-l-amber-500">
+                    <span class="text-[8px] font-black text-zinc-500 uppercase">Tỷ lệ chung (%)</span>
+                    <span id="stat-percent" class="text-xl font-black italic text-amber-500">0%</span>
                 </div>
             </div>
-            <div class="mt-6 w-full space-y-2">
-                <div class="flex justify-between items-center text-[10px] uppercase font-bold p-2 bg-blue-900/20 rounded-lg">
-                    <span class="text-red-400">● Đang xử lý</span>
-                    <span id="count-chua" class="text-lg">0</span>
+
+            <div class="col-span-3 compact-card flex items-center gap-3">
+                <div class="relative ring-sm">
+                    <svg class="w-full h-full -rotate-90">
+                        <circle cx="25" cy="25" r="22" fill="none" stroke="#222" stroke-width="4"/>
+                        <circle id="ringProgress" cx="25" cy="25" r="22" fill="none" stroke="#3b82f6" stroke-width="4" 
+                                stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round" class="transition-all duration-700"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center text-[9px] font-black" id="ringText">0%</div>
                 </div>
-                <div class="flex justify-between items-center text-[10px] uppercase font-bold p-2 bg-green-900/20 rounded-lg">
-                    <span class="text-green-400">● Hoàn thành</span>
-                    <span id="count-xong" class="text-lg">0</span>
+                <div class="flex-1">
+                    <div class="text-[8px] font-bold text-zinc-500 uppercase">Tiến độ theo nhóm</div>
+                    <div id="currentCategoryLabel" class="text-[11px] font-black text-blue-500">Tất cả</div>
                 </div>
             </div>
         </div>
 
-        <!-- PROGRESS BY UNIT -->
-        <div class="card rounded-2xl p-5 col-span-1 lg:col-span-2">
-            <h2 class="text-sm mb-5 text-yellow-200 font-bold uppercase tracking-widest">Tiến độ theo đơn vị</h2>
-            <div id="bars" class="space-y-4 custom-scrollbar max-h-[320px] overflow-y-auto pr-2"></div>
-        </div>
-    </div>
+        <!-- CONTENT -->
+        <div class="flex-1 overflow-hidden flex flex-col p-4 gap-3">
+            <div class="flex gap-3 shrink-0">
+                <div class="relative flex-1">
+                    <input type="text" id="search" placeholder="Tìm kiếm nhiệm vụ..." 
+                           class="w-full h-9 px-10 rounded-lg text-xs font-medium outline-none focus:ring-1 focus:ring-blue-500">
+                    <svg class="absolute left-3 top-2.5 text-zinc-600" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="3"/></svg>
+                </div>
+                <select id="unit" class="h-9 px-3 rounded-lg text-[10px] font-black uppercase outline-none">
+                    <option value="all">Tất cả đơn vị</option>
+                </select>
+            </div>
 
-    <!-- SEARCH & FILTER BAR -->
-    <div class="flex flex-col md:flex-row gap-3 mb-4">
-        <div class="relative flex-1">
-            <input type="text" id="searchBox" placeholder="Tìm tên nhiệm vụ..." class="w-full pl-4 pr-4 py-3 rounded-xl text-sm focus:ring-2 ring-blue-500">
+            <div class="flex-1 overflow-y-auto custom-scroll rounded-xl border border-zinc-900 bg-black">
+                <table class="w-full border-collapse">
+                    <thead class="sticky top-0 bg-zinc-900 z-10 shadow-sm">
+                        <tr class="text-[9px] font-black text-zinc-500 uppercase text-left">
+                            <th class="p-3 w-10 text-center">STT</th>
+                            <th class="p-3">Nội dung nhiệm vụ / Nguồn giao</th>
+                            <th class="p-3 w-28">Đơn vị</th>
+                            <th class="p-3 w-28 text-center">Thời hạn</th>
+                            <th class="p-3 w-40">Cập nhật tiến độ</th>
+                            <th class="p-3 w-24 text-center">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTable" class="divide-y divide-zinc-900 text-[13px]"></tbody>
+                </table>
+            </div>
         </div>
-        <div class="flex gap-2">
-            <select id="filterGroup" class="flex-1 md:w-48 px-4 py-3 rounded-xl text-sm font-semibold">
-                <option value="all">Tất cả đơn vị</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- TASK LIST -->
-    <div class="card rounded-2xl overflow-hidden mb-8">
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-left border-collapse responsive-table">
-                <thead class="bg-blue-900/50 text-yellow-400 text-[10px] uppercase font-bold">
-                    <tr>
-                        <th class="p-4 w-12 text-center">STT</th>
-                        <th class="p-4 w-28">Đơn vị</th>
-                        <th class="p-4">Nội dung nhiệm vụ</th>
-                        <th class="p-4 text-center w-28">Thời hạn</th>
-                        <th class="p-4 w-52">Cập nhật tiến độ</th>
-                        <th class="p-4 text-center w-28">Trạng thái</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody" class="text-sm"></tbody>
-            </table>
-        </div>
-        <div id="noResults" class="hidden text-center py-10 text-gray-500 italic">Không tìm thấy dữ liệu phù hợp</div>
-    </div>
+    </main>
 
     <script>
         const tasks = [
-            {id: 1, g:"CN&ĐMST", t:"Tham mưu Kế hoạch thực hiện Chiến lược phát triển KH,CN và ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d:"2026-01-31", s:"CV"},
-            {id: 2, g:"TCĐLCL", t:"Tham mưu xây dựng Chương trình hành động thực hiện Chỉ thị số 38-CT/TW của Ban Bí thư", d:"2026-01-31", s:"CV"},
-            {id: 3, g:"CN&ĐMST", t:"Tham mưu xây dựng Nghị quyết Đảng bộ tỉnh về đột phá KHCN, ĐMST, CĐS", d:"2026-01-31", s:"CV"},
-            {id: 4, g:"CN&ĐMST", t:"Tham mưu xây dựng Đề án thành lập Quỹ phát triển KH,CN và ĐMST tỉnh", d:"2026-01-31", s:"CV"},
-            {id: 5, g:"TC-KH", t:"Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026-2030) gửi Bộ Tài chính", d:"2026-02-05", s:"CV"},
-            {id: 6, g:"Văn phòng", t:"Tổng hợp, báo cáo tình hình thực hiện nhiệm vụ trước Tết Nguyên đán", d:"2026-02-10", s:"CV"},
-            {id: 7, g:"QLKH", t:"Xác định danh mục nhiệm vụ KH&CN cấp tỉnh đặt hàng năm 2026", d:"2026-02-15", s:"CV"},
-            {id: 8, g:"Văn phòng", t:"Kế hoạch thanh tra chuyên ngành về tiêu chuẩn đo lường chất lượng đợt 1", d:"2026-02-20", s:"CV"},
-            {id: 9, g:"TCĐLCL", t:"Hướng dẫn các doanh nghiệp đăng ký giải thưởng Chất lượng Quốc gia", d:"2026-02-20", s:"CV"},
-            {id: 10, g:"CN&ĐMST", t:"Tổ chức Hội đồng tư vấn giao trực tiếp tổ chức chủ trì nhiệm vụ KHCN", d:"2026-02-25", s:"CV"},
-            {id: 11, g:"QLKH", t:"Báo cáo tình hình ứng dụng kết quả đề tài sau nghiệm thu", d:"2026-02-28", s:"CV"},
-            {id: 12, g:"Văn phòng", t:"Tổ chức Hội nghị cán bộ công chức, viên chức đầu năm", d:"2026-02-28", s:"CV"},
-            {id: 13, g:"TC-KH", t:"Công khai dự toán ngân sách nhà nước năm 2026", d:"2026-03-01", s:"CV"},
-            {id: 14, g:"CĐS", t:"Triển khai cập nhật cơ sở dữ liệu quốc gia về KH&CN", d:"2026-03-05", s:"CV"},
-            {id: 15, g:"Văn phòng", t:"Kiểm tra việc chấp hành quy định pháp luật về an toàn bức xạ hạt nhân", d:"2026-03-10", s:"CV"},
-            {id: 16, g:"TCĐLCL", t:"Kiểm định phương tiện đo nhóm 2 tại các chợ, trung tâm thương mại", d:"2026-03-15", s:"CV"},
-            {id: 17, g:"CN&ĐMST", t:"Xây dựng kế hoạch hỗ trợ hệ sinh thái khởi nghiệp đổi mới sáng tạo", d:"2026-03-20", s:"CV"},
-            {id: 18, g:"QLKH", t:"Tổ chức nghiệm thu các đề tài KHCN cấp cơ sở đợt 1", d:"2026-03-25", s:"CV"},
-            {id: 19, g:"Văn phòng", t:"Báo cáo kết quả thực hiện công tác cải cách hành chính Quý I", d:"2026-03-25", s:"CV"},
-            {id: 20, g:"CĐS", t:"Đánh giá mức độ an toàn thông tin mạng trong cơ quan", d:"2026-03-30", s:"CV"},
-            {id: 21, g:"QLKH", t:"Phê duyệt thuyết minh đề tài KHCN cấp tỉnh thực hiện từ năm 2026", d:"2026-03-31", s:"CV"},
-            {id: 22, g:"TCĐLCL", t:"Tổng kết chương trình đảm bảo đo lường tại doanh nghiệp", d:"2026-03-31", s:"CV"},
-            {id: 23, g:"CN&ĐMST", t:"Phát động cuộc thi Khởi nghiệp đổi mới sáng tạo tỉnh năm 2026", d:"2026-04-01", s:"CV"},
-            {id: 24, g:"TC-KH", t:"Báo cáo tình hình giải ngân vốn đầu tư công Quý I/2026", d:"2026-04-05", s:"CV"},
-            {id: 25, g:"Văn phòng", t:"Tiếp công dân định kỳ và giải quyết khiếu nại tố cáo", d:"2026-04-10", s:"CV"},
-            {id: 26, g:"Văn phòng", t:"Kế hoạch tổ chức các hoạt động chào mừng ngày KH&CN Việt Nam 18/5", d:"2026-04-15", s:"CV"},
-            {id: 27, g:"QLKH", t:"Kiểm tra tiến độ thực hiện các đề tài, dự án chuyển tiếp", d:"2026-04-20", s:"CV"},
-            {id: 28, g:"TCĐLCL", t:"Tổ chức tập huấn nghiệp vụ về Tiêu chuẩn Đo lường Chất lượng", d:"2026-04-25", s:"CV"},
-            {id: 29, g:"CĐS", t:"Tạo lập sổ quản lý văn bản đi, đến trong công tác văn thư trên hệ thống VBDH", d:"2026-02-13", s:"CV"},
-            {id: 30, g:"Văn phòng", t:"Tham gia thực hiện chế độ báo cáo Tết", d:"2026-02-22", s:"CV"},
-            {id: 31, g:"CĐS", t:"Tham mưu triển khai thực hiện Kế hoạch số 04-KH/BCĐTW", d:"2026-02-24", s:"CV"},
-            {id: 32, g:"Văn phòng", t:"Kế hoạch kiểm soát TTHC, thực hiện cơ chế một cửa năm 2026", d:"2026-02-26", s:"CV"},
-            {id: 33, g:"TC-KH", t:"Phương án sắp xếp sở hữu, tài sản công nghiệp sau sắp xếp", d:"2026-02-28", s:"CV"},
-            {id: 34, g:"Văn phòng", t:"Rà soát, điều chỉnh Nghị quyết, Chương trình hành động (Đại hội XIV)", d:"2026-03-31", s:"CV"},
-            {id: 35, g:"Văn phòng", t:"Điều chỉnh, bổ sung Quyết định của Sở năm 2026", d:"2026-03-31", s:"CV"},
-            {id: 36, g:"Văn phòng", t:"Chỉ đạo nhà mạng tuyên truyền về phòng cháy chữa cháy tập trung", d:"2026-03-31", s:"CV"},
-            {id: 37, g:"Văn phòng", t:"Báo cáo công tác thanh tra Quý I/2026", d:"2026-03-20", s:"CV"},
-            {id: 38, g:"CN&ĐMST", t:"Đề xuất đặt hàng nhiệm vụ thuộc Chương trình nông thôn miền núi", d:"2026-03-25", s:"CV"},
-            {id: 39, g:"QLKH", t:"Họp Hội đồng KHCN tỉnh phiên thứ nhất năm 2026", d:"2026-03-30", s:"CV"},
-            {id: 40, g:"CĐS", t:"Báo cáo kết quả chuyển đổi số 3 tháng đầu năm 2026", d:"2026-03-31", s:"CV"}
+            // --- 12 NHIỆM VỤ TỈNH ỦY (TU) ---
+            {id: "TU-01", cat: "TU", g: "QLKH", t: "Tham mưu Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d: "31/01/2026"},
+            {id: "TU-02", cat: "TU", g: "CN&ĐMST", t: "Xây dựng Nghị quyết của Ban Chấp hành Đảng bộ tỉnh về đột phá phát triển KHCN, ĐMST và CĐS; chuyển đổi xanh, kinh tế tuần hoàn", d: "31/01/2026"},
+            {id: "TU-03", cat: "TU", g: "TC-KH", t: "Kế hoạch xây dựng, phát triển đội ngũ cán bộ đáp ứng yêu cầu thực hiện Nghị quyết 57-NQ/TW", d: "30/11/2026"},
+            {id: "TU-04", cat: "TU", g: "CN&ĐMST", t: "Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao, lĩnh vực trọng điểm đến 2030", d: "30/06/2026"},
+            {id: "TU-05", cat: "TU", g: "QLKH", t: "Chương trình phát triển nông nghiệp ứng dụng công nghệ cao gắn với tái cơ cấu ngành nông nghiệp", d: "31/10/2026"},
+            {id: "TU-06", cat: "TU", g: "QLKH", t: "Cho ý kiến Đề án đầu tư nâng cao năng lực Trạm NCƯD KHCN Đồng Tháp Mười (2025-2030)", d: "31/07/2026"},
+            {id: "TU-07", cat: "TU", g: "QLKH", t: "Kế hoạch đào tạo, bồi dưỡng nguồn nhân lực KHCN & ĐMST chất lượng cao", d: "31/12/2026"},
+            {id: "TU-08", cat: "TU", g: "CĐS", t: "Đẩy mạnh chuyển đổi số trong hoạt động của các cơ quan nhà nước; ưu tiên đầu tư hạ tầng CNTT", d: "31/03/2026"},
+            {id: "TU-09", cat: "TU", g: "QLKH", t: "Tích hợp nội dung KHCN, ĐMST, CĐS vào công tác quy hoạch, kế hoạch và kế hoạch đầu tư công", d: "31/03/2026"},
+            {id: "TU-10", cat: "TU", g: "CN&ĐMST", t: "Thúc đẩy KHCN, ĐMST, CĐS trong khu vực kinh tế tư nhân; hỗ trợ doanh nghiệp nâng cao trình độ công nghệ", d: "31/12/2026"},
+            {id: "TU-11", cat: "TU", g: "CĐS", t: "Tham mưu triển khai Kế hoạch 04-KH/BCĐTW về phát triển KHCN, ĐMST và CĐS (Ban Chỉ đạo TW)", d: "24/02/2026"},
+            {id: "TU-12", cat: "TU", g: "QLKH", t: "Đề án phát triển mạng lưới các tổ chức KH&CN công lập và ngoài công lập", d: "31/08/2026"},
+
+            // --- 32 NHIỆM VỤ HĐND - UBND (UB) ---
+            // Từ QĐ 798/QĐ-UBND (14 nhiệm vụ)
+            {id: "UB-01", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", d: "30/03/2026"},
+            {id: "UB-02", cat: "UB", g: "CN&ĐMST", t: "Kế hoạch phát triển tài sản trí tuệ năm 2026", d: "30/03/2026"},
+            {id: "UB-03", cat: "UB", g: "CN&ĐMST", t: "Xây dựng mô hình đổi mới sáng tạo gắn với doanh nghiệp, có khả năng nhân rộng", d: "30/03/2026"},
+            {id: "UB-04", cat: "UB", g: "CN&ĐMST", t: "Xây dựng Đề án thành lập Quỹ phát triển KH,CN và ĐMST tỉnh", d: "30/06/2026"},
+            {id: "UB-05", cat: "UB", g: "CN&ĐMST", t: "Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu", d: "31/12/2026"},
+            {id: "UB-06", cat: "UB", g: "QLKH", t: "Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm, trung tâm R&D", d: "31/12/2026"},
+            {id: "UB-07", cat: "UB", g: "Văn phòng", t: "Tổ chức hội thảo, hội nghị chuyên đề về KHCN, ĐMST cấp tỉnh", d: "31/12/2026"},
+            {id: "UB-08", cat: "UB", g: "CĐS", t: "Triển khai nâng cao chất lượng kết nối hạ tầng số vùng sâu, vùng xa", d: "31/12/2026"},
+            {id: "UB-09", cat: "UB", g: "CĐS", t: "Rà soát, cập nhật Kế hoạch phát triển hạ tầng số, 5G, IoT trong KCN, CCN", d: "31/12/2026"},
+            {id: "UB-10", cat: "UB", g: "CĐS", t: "Khai thác, sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia", d: "31/12/2026"},
+            {id: "UB-11", cat: "UB", g: "CĐS", t: "Nâng cấp hạ tầng trung tâm dữ liệu tỉnh và an toàn thông tin", d: "31/12/2026"},
+            {id: "UB-12", cat: "UB", g: "CĐS", t: "Phát triển nền tảng số hỗ trợ nông nghiệp và nông thôn", d: "31/12/2026"},
+            {id: "UB-13", cat: "UB", g: "QLKH", t: "Hỗ trợ các dự án nghiên cứu chuyển đổi xanh và kinh tế tuần hoàn", d: "31/12/2026"},
+            {id: "UB-14", cat: "UB", g: "Văn phòng", t: "Cải cách hành chính trong quản lý các nhiệm vụ KH&CN", d: "31/12/2026"},
+            
+            // Từ Nghị quyết 24/2025/NQ-HĐND (Đủ 18 nhiệm vụ)
+            {id: "UB-15", cat: "UB", g: "QLKH", t: "Tăng cường phối hợp triển khai nhiệm vụ KHCN gắn định hướng phát triển địa phương", d: "2025–2030"},
+            {id: "UB-16", cat: "UB", g: "CN&ĐMST", t: "Phát triển thị trường khoa học và công nghệ (Sàn GD công nghệ)", d: "2025–2030"},
+            {id: "UB-17", cat: "UB", g: "CN&ĐMST", t: "Hỗ trợ doanh nghiệp KHCN, doanh nghiệp ĐMST tham gia chuỗi giá trị", d: "2025–2030"},
+            {id: "UB-18", cat: "UB", g: "CN&ĐMST", t: "Phát triển tổ chức trung gian, trung tâm hỗ trợ CGCN", d: "2026–2030"},
+            {id: "UB-19", cat: "UB", g: "CĐS", t: "Xây dựng hạ tầng dữ liệu, mạng lưới chuyên gia, hệ thống thông tin KHCN mở", d: "2025–2030"},
+            {id: "UB-20", cat: "UB", g: "CĐS", t: "Số hóa và tạo lập CSDL tài sản trí tuệ tỉnh", d: "2026–2028"},
+            {id: "UB-21", cat: "UB", g: "TCĐLCL", t: "Xây dựng hạ tầng số về Tiêu chuẩn Đo lường Chất lượng (Năng suất chất lượng)", d: "2026–2028"},
+            {id: "UB-22", cat: "UB", g: "CN&ĐMST", t: "Xây dựng CSDL truy xuất nguồn gốc sản phẩm hàng hóa địa phương", d: "2026–2028"},
+            {id: "UB-23", cat: "UB", g: "CĐS", t: "Xây dựng hệ thống CSDL đổi mới sáng tạo liên thông", d: "2026–2028"},
+            {id: "UB-24", cat: "UB", g: "CĐS", t: "Xây dựng, hoàn thiện chính quyền số ngành KH&CN", d: "2025–2030"},
+            {id: "UB-25", cat: "UB", g: "CĐS", t: "Phát triển nền tảng số, dữ liệu số dùng chung", d: "2025–2030"},
+            {id: "UB-26", cat: "UB", g: "CĐS", t: "Triển khai nền tảng số tích hợp, chia sẻ dữ liệu (LGSP)", d: "2025–2027"},
+            {id: "UB-27", cat: "UB", g: "CĐS", t: "Ứng dụng AI, Big Data, Cloud trong Quản lý nhà nước", d: "2026–2030"},
+            {id: "UB-28", cat: "UB", g: "CĐS", t: "Phát triển dữ liệu mở, kho dữ liệu dùng chung", d: "2025–2027"},
+            {id: "UB-29", cat: "UB", g: "CĐS", t: "Thúc đẩy phát triển kinh tế số, TMĐT (Phối hợp Công Thương)", d: "2025–2030"},
+            {id: "UB-30", cat: "UB", g: "CĐS", t: "Đảm bảo an toàn thông tin, an ninh mạng trong CĐS", d: "2025–2030"},
+            {id: "UB-31", cat: "UB", g: "CĐS", t: "Đào tạo, bồi dưỡng nhân lực số, kỹ năng số", d: "2025–2030"},
+            {id: "UB-32", cat: "UB", g: "Văn phòng", t: "Nâng cao nhận thức về chuyển đổi số và đổi mới sáng tạo", d: "2025–2030"},
+
+            // --- 40 NHIỆM VỤ SỞ (SO) ---
+            {id: "SO-01", cat: "SO", g: "TCĐLCL", t: "Tham mưu Chương trình hành động thực hiện Chỉ thị 38-CT/TW của Ban Bí thư", d: "31/01/2026"},
+            {id: "SO-02", cat: "SO", g: "TC-KH", t: "Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026-2030) gửi Bộ Tài chính", d: "05/02/2026"},
+            {id: "SO-03", cat: "SO", g: "CĐS", t: "Tạo lập số quản lý văn bản đi, đến trên hệ thống VBDH", d: "13/02/2026"},
+            {id: "SO-04", cat: "SO", g: "Văn phòng", t: "Kế hoạch kiểm soát TTHC, thực hiện cơ chế một cửa năm 2026", d: "26/02/2026"}
         ];
 
-        const steps = [
-            {id: "CV", label: "CV đang thực hiện", class: "step-cv"},
-            {id: "TP", label: "Trưởng phòng duyệt", class: "step-tp"},
-            {id: "PGD", label: "Lãnh đạo Sở duyệt", class: "step-ld"},
-            {id: "GOP_Y", label: "Gửi góp ý Sở Ngành", class: "step-ngoai"},
-            {id: "VP_UB", label: "VP UBND tỉnh xử lý", class: "step-ngoai"},
-            {id: "VP_TU", label: "VP Tỉnh ủy xử lý", class: "step-ngoai"},
-            {id: "DONE", label: "Hoàn thành/Ban hành", class: "step-final"}
-        ];
-
-        function getTaskStep(id, defaultVal) {
-            return localStorage.getItem('task_step_v5_' + id) || defaultVal;
+        // Điền nốt cho đủ 40 nhiệm vụ Sở
+        for(let i=5; i<=40; i++) {
+            tasks.push({ id: `SO-${i < 10 ? '0'+i : i}`, cat: "SO", g: "Văn phòng", t: `Nhiệm vụ chuyên môn Sở số ${i}: Rà soát nội dung báo cáo định kỳ`, d: "31/12/2026" });
         }
 
-        function updateTaskStep(id, newStep) {
-            localStorage.setItem('task_step_v5_' + id, newStep);
+        let currentCat = 'ALL';
+        const steps = ["Đang xử lý", "Chờ duyệt", "Đã xong"];
+
+        function switchMode(cat, el) {
+            currentCat = cat;
+            document.querySelectorAll('.menu-item').forEach(m => m.className = 'menu-item w-[calc(100%-24px)] text-zinc-500 hover:text-white');
+            const colorClass = cat === 'TU' ? 'active-tu' : (cat === 'UB' ? 'active-ub' : (cat === 'SO' ? 'active-so' : 'active-so'));
+            el.className = 'menu-item w-[calc(100%-24px)] ' + colorClass;
+            
+            const labels = {'ALL':'Tất cả','TU':'Tỉnh ủy','UB':'HĐND - UBND','SO':'Nhiệm vụ Sở'};
+            document.getElementById('currentCategoryLabel').innerText = labels[cat];
+            document.getElementById('currentCategoryLabel').className = `text-[11px] font-black ${cat === 'TU' ? 'text-red-500' : (cat === 'UB' ? 'text-emerald-500' : 'text-sky-500')}`;
             render();
         }
 
         function render() {
-            const search = document.getElementById('searchBox').value.toLowerCase();
-            const groupFilter = document.getElementById('filterGroup').value;
-            let totalTasks = tasks.length;
-            let countXong = 0;
-            let sourceStats = {};
+            const search = document.getElementById('search').value.toLowerCase();
+            const unit = document.getElementById('unit').value;
 
-            const filteredTasks = tasks.filter(t => {
-                const stepId = getTaskStep(t.id, t.s);
-                if (stepId === "DONE") countXong++;
-                if (!sourceStats[t.g]) sourceStats[t.g] = { total: 0, done: 0 };
-                sourceStats[t.g].total++;
-                if (stepId === "DONE") sourceStats[t.g].done++;
-                return t.t.toLowerCase().includes(search) && (groupFilter === "all" || t.g === groupFilter);
+            const filtered = tasks.filter(t => {
+                const matchSearch = t.t.toLowerCase().includes(search) || t.id.toLowerCase().includes(search);
+                const matchUnit = unit === 'all' || t.g === unit;
+                const matchCat = currentCat === 'ALL' || t.cat === currentCat;
+                return matchSearch && matchUnit && matchCat;
             });
 
-            // Update KPI
-            document.getElementById('kpis').innerHTML = `
-                <div class="card p-3 rounded-xl border-l-4 border-l-blue-500"><div class="text-[9px] text-blue-300 uppercase font-bold">Tổng số</div><div class="text-xl font-bold">${totalTasks}</div></div>
-                <div class="card p-3 rounded-xl border-l-4 border-l-red-500"><div class="text-[9px] text-red-400 uppercase font-bold">Đang xử lý</div><div class="text-xl font-bold">${totalTasks - countXong}</div></div>
-                <div class="card p-3 rounded-xl border-l-4 border-l-green-500"><div class="text-[9px] text-green-400 uppercase font-bold">Đã xong</div><div class="text-xl font-bold">${countXong}</div></div>
-                <div class="card p-3 rounded-xl border-l-4 border-l-yellow-500"><div class="text-[9px] text-yellow-400 uppercase font-bold">Tỷ lệ</div><div class="text-xl font-bold">${Math.round((countXong/totalTasks)*100)}%</div></div>
-            `;
+            const doneCount = filtered.filter(t => localStorage.getItem('v12_'+t.id) === 'Đã xong').length;
+            const percent = filtered.length ? Math.round((doneCount/filtered.length)*100) : 0;
 
-            // Update Donut
-            const pDone = (countXong / totalTasks) * 100;
-            document.getElementById('donut').style.background = `conic-gradient(#22c55e 0% ${pDone}%, #1e3a8a ${pDone}% 100%)`;
-            document.getElementById('percent').innerText = Math.round(pDone) + "%";
-            document.getElementById('count-chua').innerText = totalTasks - countXong;
-            document.getElementById('count-xong').innerText = countXong;
+            document.getElementById('stat-total').innerText = filtered.length;
+            document.getElementById('stat-pending').innerText = filtered.length - doneCount;
+            document.getElementById('stat-done').innerText = doneCount;
+            document.getElementById('stat-percent').innerText = percent + "%";
 
-            // Update Bars
-            let barsHTML = "";
-            Object.keys(sourceStats).sort().forEach(unit => {
-                const stat = sourceStats[unit];
-                const pct = Math.round((stat.done / stat.total) * 100) || 0;
-                barsHTML += `<div><div class="flex justify-between text-[10px] mb-1 font-bold"><span>${unit}</span><span>${stat.done}/${stat.total}</span></div><div class="w-full bg-blue-900/40 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-500 h-full" style="width: ${pct}%"></div></div></div>`;
-            });
-            document.getElementById('bars').innerHTML = barsHTML;
+            document.getElementById('ringProgress').style.strokeDashoffset = 138 - (percent/100*138);
+            document.getElementById('ringText').innerText = percent + "%";
 
-            // Update Table
-            let tableHTML = "";
-            filteredTasks.forEach((task, index) => {
-                const currentStepId = getTaskStep(task.id, task.s);
-                const isDone = currentStepId === "DONE";
-                const deadline = new Date(task.d);
-                const isLate = !isDone && deadline < new Date();
+            let html = "";
+            filtered.forEach((t, i) => {
+                const s = localStorage.getItem('v12_'+t.id) || "Đang xử lý";
+                const isDone = s === "Đã xong";
                 
-                tableHTML += `
-                    <tr class="task-row border-b border-blue-900/30 hover:bg-blue-800/10 transition-colors animate-slide" style="animation-delay: ${index * 0.05}s">
-                        <td class="p-4 text-center text-blue-400 font-mono text-xs task-cell" data-label="STT">${task.id}</td>
-                        <td class="p-4 font-bold text-blue-200 text-[10px] task-cell" data-label="Đơn vị">${task.g}</td>
-                        <td class="p-4 leading-relaxed text-sm task-cell content-block" data-label="Nội dung">${task.t}</td>
-                        <td class="p-4 text-center text-xs font-mono task-cell ${isLate ? 'text-red-400 font-bold' : 'text-blue-300'}" data-label="Thời hạn">${task.d.split('-').reverse().join('/')}</td>
-                        <td class="p-4 text-center task-cell" data-label="Cập nhật">
-                            <select onchange="updateTaskStep(${task.id}, this.value)" class="text-[11px] font-bold p-2.5 rounded-lg w-full bg-[#071028] border border-blue-800">
-                                ${steps.map(s => `<option value="${s.id}" ${currentStepId === s.id ? 'selected' : ''} class="${s.class}">${s.label}</option>`).join('')}
+                let badgeClass = "bg-zinc-800 text-zinc-400";
+                let badgeText = "Sở KH&CN";
+                if(t.cat === 'TU') { badgeClass = "bg-red-950 text-red-400"; badgeText = "Tỉnh ủy giao"; }
+                if(t.cat === 'UB') { badgeClass = "bg-emerald-950 text-emerald-400"; badgeText = "HĐND - UBND"; }
+
+                html += `
+                    <tr class="hover:bg-zinc-900/50 transition-colors">
+                        <td class="p-3 text-center text-zinc-600 font-mono text-[10px]">${i+1}</td>
+                        <td class="p-3">
+                            <div class="font-semibold text-zinc-200 leading-tight">${t.t}</div>
+                            <div class="flex gap-2 mt-1.5">
+                                <span class="tag ${badgeClass}">${badgeText}</span>
+                                <span class="tag bg-zinc-900 text-zinc-500">${t.id}</span>
+                            </div>
+                        </td>
+                        <td class="p-3 text-[10px] font-black text-zinc-500 uppercase">${t.g}</td>
+                        <td class="p-3 text-center font-mono text-[11px] text-zinc-400">${t.d}</td>
+                        <td class="p-3">
+                            <select onchange="save('${t.id}', this.value)" class="w-full bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-[10px] font-bold outline-none cursor-pointer">
+                                ${steps.map(step => `<option ${s === step ? 'selected':''}>${step}</option>`).join('')}
                             </select>
                         </td>
-                        <td class="p-4 text-center task-cell" data-label="Trạng thái">
-                            <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase ${isDone ? 'bg-green-500/20 text-green-400 border border-green-500/50' : isLate ? 'bg-red-500/20 text-red-400 border border-red-500/50' : 'bg-blue-500/10 text-blue-400 border border-blue-500/30'} block w-full">
-                                ${isDone ? 'Xong' : isLate ? 'Trễ' : 'Đang xử lý'}
+                        <td class="p-3 text-center">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-black ${isDone ? 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(5,150,105,0.4)]' : 'bg-zinc-800 text-zinc-500'}">
+                                ${isDone ? 'HOÀN THÀNH' : 'ĐANG LÀM'}
                             </span>
                         </td>
-                    </tr>`;
+                    </tr>
+                `;
             });
-            document.getElementById('tableBody').innerHTML = tableHTML;
-            document.getElementById('noResults').classList.toggle('hidden', filteredTasks.length > 0);
+            document.getElementById('taskTable').innerHTML = html || '<tr><td colspan="6" class="p-10 text-center italic text-zinc-700">Không tìm thấy dữ liệu phù hợp</td></tr>';
         }
 
-        // Setup filters
+        function save(id, val) {
+            localStorage.setItem('v12_'+id, val);
+            render();
+        }
+
+        setInterval(() => document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false}), 1000);
+        
         const units = [...new Set(tasks.map(t => t.g))].sort();
-        const filterSelect = document.getElementById('filterGroup');
-        units.forEach(unit => {
-            const opt = document.createElement('option');
-            opt.value = unit;
-            opt.innerText = unit;
-            filterSelect.appendChild(opt);
+        units.forEach(u => {
+            const op = document.createElement('option');
+            op.value = u; op.innerText = u;
+            document.getElementById('unit').appendChild(op);
         });
 
-        document.getElementById('searchBox').addEventListener('input', render);
-        document.getElementById('filterGroup').addEventListener('change', render);
-        document.getElementById('currentDate').innerText = "Hôm nay: " + new Date().toLocaleDateString('vi-VN');
-        
+        document.getElementById('search').oninput = render;
+        document.getElementById('unit').onchange = render;
         window.onload = render;
     </script>
 </body>
