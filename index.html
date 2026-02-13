@@ -3,175 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IOC Điều Hành KH&CN Tây Ninh - Siêu Rộng Nội Dung</title>
+    <title>IOC Điều Hành KH&CN Tây Ninh - 84 Nhiệm Vụ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #1E40AF; 
+            --bg-page: #F8FAFC;
+            --bg-sidebar: #020617; 
+            --sidebar-text: #94A3B8;
+            --sidebar-active-bg: #1E40AF;
+            --text-main: #0F172A;
+            --border: #CBD5E1;
+        }
 
-:root{
---primary:#2563EB;
---primary-soft:#EFF6FF;
---bg-page:#F1F5F9;
---bg-sidebar:#020617;
---sidebar-text:#94A3B8;
---sidebar-hover:#111827;
---sidebar-active:#2563EB;
---text-main:#0F172A;
---border:#E2E8F0;
-}
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Lexend', sans-serif;
+            overflow: hidden;
+        }
 
-body{
-background:var(--bg-page);
-color:var(--text-main);
-font-family:'Lexend',sans-serif;
-overflow:hidden;
-}
+        .sidebar { width: 260px; background: var(--bg-sidebar); color: var(--sidebar-text); }
 
-*{transition:all .18s ease}
+        .menu-item {
+            padding: 10px 20px;
+            margin: 4px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
 
-/* SIDEBAR */
-.sidebar{
-width:260px;
-background:var(--bg-sidebar);
-box-shadow:4px 0 25px rgba(0,0,0,.35);
-}
+        .active-item { 
+            background: var(--sidebar-active-bg) !important; 
+            color: white !important; 
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4);
+        }
 
-.menu-item{
-padding:11px 20px;
-margin:4px 16px;
-border-radius:12px;
-font-size:13px;
-font-weight:600;
-display:flex;
-align-items:center;
-gap:12px;
-cursor:pointer;
-}
+        .compact-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 12px;
+        }
 
-.menu-item:hover{
-background:var(--sidebar-hover);
-transform:translateX(4px);
-}
+        .card-total { background: linear-gradient(135deg, #1E40AF, #1E3A8A); color: white; border: none; }
 
-.active-item{
-background:var(--sidebar-active)!important;
-color:white!important;
-box-shadow:0 8px 20px rgba(37,99,235,.45);
-}
+        .task-table-container { background: #FFFFFF; border: 1px solid var(--border); border-radius: 12px; }
 
-/* CARDS */
-.compact-card{
-background:#fff;
-border:1px solid var(--border);
-padding:14px 18px;
-border-radius:16px;
-box-shadow:0 6px 18px rgba(0,0,0,.05);
-}
+        thead.sticky th {
+            color: white;
+            font-weight: 800;
+            background-color: #1e293b;
+            text-transform: uppercase;
+            font-size: 9.5px;
+            padding: 12px 10px;
+            letter-spacing: 0.05em;
+        }
 
-.compact-card:hover{
-transform:translateY(-3px);
-box-shadow:0 14px 32px rgba(0,0,0,.08);
-}
+        .task-row td {
+            font-size: 11px; 
+            padding: 8px 10px;
+            line-height: 1.4;
+            border-bottom: 1px solid #f1f5f9;
+        }
 
-/* KPI COLORS */
-.card-total{
-background:linear-gradient(135deg,#2563EB,#1E40AF);
-color:white;
-border:none;
-box-shadow:0 10px 26px rgba(37,99,235,.35);
-}
+        .row-color-0 { color: #1e293b; }
+        .row-color-1 { color: #1e40af; }
+        .row-color-2 { color: #0369a1; }
+        .row-color-3 { color: #4338ca; }
+        .row-color-4 { color: #0f172a; }
 
-/* STATS CARDS */
-.border-amber-500{background:#FFFBEB}
-.border-emerald-500{background:#ECFDF5}
-.border-blue-500{background:#EFF6FF}
+        .task-row:hover { background-color: #f1f5f9; }
 
-/* TOP BAR */
-.z-20{
-backdrop-filter:blur(8px);
-background:rgba(255,255,255,.85)!important;
-}
+        .badge-step { padding: 4px 6px; border-radius: 4px; font-size: 8px; font-weight: 800; display: inline-block; width: 65px; }
+        .badge-in-progress { background: #E0F2FE; color: #0369A1; border: 1px solid #BAe6FD; }
+        .badge-done { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
 
-/* TABLE */
-.task-table-container{
-background:#fff;
-border:1px solid var(--border);
-border-radius:18px;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-}
+        .tag { padding: 2px 5px; border-radius: 4px; font-size: 8.5px; font-weight: 800; }
 
-thead.sticky th{
-background:linear-gradient(90deg,#1E293B,#334155);
-color:white;
-font-size:11px;
-letter-spacing:.08em;
-}
-
-.task-row td{
-font-size:11px;
-padding:9px 10px;
-border-bottom:1px solid #F1F5F9;
-}
-
-.task-row:hover{
-background:#EFF6FF;
-transform:scale(1.002);
-}
-
-/* ROW COLOR VARIANTS */
-.row-color-0{color:#0F172A}
-.row-color-1{color:#1E3A8A}
-.row-color-2{color:#0369A1}
-.row-color-3{color:#4338CA}
-.row-color-4{color:#0F172A}
-
-/* BADGE */
-.badge-step{
-padding:4px 8px;
-border-radius:999px;
-font-size:9px;
-font-weight:800;
-letter-spacing:.04em;
-}
-
-.badge-in-progress{
-background:#DBEAFE;
-color:#1D4ED8;
-}
-
-.badge-done{
-background:#D1FAE5;
-color:#065F46;
-}
-
-/* TAG */
-.tag{
-padding:3px 8px;
-border-radius:999px;
-font-size:9px;
-font-weight:800;
-letter-spacing:.03em;
-}
-
-/* SCROLLBAR */
-.custom-scroll::-webkit-scrollbar{width:6px}
-.custom-scroll::-webkit-scrollbar-thumb{
-background:#CBD5E1;
-border-radius:20px;
-}
-
-/* INPUT */
-input,select{
-border:1px solid var(--border)!important;
-}
-
-input:focus,select:focus{
-border-color:#2563EB!important;
-box-shadow:0 0 0 2px rgba(37,99,235,.15);
-background:white;
-}
-</style>
-
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
 </head>
 <body class="flex h-screen">
 
@@ -181,12 +100,12 @@ background:white;
             <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mt-1">Sở KH&CN Tây Ninh</p>
         </div>
 
-        <nav class="flex-1 space-y-1">
-            <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-32px)] active-item">Tất cả nhiệm vụ</button>
+        <nav class="flex-1 space-y-1 overflow-y-auto custom-scroll">
+            <button onclick="switchMode('ALL', this)" class="menu-item w-[calc(100%-32px)] active-item">Tất cả nhiệm vụ (84)</button>
             <button onclick="switchMode('TU', this)" class="menu-item w-[calc(100%-32px)]">Tỉnh ủy giao (12)</button>
             <button onclick="switchMode('UB', this)" class="menu-item w-[calc(100%-32px)]">UBND Tỉnh giao (14)</button>
             <button onclick="switchMode('NQ24', this)" class="menu-item w-[calc(100%-32px)]">Nghị quyết 24 (18)</button>
-            <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-32px)]">Chuyên môn Sở</button>
+            <button onclick="switchMode('SO', this)" class="menu-item w-[calc(100%-32px)]">Chuyên môn Sở (40)</button>
         </nav>
         
         <div class="p-4 border-t border-slate-800">
@@ -200,7 +119,7 @@ background:white;
             <div class="col-span-9 grid grid-cols-4 gap-4">
                 <div class="compact-card card-total">
                     <div class="text-[9px] font-bold opacity-80 uppercase">Tổng số</div>
-                    <div id="stat-total" class="text-2xl font-black">0</div>
+                    <div id="stat-total" class="text-2xl font-black">84</div>
                 </div>
                 <div class="compact-card border-l-4 border-amber-500">
                     <div class="text-[9px] font-bold text-slate-400 uppercase">Chưa xong</div>
@@ -221,7 +140,6 @@ background:white;
             </div>
         </div>
 
-        <!-- Table Area -->
         <div class="flex-1 overflow-hidden flex flex-col p-4 gap-4 bg-slate-50">
             <div class="flex gap-3 shrink-0">
                 <input type="text" id="search" placeholder="Tìm tên nhiệm vụ..." 
@@ -236,7 +154,7 @@ background:white;
                     <thead class="sticky top-0 z-10">
                         <tr class="text-left">
                             <th class="p-2 w-8 text-center">#</th>
-                            <th class="p-2 w-auto">Nội dung nhiệm vụ (Phần chính)</th> <!-- MỞ RỘNG TỐI ĐA -->
+                            <th class="p-2 w-auto">Nội dung nhiệm vụ (Phần chính)</th>
                             <th class="p-2 w-20">Tham mưu</th> 
                             <th class="p-2 w-14 text-center">Hạn</th> 
                             <th class="p-2 w-32">Tiến độ điều hành</th> 
@@ -262,37 +180,112 @@ background:white;
             "9. Đã hoàn thành"
         ];
 
-        const tasks = [
-            {id: "TU-01", cat: "TU", g: "QLKH", t: "Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 theo Quyết định số 569/QĐ-TTg ngày 11/5/2022 của Thủ tướng Chính phủ", d: "01/26"},
-            {id: "TU-02", cat: "TU", g: "CN&ĐMST", t: "Nghị quyết của Ban Chấp hành Đảng bộ tỉnh về đột phá phát triển khoa học công nghệ, đổi mới sáng tạo và chuyển đổi số; gắn với chuyển đổi xanh, kinh tế tuần hoàn trên địa bàn tỉnh Tây Ninh", d: "01/26"},
-            {id: "TU-03", cat: "TU", g: "TC-KH", t: "Kế hoạch xây dựng, phát triển đội ngũ cán bộ KHCN đáp ứng yêu cầu thực hiện Nghị quyết số 57-NQ/TW của Bộ Chính trị về định hướng xây dựng và phát triển đội ngũ trí thức", d: "11/26"},
-            {id: "TU-04", cat: "TU", g: "CN&ĐMST", t: "Xây dựng Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao, các lĩnh vực trọng điểm của tỉnh đến năm 2030", d: "06/26"},
-            {id: "TU-05", cat: "TU", g: "QLKH", t: "Chương trình phát triển nông nghiệp ứng dụng công nghệ cao gắn với tái cơ cấu ngành nông nghiệp tỉnh nhà theo hướng bền vững", d: "10/26"},
-            {id: "TU-06", cat: "TU", g: "QLKH", t: "Tham mưu ý kiến Đề án đầu tư nâng cao năng lực Trạm nghiên cứu ứng dụng khoa học và công nghệ Đồng Tháp Mười giai đoạn 2025-2030", d: "07/26"},
-            {id: "TU-07", cat: "TU", g: "Văn phòng", t: "Kế hoạch tổng thể nâng cao các chỉ số năng lực cạnh tranh cấp tỉnh PCI, chỉ số hiệu quả quản trị PAPI, chỉ số cải cách hành chính PAR INDEX", d: "07/26"},
-            {id: "UB-01", cat: "UB", g: "CN&ĐMST", t: "Xây dựng và hoàn thiện Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh nhằm thúc đẩy hệ sinh thái khởi nghiệp địa phương", d: "30/03/26"},
-            {id: "UB-02", cat: "UB", g: "QLKH", t: "Tổ chức triển khai Kế hoạch phát triển tài sản trí tuệ tỉnh năm 2026 và hỗ trợ đăng ký bảo hộ nhãn hiệu đặc sản", d: "30/03/26"},
-            {id: "UB-04", cat: "UB", g: "CN&ĐMST", t: "Nghiên cứu xây dựng Đề án thành lập Quỹ phát triển khoa học, công nghệ và đổi mới sáng tạo tỉnh Tây Ninh", d: "30/06/26"}
+        const rawTasks = [
+            // --- TỈNH ỦY GIAO (12) ---
+            {id:"TU-01", cat:"TU", g:"CN&ĐMST", t:"Kế hoạch thực hiện Chiến lược phát triển KH,CN & ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d:"31/01/26"},
+            {id:"TU-02", cat:"TU", g:"CN&ĐMST", t:"Nghị quyết của Tỉnh ủy về đột phá phát triển KHCN, ĐMST và chuyển đổi số; gắn với chuyển đổi xanh, kinh tế tuần hoàn", d:"31/01/26"},
+            {id:"TU-03", cat:"TU", g:"Văn phòng", t:"Tổ chức triển khai các Chương trình, Kế hoạch thực hiện Nghị quyết số 57-NQ/TW của Bộ Chính trị về đội ngũ trí thức", d:"Thường xuyên"},
+            {id:"TU-04", cat:"TU", g:"Văn phòng", t:"Đẩy mạnh chuyển đổi số trong hoạt động của các cơ quan, đơn vị, địa phương; hạ tầng CNTT", d:"Quý I/2026"},
+            {id:"TU-05", cat:"TU", g:"QLKH", t:"Tích hợp nội dung KHCN, ĐMST, CĐS vào công tác quy hoạch, kế hoạch, đầu tư kinh tế - xã hội", d:"Quý I/2026"},
+            {id:"TU-06", cat:"TU", g:"CN&ĐMST", t:"Thúc đẩy KHCN, ĐMST và CĐS trong khu vực kinh tế tư nhân; nâng cao năng lực đổi mới sáng tạo doanh nghiệp", d:"Thường xuyên"},
+            {id:"TU-07", cat:"TU", g:"Văn phòng", t:"Kế hoạch phát triển đội ngũ cán bộ KHCN đáp ứng yêu cầu thực hiện Nghị quyết số 57-NQ/TW (phối hợp BTC Tỉnh ủy)", d:"11/2026"},
+            {id:"TU-08", cat:"TU", g:"CN&ĐMST", t:"Đề án thu hút nhà đầu tư chiến lược vào các ngành công nghệ cao, lĩnh vực trọng điểm đến năm 2030", d:"06/2026"},
+            {id:"TU-09", cat:"TU", g:"QLKH", t:"Chương trình phát triển nông nghiệp ứng dụng công nghệ cao gắn với tái cơ cấu ngành nông nghiệp", d:"10/2026"},
+            {id:"TU-10", cat:"TU", g:"QLKH", t:"Cho ý kiến Đề án đầu tư nâng cao năng lực Trạm nghiên cứu ứng dụng KH&CN Đồng Tháp Mười (2025-2030)", d:"07/2026"},
+            {id:"TU-11", cat:"TU", g:"Văn phòng", t:"Kế hoạch tổng thể nâng cao các chỉ số năng lực cạnh tranh PCI, PAPI, PAR INDEX", d:"Thường xuyên"},
+            {id:"TU-12", cat:"TU", g:"Văn phòng", t:"Rà soát, điều chỉnh Nghị quyết, Chương trình hành động phục vụ Đại hội XIV Đảng bộ tỉnh", d:"31/03/26"},
+
+            // --- UBND TỈNH GIAO (14) ---
+            {id:"UB-01", cat:"UB", g:"CN&ĐMST", t:"Xây dựng Đề án thành lập Trung tâm Đổi mới sáng tạo tỉnh Tây Ninh", d:"30/03/26"},
+            {id:"UB-02", cat:"UB", g:"CN&ĐMST", t:"Kế hoạch phát triển tài sản trí tuệ tỉnh Tây Ninh năm 2026", d:"30/03/26"},
+            {id:"UB-03", cat:"UB", g:"CN&ĐMST", t:"Xây dựng mô hình đổi mới sáng tạo gắn với doanh nghiệp, có khả năng nhân rộng", d:"30/03/26"},
+            {id:"UB-04", cat:"UB", g:"CN&ĐMST", t:"Xây dựng Đề án thành lập Quỹ phát triển khoa học, công nghệ và đổi mới sáng tạo tỉnh", d:"30/06/26"},
+            {id:"UB-05", cat:"UB", g:"CN&ĐMST", t:"Đẩy mạnh bảo hộ và khai thác tài sản trí tuệ từ kết quả nghiên cứu khoa học", d:"Thường xuyên"},
+            {id:"UB-06", cat:"UB", g:"QLKH", t:"Rà soát, nâng cấp và liên thông hạ tầng phòng thí nghiệm, trung tâm R&D", d:"Thường xuyên"},
+            {id:"UB-07", cat:"UB", g:"Văn phòng", t:"Tổ chức hội thảo, hội nghị chuyên đề về KHCN, ĐMST phục vụ phát triển kinh tế", d:"Thường xuyên"},
+            {id:"UB-08", cat:"UB", g:"CN&ĐMST", t:"Triển khai nâng cao chất lượng kết nối số, ưu tiên vùng sâu, vùng xa, vùng biên giới", d:"Thường xuyên"},
+            {id:"UB-09", cat:"UB", g:"CN&ĐMST", t:"Rà soát, cập nhật Kế hoạch phát triển hạ tầng số, 5G, IoT trong các KCN, CCN", d:"Trong năm 2026"},
+            {id:"UB-10", cat:"UB", g:"Văn phòng", t:"Khai thác, sử dụng hiệu quả hạ tầng số dùng chung cấp quốc gia và của tỉnh", d:"Thường xuyên"},
+            {id:"UB-11", cat:"UB", g:"TĐLCL", t:"Kế hoạch nâng cao năng suất chất lượng sản phẩm, hàng hóa dựa trên nền tảng KHCN & ĐMST", d:"Quý II/2026"},
+            {id:"UB-12", cat:"UB", g:"TĐLCL", t:"Xây dựng cơ sở dữ liệu về tiêu chuẩn, quy chuẩn kỹ thuật địa phương", d:"30/09/26"},
+            {id:"UB-13", cat:"UB", g:"CN&ĐMST", t:"Hỗ trợ doanh nghiệp thực hiện chuyển đổi số và áp dụng các tiêu chuẩn quốc tế", d:"Thường xuyên"},
+            {id:"UB-14", cat:"UB", g:"Văn phòng", t:"Báo cáo định kỳ kết quả thực hiện các chỉ tiêu về KHCN và ĐMST phục vụ điều hành UBND tỉnh", d:"Hàng tháng"},
+
+            // --- NGHỊ QUYẾT 24 (18) ---
+            {id:"NQ-01", cat:"NQ24", g:"QLKH", t:"Tăng cường phối hợp triển khai nhiệm vụ KHCN gắn định hướng phát triển địa phương", d:"2025-2030"},
+            {id:"NQ-02", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển thị trường khoa học và công nghệ và mạng lưới tổ chức trung gian", d:"2025-2030"},
+            {id:"NQ-03", cat:"NQ24", g:"CN&ĐMST", t:"Hỗ trợ doanh nghiệp KHCN, doanh nghiệp đổi mới sáng tạo và khởi nghiệp", d:"2025-2030"},
+            {id:"NQ-04", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển các tổ chức trung gian, trung tâm hỗ trợ chuyển giao công nghệ", d:"2026-2030"},
+            {id:"NQ-05", cat:"NQ24", g:"CN&ĐMST", t:"Xây dựng hạ tầng dữ liệu, mạng lưới chuyên gia và hệ thống thông tin KHCN mở", d:"2025-2027"},
+            {id:"NQ-06", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển hệ sinh thái khởi nghiệp đổi mới sáng tạo tỉnh Tây Ninh", d:"2025-2030"},
+            {id:"NQ-07", cat:"NQ24", g:"CN&ĐMST", t:"Liên kết viện, trường, doanh nghiệp trong nghiên cứu và ứng dụng KHCN", d:"2025-2030"},
+            {id:"NQ-08", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển hạ tầng KHCN, các phòng thí nghiệm trọng điểm", d:"2026-2030"},
+            {id:"NQ-09", cat:"NQ24", g:"CN&ĐMST", t:"Xây dựng CSDL đổi mới sáng tạo liên thông cấp tỉnh và quốc gia", d:"2026-2028"},
+            {id:"NQ-10", cat:"NQ24", g:"CN&ĐMST", t:"Xây dựng, hoàn thiện chính quyền số và dịch vụ công trực tuyến", d:"2025-2030"},
+            {id:"NQ-11", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển nền tảng số, dữ liệu số dùng chung cho ngành KHCN", d:"2025-2030"},
+            {id:"NQ-12", cat:"NQ24", g:"CN&ĐMST", t:"Triển khai nền tảng số tích hợp, chia sẻ dữ liệu (LGSP) liên thông", d:"2025-2027"},
+            {id:"NQ-13", cat:"NQ24", g:"CN&ĐMST", t:"Ứng dụng AI, Big Data, Cloud trong quản lý nhà nước về KHCN", d:"2026-2030"},
+            {id:"NQ-14", cat:"NQ24", g:"CN&ĐMST", t:"Phát triển dữ liệu mở, kho dữ liệu dùng chung ngành KHCN", d:"2025-2027"},
+            {id:"NQ-15", cat:"NQ24", g:"CN&ĐMST", t:"Thúc đẩy phát triển kinh tế số, thương mại điện tử trên nền tảng KHCN", d:"2025-2030"},
+            {id:"NQ-16", cat:"NQ24", g:"Văn phòng", t:"Phát triển nguồn nhân lực số và kỹ năng số cho cán bộ, công chức", d:"2025-2030"},
+            {id:"NQ-17", cat:"NQ24", g:"CN&ĐMST", t:"Đảm bảo an toàn thông tin mạng và an ninh dữ liệu số", d:"2025-2030"},
+            {id:"NQ-18", cat:"NQ24", g:"Văn phòng", t:"Tuyên truyền, nâng cao nhận thức về chuyển đổi số và đổi mới sáng tạo", d:"Thường xuyên"},
+
+            // --- CHUYÊN MÔN SỞ (40) - Thay Thanh tra bằng Văn phòng ---
+            {id:"SO-01", cat:"SO", g:"TĐLCL", t:"Tham mưu xây dựng Chương trình hành động thực hiện Chỉ thị số 38-CT/TW của Ban Bí thư", d:"31/01/26"},
+            {id:"SO-02", cat:"SO", g:"TC-KH", t:"Báo cáo nhu cầu vốn KHCN, ĐMST, CĐS (2026-2030) gửi Bộ Tài chính", d:"05/02/26"},
+            {id:"SO-03", cat:"SO", g:"Văn phòng", t:"Góp ý dự thảo Kế hoạch của UBND tỉnh về kiểm tra công vụ năm 2026", d:"06/02/26"},
+            {id:"SO-04", cat:"SO", g:"Văn phòng", t:"Tổng hợp báo cáo kết quả thực hiện quy chế dân chủ tại cơ sở năm 2025", d:"08/02/26"},
+            {id:"SO-05", cat:"SO", g:"Văn phòng", t:"Tham mưu báo cáo công tác phòng, chống tham nhũng, tiêu cực định kỳ", d:"10/02/26"},
+            {id:"SO-06", cat:"SO", g:"Văn phòng", t:"Xây dựng Kế hoạch thanh tra, kiểm tra chuyên ngành năm 2026 (nội dung chuyển giao)", d:"12/02/26"},
+            {id:"SO-07", cat:"SO", g:"CN&ĐMST", t:"Dự thảo Kế hoạch họp mặt doanh nghiệp KHCN nhân ngày 18/5", d:"12/02/26"},
+            {id:"SO-08", cat:"SO", g:"Văn phòng", t:"Dự thảo báo cáo sơ kết công tác cải cách hành chính Quý I/2026", d:"15/02/26"},
+            {id:"SO-09", cat:"SO", g:"Văn phòng", t:"Báo cáo tình hình thực hiện Nghị quyết 01/NQ-CP của Chính phủ tại đơn vị", d:"15/02/26"},
+            {id:"SO-10", cat:"SO", g:"CN&ĐMST", t:"Thông báo tiếp nhận hồ sơ đăng ký nhiệm vụ KHCN cấp tỉnh đợt 1/2026", d:"18/02/26"},
+            {id:"SO-11", cat:"SO", g:"Văn phòng", t:"Tạo lập số quản lý văn bản đi, đến trên hệ thống VBDH điện tử", d:"Thường xuyên"},
+            {id:"SO-12", cat:"SO", g:"Văn phòng", t:"Tham gia thực hiện chế độ báo cáo trực Tết Nguyên đán 2026", d:"22/02/26"},
+            {id:"SO-13", cat:"SO", g:"CN&ĐMST", t:"Tham mưu Kế hoạch của Ban Chỉ đạo về phát triển KHCN, ĐMST và CĐS", d:"24/02/26"},
+            {id:"SO-14", cat:"SO", g:"Văn phòng", t:"Kế hoạch kiểm soát thủ tục hành chính, thực hiện cơ chế một cửa năm 2026", d:"26/02/26"},
+            {id:"SO-15", cat:"SO", g:"TC-KH", t:"Phương án sắp xếp sở hữu, tài sản công nghiệp sau sắp xếp đơn vị", d:"28/02/26"},
+            {id:"SO-16", cat:"SO", g:"Văn phòng", t:"Điều chỉnh, bổ sung Quy chế làm việc của Sở năm 2026", d:"31/03/26"},
+            {id:"SO-17", cat:"SO", g:"CN&ĐMST", t:"Chỉ đạo nhà mạng tuyên truyền về PCCC trên các nền tảng số", d:"Thường xuyên"},
+            {id:"SO-18", cat:"SO", g:"Văn phòng", t:"Báo cáo tổng hợp kết quả tự đánh giá chỉ số CCHC (PAR Index) năm 2025", d:"15/01/26"},
+            {id:"SO-19", cat:"SO", g:"Văn phòng", t:"Thẩm định kế hoạch sử dụng kinh phí sự nghiệp KHCN của các huyện", d:"Thường xuyên"},
+            {id:"SO-20", cat:"SO", g:"QLKH", t:"Kiểm tra tiến độ thực hiện các đề tài KHCN cấp tỉnh đang triển khai", d:"Hàng quý"},
+            {id:"SO-21", cat:"SO", g:"Văn phòng", t:"Công tác quản lý cán bộ, công chức và đào tạo bồi dưỡng năm 2026", d:"Thường xuyên"},
+            {id:"SO-22", cat:"SO", g:"Văn phòng", t:"Thực hiện công tác văn thư, lưu trữ và bảo mật hồ sơ tài liệu", d:"Thường xuyên"},
+            {id:"SO-23", cat:"SO", g:"Văn phòng", t:"Tham mưu giải quyết khiếu nại, tố cáo và kiến nghị của công dân", d:"Thường xuyên"},
+            {id:"SO-24", cat:"SO", g:"Văn phòng", t:"Quản lý tài sản công, mua sắm trang thiết bị làm việc của cơ quan", d:"Thường xuyên"},
+            {id:"SO-25", cat:"SO", g:"Văn phòng", t:"Theo dõi, đôn đốc việc thực hiện các kết luận chỉ đạo của Giám đốc Sở", d:"Thàng tuần"},
+            {id:"SO-26", cat:"SO", g:"TĐLCL", t:"Kiểm tra nhà nước về đo lường đối với phương tiện đo nhóm 2", d:"Theo kế hoạch"},
+            {id:"SO-27", cat:"SO", g:"TĐLCL", t:"Khảo sát chất lượng sản phẩm hàng hóa lưu thông trên thị trường", d:"Thường xuyên"},
+            {id:"SO-28", cat:"SO", g:"TĐLCL", t:"Hướng dẫn ghi nhãn hàng hóa và công bố tiêu chuẩn cơ sở cho DN", d:"Thường xuyên"},
+            {id:"SO-29", cat:"SO", g:"TĐLCL", t:"Triển khai áp dụng ISO 9001:2015 vào hoạt động cơ quan hành chính", d:"Quý III/2026"},
+            {id:"SO-30", cat:"SO", g:"QLKH", t:"Tổ chức họp Hội đồng tư vấn xác định nhiệm vụ KHCN năm 2027", d:"10/2026"},
+            {id:"SO-31", cat:"SO", g:"QLKH", t:"Nghiệm thu các đề tài, dự án KHCN kết thúc trong năm 2026", d:"Theo tiến độ"},
+            {id:"SO-32", cat:"SO", g:"QLKH", t:"Quản lý hoạt động các tổ chức KHCN ngoài công lập trên địa bàn", d:"Thường xuyên"},
+            {id:"SO-33", cat:"SO", g:"CN&ĐMST", t:"Hỗ trợ xác lập quyền sở hữu công nghiệp cho các sản phẩm OCOP", d:"Thường xuyên"},
+            {id:"SO-34", cat:"SO", g:"CN&ĐMST", t:"Tổ chức cuộc thi Khởi nghiệp đổi mới sáng tạo tỉnh năm 2026", d:"Quý IV/2026"},
+            {id:"SO-35", cat:"SO", g:"CN&ĐMST", t:"Cấp giấy phép tiến hành công việc bức xạ (X-quang chẩn đoán y tế)", d:"Thường xuyên"},
+            {id:"SO-36", cat:"SO", g:"CN&ĐMST", t:"Kiểm tra an toàn bức xạ và hạt nhân tại các cơ sở trên địa bàn", d:"Theo kế hoạch"},
+            {id:"SO-37", cat:"SO", g:"TC-KH", t:"Quyết toán kinh phí hoạt động năm 2025 và giao dự toán 2026", d:"Quý I/2026"},
+            {id:"SO-38", cat:"SO", g:"TC-KH", t:"Tham mưu phân bổ kinh phí sự nghiệp KHCN cho các đơn vị trực thuộc", d:"Quý I/2026"},
+            {id:"SO-39", cat:"SO", g:"Văn phòng", t:"Báo cáo kết quả thực hiện quy chế dân chủ và dân vận chính quyền", d:"30/06/26"},
+            {id:"SO-40", cat:"SO", g:"Văn phòng", t:"Tổ chức Hội nghị cán bộ, công chức, viên chức năm 2026", d:"12/2026"}
         ];
 
-        // Thêm nhiệm vụ ảo để lấp đầy bảng
-        for(let i=1; i<=30; i++) {
-            tasks.push({ 
-                id: `SO-${i<10?'0'+i:i}`, 
-                cat: "SO", 
-                g: "Văn phòng", 
-                t: `Nhiệm vụ chuyên môn thường xuyên số ${i}: Kiểm tra, rà soát và đánh giá kết quả thực hiện các chỉ tiêu khoa học công nghệ tại các huyện, thị xã, thành phố trên địa bàn tỉnh trong năm 2026`, 
-                d: "31/12/26" 
-            });
-        }
-
+        let tasks = rawTasks;
         let currentCat = 'ALL';
 
         function switchMode(cat, el) {
             currentCat = cat;
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active-item'));
             el.classList.add('active-item');
-            document.getElementById('currentCategoryLabel').innerText = cat === 'ALL' ? 'TẤT CẢ' : cat;
+            document.getElementById('currentCategoryLabel').innerText = 
+                cat === 'ALL' ? 'TẤT CẢ' : 
+                (cat === 'TU' ? 'TỈNH ỦY GIAO' : 
+                (cat === 'UB' ? 'UBND TỈNH GIAO' : 
+                (cat === 'NQ24' ? 'NGHỊ QUYẾT 24' : 'CHUYÊN MÔN SỞ')));
             render();
         }
 
@@ -355,12 +348,20 @@ background:white;
             document.getElementById('taskTable').innerHTML = html;
         }
 
-        function save(id, val) { localStorage.setItem('ioc_v20_'+id, val); render(); }
-        setInterval(() => { document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false}); }, 1000);
+        function save(id, val) { 
+            localStorage.setItem('ioc_v20_'+id, val); 
+            render(); 
+        }
+
+        setInterval(() => { 
+            document.getElementById('miniClock').innerText = new Date().toLocaleTimeString('vi-VN',{hour12:false}); 
+        }, 1000);
         
         const units = [...new Set(tasks.map(t => t.g))].sort();
         units.forEach(u => {
-            const op = document.createElement('option'); op.value = u; op.innerText = u;
+            const op = document.createElement('option'); 
+            op.value = u; 
+            op.innerText = u;
             document.getElementById('unit').appendChild(op);
         });
 
