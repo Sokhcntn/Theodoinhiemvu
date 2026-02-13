@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IOC Điều Hành Nhiệm Vụ - KH&CN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -19,136 +19,161 @@
             background: var(--bg-deep);
             color: white;
             font-family: 'Inter', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-blue);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        /* Mobile Responsive Table to Card */
+        @media (max-width: 768px) {
+            .responsive-table thead {
+                display: none;
+            }
+            .responsive-table border-b {
+                border-bottom: 2px solid #1e3a8a;
+            }
+            .task-row {
+                display: block;
+                margin-bottom: 1rem;
+                padding: 1rem !important;
+                background: #162a5a;
+                border-radius: 12px;
+                border: 1px solid #1e40af;
+            }
+            .task-cell {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem 0;
+                border-bottom: 1px border-blue-900/30;
+                width: 100% !important;
+                text-align: left !important;
+            }
+            .task-cell::before {
+                content: attr(data-label);
+                font-weight: 700;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: #94a3b8;
+                margin-right: 1rem;
+            }
+            .task-cell.content-block {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .task-cell.content-block::before {
+                margin-bottom: 0.25rem;
+            }
         }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #0f1c3f;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #1e3a8a;
-            border-radius: 10px;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f1c3f; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
 
         select, input {
             background: #162a5a;
             color: white;
             border: 1px solid #1e3a8a;
+            appearance: none;
         }
 
-        select:focus, input:focus {
-            border-color: var(--accent-yellow);
-            outline: none;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        .step-cv { color: #94a3b8; }
+        .step-tp { color: #60a5fa; }
+        .step-ld { color: #facc15; }
+        .step-ngoai { color: #f472b6; }
+        .step-final { color: #4ade80; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .task-row {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-
-        /* Màu sắc cho từng cấp độ tiến độ */
-        .step-cv { color: #94a3b8; } /* Chuyên viên */
-        .step-tp { color: #60a5fa; } /* Trưởng phòng */
-        .step-ld { color: #facc15; } /* Lãnh đạo Sở */
-        .step-ngoai { color: #f472b6; } /* Bên ngoài */
-        .step-final { color: #4ade80; } /* Hoàn thành */
+        .animate-slide { animation: slideUp 0.4s ease-out forwards; }
     </style>
 </head>
 
-<body class="p-4 md:p-8">
+<body class="p-3 md:p-8">
 
     <!-- HEADER -->
-    <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+    <header class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-            <h1 class="text-2xl md:text-3xl font-bold text-yellow-400 uppercase tracking-tight">
-                Hệ thống theo dõi nhiệm vụ Sở KH&CN
+            <h1 class="text-xl md:text-3xl font-bold text-yellow-400 uppercase tracking-tight">
+                IOC Điều Hành KH&CN
             </h1>
-            <p class="text-blue-300 text-sm mt-1 italic">Theo dõi 40 nhiệm vụ & Quy trình phối hợp đa bên</p>
+            <p class="text-blue-300 text-xs mt-1 italic opacity-80">Giao diện tối ưu đa thiết bị (Mobile & Desktop)</p>
         </div>
-        <div class="text-right">
-            <span id="currentDate" class="text-xs font-mono text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full border border-blue-800"></span>
-        </div>
+        <div id="currentDate" class="text-[10px] font-mono text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full border border-blue-800"></div>
     </header>
 
-    <!-- KPI ROW -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="kpis"></div>
+    <!-- KPI GRID -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6" id="kpis"></div>
 
     <!-- MAIN DASHBOARD -->
-    <div class="grid lg:grid-cols-3 gap-8 mb-8">
-        <div class="card rounded-2xl p-6 flex flex-col items-center justify-center">
-            <h2 class="text-lg mb-8 text-yellow-200 font-semibold w-full text-left uppercase text-sm tracking-wider">Tổng thể tiến độ</h2>
-            <div class="relative w-48 h-48 md:w-56 md:h-56">
-                <div id="donut" class="w-full h-full rounded-full transition-all duration-1000"></div>
+    <div class="grid lg:grid-cols-3 gap-6 mb-6">
+        <!-- DONUT CHART -->
+        <div class="card rounded-2xl p-5 flex flex-col items-center">
+            <h2 class="text-sm mb-6 text-yellow-200 font-bold w-full uppercase tracking-widest">Tiến độ tổng thể</h2>
+            <div class="relative w-40 h-40 md:w-48 md:h-48">
+                <div id="donut" class="w-full h-full rounded-full transition-all duration-700 shadow-[0_0_20px_rgba(30,58,138,0.5)]"></div>
                 <div class="absolute inset-0 flex flex-col justify-center items-center bg-transparent">
-                    <div id="percent" class="text-4xl font-bold">0%</div>
-                    <div class="text-[10px] uppercase tracking-widest text-blue-300">Hoàn thành</div>
+                    <div id="percent" class="text-3xl font-bold">0%</div>
+                    <div class="text-[9px] uppercase tracking-tighter text-blue-300">Hoàn thành</div>
                 </div>
             </div>
-            <div class="mt-8 grid grid-cols-1 gap-3 w-full text-xs uppercase font-medium">
-                <div class="flex justify-between items-center bg-red-950/30 p-2 rounded">
-                    <span>🔴 Chưa hoàn thành</span>
-                    <b id="count-chua" class="text-red-400 text-base">0</b>
+            <div class="mt-6 w-full space-y-2">
+                <div class="flex justify-between items-center text-[10px] uppercase font-bold p-2 bg-blue-900/20 rounded-lg">
+                    <span class="text-red-400">● Đang xử lý</span>
+                    <span id="count-chua" class="text-lg">0</span>
                 </div>
-                <div class="flex justify-between items-center bg-green-950/30 p-2 rounded">
-                    <span>🟢 Đã hoàn thành</span>
-                    <b id="count-xong" class="text-green-400 text-base">0</b>
+                <div class="flex justify-between items-center text-[10px] uppercase font-bold p-2 bg-green-900/20 rounded-lg">
+                    <span class="text-green-400">● Hoàn thành</span>
+                    <span id="count-xong" class="text-lg">0</span>
                 </div>
             </div>
         </div>
 
-        <div class="card rounded-2xl p-6 col-span-1 lg:col-span-2">
-            <h2 class="text-lg mb-6 text-yellow-200 font-semibold uppercase text-sm tracking-wider">Tiến độ theo phòng chuyên môn</h2>
-            <div id="bars" class="space-y-5 custom-scrollbar max-h-[400px] overflow-y-auto pr-2"></div>
+        <!-- PROGRESS BY UNIT -->
+        <div class="card rounded-2xl p-5 col-span-1 lg:col-span-2">
+            <h2 class="text-sm mb-5 text-yellow-200 font-bold uppercase tracking-widest">Tiến độ theo đơn vị</h2>
+            <div id="bars" class="space-y-4 custom-scrollbar max-h-[320px] overflow-y-auto pr-2"></div>
         </div>
     </div>
 
-    <!-- DATA TABLE SECTION -->
-    <div class="card rounded-2xl p-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            <h2 class="text-lg text-yellow-200 font-semibold uppercase text-sm tracking-wider">Chi tiết quy trình phê duyệt</h2>
-            <div class="flex flex-wrap gap-2 w-full md:w-auto">
-                <input type="text" id="searchBox" placeholder="Tìm tên nhiệm vụ..." class="px-4 py-2 rounded-lg text-sm w-full md:w-64">
-                <select id="filterGroup" class="px-4 py-2 rounded-lg text-sm cursor-pointer">
-                    <option value="all">Tất cả đơn vị</option>
-                </select>
-            </div>
+    <!-- SEARCH & FILTER BAR -->
+    <div class="flex flex-col md:flex-row gap-3 mb-4">
+        <div class="relative flex-1">
+            <input type="text" id="searchBox" placeholder="Tìm tên nhiệm vụ..." class="w-full pl-4 pr-4 py-3 rounded-xl text-sm focus:ring-2 ring-blue-500">
         </div>
+        <div class="flex gap-2">
+            <select id="filterGroup" class="flex-1 md:w-48 px-4 py-3 rounded-xl text-sm font-semibold">
+                <option value="all">Tất cả đơn vị</option>
+            </select>
+        </div>
+    </div>
 
-        <div class="overflow-x-auto custom-scrollbar h-[600px]">
-            <table class="w-full text-left border-collapse min-w-[1100px]">
-                <thead class="sticky top-0 bg-[#0f1c3f] z-10 shadow-lg">
-                    <tr class="bg-blue-900/50 text-yellow-400 text-[10px] uppercase tracking-wider">
-                        <th class="p-4 font-bold border-b border-blue-800 w-12 text-center">STT</th>
-                        <th class="p-4 font-bold border-b border-blue-800 w-28">Đơn vị</th>
-                        <th class="p-4 font-bold border-b border-blue-800">Nội dung nhiệm vụ</th>
-                        <th class="p-4 font-bold border-b border-blue-800 text-center w-28">Hạn định</th>
-                        <th class="p-4 font-bold border-b border-blue-800 w-56 text-center">Cập nhật tiến độ (Phân quyền)</th>
-                        <th class="p-4 font-bold border-b border-blue-800 w-32 text-center">Trạng thái</th>
+    <!-- TASK LIST -->
+    <div class="card rounded-2xl overflow-hidden mb-8">
+        <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse responsive-table">
+                <thead class="bg-blue-900/50 text-yellow-400 text-[10px] uppercase font-bold">
+                    <tr>
+                        <th class="p-4 w-12 text-center">STT</th>
+                        <th class="p-4 w-28">Đơn vị</th>
+                        <th class="p-4">Nội dung nhiệm vụ</th>
+                        <th class="p-4 text-center w-28">Thời hạn</th>
+                        <th class="p-4 w-52">Cập nhật tiến độ</th>
+                        <th class="p-4 text-center w-28">Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody" class="text-sm"></tbody>
             </table>
         </div>
-        <div id="noResults" class="hidden text-center py-10 text-gray-500">Không tìm thấy kết quả phù hợp</div>
+        <div id="noResults" class="hidden text-center py-10 text-gray-500 italic">Không tìm thấy dữ liệu phù hợp</div>
     </div>
 
     <script>
-        document.getElementById('currentDate').innerText = "Dữ liệu hệ thống: " + new Date().toLocaleDateString('vi-VN');
-
         const tasks = [
             {id: 1, g:"CN&ĐMST", t:"Tham mưu Kế hoạch thực hiện Chiến lược phát triển KH,CN và ĐMST đến năm 2030 (QĐ 569/QĐ-TTg)", d:"2026-01-31", s:"CV"},
             {id: 2, g:"TCĐLCL", t:"Tham mưu xây dựng Chương trình hành động thực hiện Chỉ thị số 38-CT/TW của Ban Bí thư", d:"2026-01-31", s:"CV"},
@@ -180,7 +205,7 @@
             {id: 28, g:"TCĐLCL", t:"Tổ chức tập huấn nghiệp vụ về Tiêu chuẩn Đo lường Chất lượng", d:"2026-04-25", s:"CV"},
             {id: 29, g:"CĐS", t:"Tạo lập sổ quản lý văn bản đi, đến trong công tác văn thư trên hệ thống VBDH", d:"2026-02-13", s:"CV"},
             {id: 30, g:"Văn phòng", t:"Tham gia thực hiện chế độ báo cáo Tết", d:"2026-02-22", s:"CV"},
-            {id: 31, g:"CĐS", t:"Tham mưu triển khai Kế hoạch 04-KH/BCĐTW về KH,CN, ĐMST và CĐS", d:"2026-02-24", s:"CV"},
+            {id: 31, g:"CĐS", t:"Tham mưu triển khai thực hiện Kế hoạch số 04-KH/BCĐTW", d:"2026-02-24", s:"CV"},
             {id: 32, g:"Văn phòng", t:"Kế hoạch kiểm soát TTHC, thực hiện cơ chế một cửa năm 2026", d:"2026-02-26", s:"CV"},
             {id: 33, g:"TC-KH", t:"Phương án sắp xếp sở hữu, tài sản công nghiệp sau sắp xếp", d:"2026-02-28", s:"CV"},
             {id: 34, g:"Văn phòng", t:"Rà soát, điều chỉnh Nghị quyết, Chương trình hành động (Đại hội XIV)", d:"2026-03-31", s:"CV"},
@@ -193,48 +218,23 @@
         ];
 
         const steps = [
-            {id: "CV", label: "Chuyên viên đang thực hiện", class: "step-cv"},
-            {id: "TP", label: "Trưởng phòng đang duyệt", class: "step-tp"},
-            {id: "PGD", label: "Phó Giám đốc đang duyệt", class: "step-ld"},
-            {id: "GD", label: "Giám đốc đang duyệt", class: "step-ld"},
-            {id: "GOP_Y", label: "Đang gửi góp ý Sở, Ngành", class: "step-ngoai"},
-            {id: "VP_UB", label: "VP UBND tỉnh đang xử lý", class: "step-ngoai"},
-            {id: "VP_HD", label: "VP HĐND-QH đang xử lý", class: "step-ngoai"},
-            {id: "VP_TU", label: "VP Tỉnh ủy đang xử lý", class: "step-ngoai"},
-            {id: "DONE", label: "Đã hoàn thành/Ban hành", class: "step-final"}
+            {id: "CV", label: "CV đang thực hiện", class: "step-cv"},
+            {id: "TP", label: "Trưởng phòng duyệt", class: "step-tp"},
+            {id: "PGD", label: "Lãnh đạo Sở duyệt", class: "step-ld"},
+            {id: "GOP_Y", label: "Gửi góp ý Sở Ngành", class: "step-ngoai"},
+            {id: "VP_UB", label: "VP UBND tỉnh xử lý", class: "step-ngoai"},
+            {id: "VP_TU", label: "VP Tỉnh ủy xử lý", class: "step-ngoai"},
+            {id: "DONE", label: "Hoàn thành/Ban hành", class: "step-final"}
         ];
 
         function getTaskStep(id, defaultVal) {
-            return localStorage.getItem('task_step_v4_' + id) || defaultVal;
+            return localStorage.getItem('task_step_v5_' + id) || defaultVal;
         }
 
         function updateTaskStep(id, newStep) {
-            localStorage.setItem('task_step_v4_' + id, newStep);
+            localStorage.setItem('task_step_v5_' + id, newStep);
             render();
         }
-
-        function getDeadlineStatus(dateStr, stepId) {
-            if (stepId === "DONE") return { label: "Hoàn thành", color: "bg-green-500/20 text-green-400 border border-green-500/50" };
-            const deadline = new Date(dateStr);
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            if (deadline < today) return { label: "Quá hạn", color: "bg-red-500/20 text-red-400 border border-red-500/50" };
-            const diffDays = Math.ceil(Math.abs(deadline - today) / (1000 * 60 * 60 * 24)); 
-            if (diffDays <= 5) return { label: "Sắp đến hạn", color: "bg-yellow-500/20 text-yellow-400 border border-yellow-500/50" };
-            return { label: "Trong hạn", color: "bg-blue-500/20 text-blue-400 border border-blue-500/50" };
-        }
-
-        const units = [...new Set(tasks.map(t => t.g))].sort();
-        const filterSelect = document.getElementById('filterGroup');
-        units.forEach(unit => {
-            const opt = document.createElement('option');
-            opt.value = unit;
-            opt.innerText = unit;
-            filterSelect.appendChild(opt);
-        });
-
-        document.getElementById('searchBox').addEventListener('input', render);
-        document.getElementById('filterGroup').addEventListener('change', render);
 
         function render() {
             const search = document.getElementById('searchBox').value.toLowerCase();
@@ -246,59 +246,80 @@
             const filteredTasks = tasks.filter(t => {
                 const stepId = getTaskStep(t.id, t.s);
                 if (stepId === "DONE") countXong++;
-                
                 if (!sourceStats[t.g]) sourceStats[t.g] = { total: 0, done: 0 };
                 sourceStats[t.g].total++;
                 if (stepId === "DONE") sourceStats[t.g].done++;
-                
                 return t.t.toLowerCase().includes(search) && (groupFilter === "all" || t.g === groupFilter);
             });
 
+            // Update KPI
             document.getElementById('kpis').innerHTML = `
-                <div class="card p-4 rounded-xl border-l-4 border-l-blue-500"><div class="text-[10px] text-blue-300 uppercase font-bold">Tổng nhiệm vụ</div><div class="text-2xl font-bold mt-1">${totalTasks}</div></div>
-                <div class="card p-4 rounded-xl border-l-4 border-l-red-500"><div class="text-[10px] text-red-400 uppercase font-bold">Chưa hoàn thành</div><div class="text-2xl font-bold mt-1">${totalTasks - countXong}</div></div>
-                <div class="card p-4 rounded-xl border-l-4 border-l-green-500"><div class="text-[10px] text-green-400 uppercase font-bold">Đã hoàn thành</div><div class="text-2xl font-bold mt-1">${countXong}</div></div>
-                <div class="card p-4 rounded-xl border-l-4 border-l-yellow-500"><div class="text-[10px] text-yellow-400 uppercase font-bold">Tỷ lệ hoàn thành</div><div class="text-2xl font-bold mt-1">${Math.round((countXong/totalTasks)*100)}%</div></div>
+                <div class="card p-3 rounded-xl border-l-4 border-l-blue-500"><div class="text-[9px] text-blue-300 uppercase font-bold">Tổng số</div><div class="text-xl font-bold">${totalTasks}</div></div>
+                <div class="card p-3 rounded-xl border-l-4 border-l-red-500"><div class="text-[9px] text-red-400 uppercase font-bold">Đang xử lý</div><div class="text-xl font-bold">${totalTasks - countXong}</div></div>
+                <div class="card p-3 rounded-xl border-l-4 border-l-green-500"><div class="text-[9px] text-green-400 uppercase font-bold">Đã xong</div><div class="text-xl font-bold">${countXong}</div></div>
+                <div class="card p-3 rounded-xl border-l-4 border-l-yellow-500"><div class="text-[9px] text-yellow-400 uppercase font-bold">Tỷ lệ</div><div class="text-xl font-bold">${Math.round((countXong/totalTasks)*100)}%</div></div>
             `;
 
+            // Update Donut
             const pDone = (countXong / totalTasks) * 100;
             document.getElementById('donut').style.background = `conic-gradient(#22c55e 0% ${pDone}%, #1e3a8a ${pDone}% 100%)`;
             document.getElementById('percent').innerText = Math.round(pDone) + "%";
             document.getElementById('count-chua').innerText = totalTasks - countXong;
             document.getElementById('count-xong').innerText = countXong;
 
+            // Update Bars
             let barsHTML = "";
             Object.keys(sourceStats).sort().forEach(unit => {
                 const stat = sourceStats[unit];
                 const pct = Math.round((stat.done / stat.total) * 100) || 0;
-                barsHTML += `<div><div class="flex justify-between text-xs mb-1 font-semibold"><span>${unit}</span><span class="text-blue-300">${stat.done}/${stat.total}</span></div><div class="w-full bg-blue-900/40 h-2 rounded-full overflow-hidden"><div class="bg-gradient-to-r from-blue-500 to-green-400 h-full transition-all" style="width: ${pct}%"></div></div></div>`;
+                barsHTML += `<div><div class="flex justify-between text-[10px] mb-1 font-bold"><span>${unit}</span><span>${stat.done}/${stat.total}</span></div><div class="w-full bg-blue-900/40 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-500 h-full" style="width: ${pct}%"></div></div></div>`;
             });
             document.getElementById('bars').innerHTML = barsHTML;
 
+            // Update Table
             let tableHTML = "";
             filteredTasks.forEach((task, index) => {
                 const currentStepId = getTaskStep(task.id, task.s);
-                const st = getDeadlineStatus(task.d, currentStepId);
-                const dateObj = new Date(task.d);
-                const dateDisplay = isNaN(dateObj) ? task.d : `${dateObj.getDate().toString().padStart(2,'0')}/${(dateObj.getMonth()+1).toString().padStart(2,'0')}/${dateObj.getFullYear()}`;
+                const isDone = currentStepId === "DONE";
+                const deadline = new Date(task.d);
+                const isLate = !isDone && deadline < new Date();
                 
                 tableHTML += `
-                    <tr class="task-row border-b border-blue-900/50 hover:bg-blue-800/20 transition-colors" style="animation-delay: ${index * 0.01}s">
-                        <td class="p-4 text-center text-blue-400 text-xs font-mono">${task.id}</td>
-                        <td class="p-4 font-semibold text-blue-200 text-[11px]">${task.g}</td>
-                        <td class="p-4 leading-relaxed text-[13px]">${task.t}</td>
-                        <td class="p-4 text-center text-xs font-mono text-blue-300">${dateDisplay}</td>
-                        <td class="p-4 text-center">
-                            <select onchange="updateTaskStep(${task.id}, this.value)" class="text-[11px] font-medium p-2 rounded cursor-pointer w-full bg-[#162a5a] border border-blue-700 focus:border-yellow-400">
+                    <tr class="task-row border-b border-blue-900/30 hover:bg-blue-800/10 transition-colors animate-slide" style="animation-delay: ${index * 0.05}s">
+                        <td class="p-4 text-center text-blue-400 font-mono text-xs task-cell" data-label="STT">${task.id}</td>
+                        <td class="p-4 font-bold text-blue-200 text-[10px] task-cell" data-label="Đơn vị">${task.g}</td>
+                        <td class="p-4 leading-relaxed text-sm task-cell content-block" data-label="Nội dung">${task.t}</td>
+                        <td class="p-4 text-center text-xs font-mono task-cell ${isLate ? 'text-red-400 font-bold' : 'text-blue-300'}" data-label="Thời hạn">${task.d.split('-').reverse().join('/')}</td>
+                        <td class="p-4 text-center task-cell" data-label="Cập nhật">
+                            <select onchange="updateTaskStep(${task.id}, this.value)" class="text-[11px] font-bold p-2.5 rounded-lg w-full bg-[#071028] border border-blue-800">
                                 ${steps.map(s => `<option value="${s.id}" ${currentStepId === s.id ? 'selected' : ''} class="${s.class}">${s.label}</option>`).join('')}
                             </select>
                         </td>
-                        <td class="p-4 text-center"><span class="px-2 py-1 rounded-full text-[9px] font-bold uppercase ${st.color} block text-center min-w-[80px]">${st.label}</span></td>
+                        <td class="p-4 text-center task-cell" data-label="Trạng thái">
+                            <span class="px-3 py-1 rounded-full text-[9px] font-bold uppercase ${isDone ? 'bg-green-500/20 text-green-400 border border-green-500/50' : isLate ? 'bg-red-500/20 text-red-400 border border-red-500/50' : 'bg-blue-500/10 text-blue-400 border border-blue-500/30'} block w-full">
+                                ${isDone ? 'Xong' : isLate ? 'Trễ' : 'Đang xử lý'}
+                            </span>
+                        </td>
                     </tr>`;
             });
             document.getElementById('tableBody').innerHTML = tableHTML;
             document.getElementById('noResults').classList.toggle('hidden', filteredTasks.length > 0);
         }
+
+        // Setup filters
+        const units = [...new Set(tasks.map(t => t.g))].sort();
+        const filterSelect = document.getElementById('filterGroup');
+        units.forEach(unit => {
+            const opt = document.createElement('option');
+            opt.value = unit;
+            opt.innerText = unit;
+            filterSelect.appendChild(opt);
+        });
+
+        document.getElementById('searchBox').addEventListener('input', render);
+        document.getElementById('filterGroup').addEventListener('change', render);
+        document.getElementById('currentDate').innerText = "Hôm nay: " + new Date().toLocaleDateString('vi-VN');
+        
         window.onload = render;
     </script>
 </body>
